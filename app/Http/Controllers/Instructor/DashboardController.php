@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Instructor;
 use App\Http\Controllers\Controller;
 use App\Models\Instructor;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -26,41 +25,50 @@ class DashboardController extends Controller
                 'user_id' => $user->id,
                 'status' => 'approved',
                 'is_freelance' => true,
+                'is_active' => true,
             ]);
             $instructor->load(['school', 'user']);
         }
 
-        $bookings = [];
-        $stats = [
-            'upcoming' => 0,
-            'students_taught' => 0,
-            'average_rating' => 4.9,
-            'total_bookings' => 0,
-            'completed' => 0,
-            'earnings' => 0,
+        // Calculate profile completion
+        $profileFields = [
+            'name' => ! empty($user->name),
+            'email' => ! empty($user->email),
+            'avatar' => ! empty($user->profile_picture) || ! empty($instructor->profile_photo),
+            'bio' => ! empty($instructor->bio),
+            'certifications' => ! empty($instructor->certifications),
+            'experience_years' => ! empty($instructor->experience_years),
+            'location' => ! empty($instructor->location),
+            'languages' => ! empty($instructor->languages),
+            'hourly_rate' => ! empty($instructor->hourly_rate),
+            'daily_rate' => ! empty($instructor->daily_rate),
         ];
+        $completedCount = count(array_filter($profileFields));
+        $profileCompletion = round(($completedCount / count($profileFields)) * 100);
 
-        if (Schema::hasTable('bookings')) {
-            try {
-                $bookingsCollection = $instructor->bookings()
-                    ->with('client:id,name,email')
-                    ->orderBy('date', 'desc')
-                    ->get();
+        $bookingsCollection = $instructor->bookings()
+            ->with('student:id,name,email,profile_picture')
+            ->orderBy('date', 'desc')
+            ->get();
 
-                $bookings = $bookingsCollection;
-                $stats['total_bookings'] = $bookingsCollection->count();
-                $stats['upcoming'] = $bookingsCollection->where('status', 'confirmed')->where('date', '>=', now()->toDateString())->count();
-                $stats['completed'] = $bookingsCollection->where('status', 'completed')->count();
-                $stats['students_taught'] = $bookingsCollection->where('status', 'completed')->pluck('client_id')->unique()->count();
-                $stats['earnings'] = $bookingsCollection->where('status', 'completed')->sum('price');
-            } catch (\Throwable $e) {
-                // Keep default empty stats if bookings table schema differs
-            }
-        }
+        $startOfMonth = now()->startOfMonth()->toDateString();
+
+        $stats = [
+            'upcoming' => $bookingsCollection->where('status', 'confirmed')->where('date', '>=', now()->toDateString())->count(),
+            'pending_requests' => $bookingsCollection->where('status', 'pending')->count(),
+            'students_taught' => $bookingsCollection->where('status', 'completed')->pluck('student_id')->unique()->count(),
+            'average_rating' => round($instructor->reviews()->avg('rating') ?: 4.9, 1),
+            'total_bookings' => $bookingsCollection->count(),
+            'completed' => $bookingsCollection->where('status', 'completed')->count(),
+            'total_earnings' => (float) $bookingsCollection->where('status', 'completed')->sum('total_price'),
+            'monthly_revenue' => (float) $bookingsCollection->where('status', 'completed')->where('date', '>=', $startOfMonth)->sum('total_price'),
+            'profile_completion' => $profileCompletion,
+            'hire_requests_count' => $instructor->hireRequests()->where('status', 'pending')->count(),
+        ];
 
         return Inertia::render('instructor/Dashboard', [
             'instructor' => $instructor,
-            'bookings' => $bookings,
+            'bookings' => $bookingsCollection->take(10)->values(),
             'stats' => $stats,
         ]);
     }

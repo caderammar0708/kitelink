@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('instructors', function (Blueprint $table) {
-            if (! Schema::hasColumn('instructors', 'certifications')) {
-                $table->string('certifications')->nullable()->after('bio');
-            }
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('type');
+            $table->morphs('notifiable');
+            $table->text('data');
+            $table->timestamp('read_at')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -23,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('instructors', function (Blueprint $table) {
-            $table->dropColumn('certifications');
-        });
+        Schema::dropIfExists('notifications');
     }
 };

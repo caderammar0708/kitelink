@@ -3,7 +3,19 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { CalendarCheck, Compass, LayoutDashboard, Settings, User } from 'lucide-react';
+import {
+    Bell,
+    Briefcase,
+    CalendarCheck,
+    CalendarDays,
+    Compass,
+    DollarSign,
+    LayoutDashboard,
+    MessageSquare,
+    Settings,
+    Star,
+    User,
+} from 'lucide-react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
@@ -20,8 +32,13 @@ export function AppSidebar() {
               },
               {
                   title: 'My Bookings',
-                  url: '/instructor/dashboard#bookings',
+                  url: '/instructor/bookings',
                   icon: CalendarCheck,
+              },
+              {
+                  title: 'Availability',
+                  url: '/instructor/availability',
+                  icon: CalendarDays,
               },
               {
                   title: 'My Profile',
@@ -29,13 +46,38 @@ export function AppSidebar() {
                   icon: User,
               },
               {
-                  title: 'Kite Centers',
-                  url: '/instructors',
+                  title: 'Revenue & Earnings',
+                  url: '/instructor/revenue',
+                  icon: DollarSign,
+              },
+              {
+                  title: 'Student Reviews',
+                  url: '/instructor/reviews',
+                  icon: Star,
+              },
+              {
+                  title: 'Messages',
+                  url: '/instructor/messages',
+                  icon: MessageSquare,
+              },
+              {
+                  title: 'School Hire Requests',
+                  url: '/instructor/hire-requests',
+                  icon: Briefcase,
+              },
+              {
+                  title: 'Browse Instructors',
+                  url: '/instructor/browse',
                   icon: Compass,
               },
               {
+                  title: 'Notifications',
+                  url: '/instructor/notifications',
+                  icon: Bell,
+              },
+              {
                   title: 'Settings',
-                  url: '/settings/profile',
+                  url: '/instructor/settings',
                   icon: Settings,
               },
           ]

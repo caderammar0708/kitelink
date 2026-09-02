@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Instructor;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -97,7 +98,7 @@ test('users can register with school role', function () {
 
 test('public users can view instructors index and detail pages', function () {
     $instructorUser = User::factory()->create(['role' => 'instructor', 'name' => 'John Kite Coach']);
-    $instructor = \App\Models\Instructor::create([
+    $instructor = Instructor::create([
         'user_id' => $instructorUser->id,
         'location' => 'Kalpitiya, Sri Lanka',
         'hourly_rate' => 70,
@@ -111,7 +112,7 @@ test('public users can view instructors index and detail pages', function () {
 test('authenticated client can book a lesson with an instructor', function () {
     $client = User::factory()->create(['role' => 'client']);
     $instructorUser = User::factory()->create(['role' => 'instructor']);
-    $instructor = \App\Models\Instructor::create([
+    $instructor = Instructor::create([
         'user_id' => $instructorUser->id,
         'location' => 'Tarifa, Spain',
         'hourly_rate' => 80,

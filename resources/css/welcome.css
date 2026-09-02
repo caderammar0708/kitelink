@@ -1,15 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Inter', sans-serif;
-  background: #070b12;
-  color: white;
-  overflow-x: hidden;
-}
+/* Global resets removed — handled by Tailwind preflight and app.css @layer base */
 
 .bg-image {
   position: fixed;

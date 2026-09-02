@@ -1,7 +1,25 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { Award, Camera, CheckCircle2, LoaderCircle, Save, User as UserIcon, Wind } from 'lucide-react';
+import {
+    Award,
+    Camera,
+    Check,
+    CheckCircle2,
+    DollarSign,
+    FileText,
+    Globe,
+    Info,
+    LoaderCircle,
+    MapPin,
+    Plus,
+    Power,
+    Save,
+    Upload,
+    User as UserIcon,
+    Wind,
+    X,
+} from 'lucide-react';
 import React, { useRef, useState } from 'react';
 
 interface InstructorData {
@@ -10,9 +28,12 @@ interface InstructorData {
     certifications?: string;
     experience_years?: number;
     location?: string;
+    languages?: string[];
     hourly_rate?: number;
+    daily_rate?: number;
     profile_photo?: string;
     is_freelance?: boolean;
+    is_active?: boolean;
     school?: { name: string };
     user?: { name: string; email: string; profile_picture?: string };
 }
@@ -33,9 +54,27 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+const AVAILABLE_LANGUAGES = [
+    'English',
+    'German',
+    'French',
+    'Spanish',
+    'Italian',
+    'Russian',
+    'Dutch',
+    'Portuguese',
+    'Arabic',
+    'Sinhala',
+];
+
 export default function Profile({ instructor, status }: ProfileProps) {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(instructor?.profile_photo || instructor?.user?.profile_picture || null);
+    const certDocInputRef = useRef<HTMLInputElement | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(
+        instructor?.profile_photo || instructor?.user?.profile_picture || null
+    );
+    const [certFileName, setCertFileName] = useState<string | null>(null);
+    const [customLangInput, setCustomLangInput] = useState('');
 
     const { data, setData, post, processing, errors, recentlySuccessful } = useForm({
         name: instructor?.user?.name || '',
@@ -44,8 +83,12 @@ export default function Profile({ instructor, status }: ProfileProps) {
         certifications: instructor?.certifications || '',
         experience_years: instructor?.experience_years ?? '',
         location: instructor?.location || '',
+        languages: (instructor?.languages || ['English']) as string[],
         hourly_rate: instructor?.hourly_rate ?? '',
+        daily_rate: instructor?.daily_rate ?? '',
+        is_active: instructor?.is_active ?? true,
         avatar: null as File | null,
+        cert_document: null as File | null,
     });
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,8 +100,27 @@ export default function Profile({ instructor, status }: ProfileProps) {
         }
     };
 
-    const triggerFileInput = () => {
-        fileInputRef.current?.click();
+    const handleCertDocChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setData('cert_document', file);
+            setCertFileName(file.name);
+        }
+    };
+
+    const toggleLanguage = (lang: string) => {
+        if (data.languages.includes(lang)) {
+            setData('languages', data.languages.filter((l) => l !== lang));
+        } else {
+            setData('languages', [...data.languages, lang]);
+        }
+    };
+
+    const addCustomLanguage = () => {
+        if (customLangInput.trim() && !data.languages.includes(customLangInput.trim())) {
+            setData('languages', [...data.languages, customLangInput.trim()]);
+            setCustomLangInput('');
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -71,7 +133,7 @@ export default function Profile({ instructor, status }: ProfileProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Instructor Profile - KiteLink" />
+            <Head title="My Instructor Profile - KiteLink" />
 
             <div className="relative mx-auto min-h-full max-w-5xl space-y-6 p-4 text-slate-100 selection:bg-[#3b82f6]/30 selection:text-white sm:p-6 lg:p-8">
                 {/* Header Banner */}
@@ -79,16 +141,26 @@ export default function Profile({ instructor, status }: ProfileProps) {
                     <div>
                         <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
                             <UserIcon className="h-7 w-7 text-[#5bb4ff]" />
-                            Instructor Profile
+                            My Instructor Profile
                         </h1>
-                        <p className="mt-1 text-sm text-slate-400">Update your public instructor details, credentials, and profile picture</p>
+                        <p className="mt-1 text-xs text-slate-400 sm:text-sm">
+                            Configure your teaching rates, credentials, spoken languages, and listing visibility
+                        </p>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#5bb4ff]/20 bg-[#5bb4ff]/10 px-3 py-1 text-xs font-semibold text-[#8acbff]">
-                            <Wind className="h-3.5 w-3.5" />
-                            Public Listing Active
-                        </span>
+                    <div className="flex items-center gap-3">
+                        <button
+                            type="button"
+                            onClick={() => setData('is_active', !data.is_active)}
+                            className={`inline-flex cursor-pointer items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
+                                data.is_active
+                                    ? 'border-emerald-500/40 bg-emerald-950/40 text-emerald-300 hover:bg-emerald-900/40'
+                                    : 'border-slate-600 bg-slate-900/80 text-slate-400 hover:bg-slate-800'
+                            }`}
+                        >
+                            <Power className="h-3.5 w-3.5" />
+                            {data.is_active ? 'Listing Active (Online)' : 'Listing Paused (Offline)'}
+                        </button>
                     </div>
                 </div>
 
@@ -96,22 +168,24 @@ export default function Profile({ instructor, status }: ProfileProps) {
                 {(status || recentlySuccessful) && (
                     <div className="animate-in fade-in flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-950/50 p-4 text-sm text-emerald-300 shadow-lg backdrop-blur-md duration-300">
                         <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-400" />
-                        <span className="font-medium">{status || 'Your profile changes have been saved successfully!'}</span>
+                        <span className="font-medium">{status || 'Your profile has been saved and published successfully!'}</span>
                     </div>
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Top Section: Profile Picture Glass Card */}
+                    {/* Top Section: Avatar & Status */}
                     <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-6 shadow-2xl backdrop-blur-xl sm:p-8">
-                        <h2 className="mb-1 text-lg font-bold text-white">Profile Photo</h2>
-                        <p className="mb-6 text-xs text-slate-400">Upload a high-quality picture of yourself or you kitesurfing. Max size: 2MB.</p>
+                        <h2 className="mb-1 text-base font-bold text-white sm:text-lg">Profile Photo & Identity</h2>
+                        <p className="mb-6 text-xs text-slate-400">
+                            Upload a professional headshot or active kitesurfing image to increase student bookings.
+                        </p>
 
                         <div className="flex flex-col items-center gap-6 sm:flex-row">
-                            {/* Circular Avatar with Hover Overlay */}
-                            <div className="group relative cursor-pointer" onClick={triggerFileInput}>
+                            {/* Circular Avatar */}
+                            <div className="group relative cursor-pointer" onClick={() => fileInputRef.current?.click()}>
                                 <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-2 border-[#5bb4ff]/50 bg-slate-900 shadow-[0_0_25px_rgba(91,180,255,0.3)] sm:h-32 sm:w-32">
                                     {previewUrl ? (
-                                        <img src={previewUrl} alt={data.name || 'Instructor Avatar'} className="h-full w-full object-cover" />
+                                        <img src={previewUrl} alt={data.name || 'Avatar'} className="h-full w-full object-cover" />
                                     ) : (
                                         <span className="bg-gradient-to-br from-[#b8e6ff] to-[#4da6ff] bg-clip-text text-3xl font-extrabold text-transparent">
                                             {data.name?.charAt(0) || 'I'}
@@ -127,7 +201,7 @@ export default function Profile({ instructor, status }: ProfileProps) {
 
                                 <button
                                     type="button"
-                                    onClick={triggerFileInput}
+                                    onClick={() => fileInputRef.current?.click()}
                                     className="absolute right-0 bottom-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#070b12] bg-[#1f6eff] text-white shadow-lg transition-transform group-hover:scale-110 hover:bg-[#3b82f6]"
                                 >
                                     <Camera className="h-4 w-4" />
@@ -147,143 +221,104 @@ export default function Profile({ instructor, status }: ProfileProps) {
                                 <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
                                     <button
                                         type="button"
-                                        onClick={triggerFileInput}
-                                        className="cursor-pointer rounded-xl border border-white/15 bg-white/[0.08] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-white/[0.14]"
+                                        onClick={() => fileInputRef.current?.click()}
+                                        className="cursor-pointer rounded-xl border border-white/15 bg-white/[0.08] px-4 py-2 text-xs font-semibold text-white transition hover:bg-white/[0.14]"
                                     >
-                                        Select New Image
+                                        Choose New Picture
                                     </button>
-                                    {previewUrl && previewUrl !== instructor?.profile_photo && (
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                setPreviewUrl(instructor?.profile_photo || null);
-                                                setData('avatar', null);
-                                            }}
-                                            className="rounded-xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-xs font-medium text-rose-300 transition-colors hover:bg-rose-500/20"
-                                        >
-                                            Reset
-                                        </button>
-                                    )}
                                 </div>
-                                <p className="text-[11px] text-slate-400">JPG, PNG, GIF or WebP up to 2MB.</p>
+                                <p className="text-[11px] text-slate-400">JPG, PNG, GIF, WebP up to 2MB.</p>
                                 {errors.avatar && <p className="mt-1 text-xs text-rose-400">{errors.avatar}</p>}
                             </div>
                         </div>
                     </div>
 
-                    {/* Main Form Fields Glass Card */}
+                    {/* Basic Info & Rates */}
                     <div className="space-y-6 rounded-2xl border border-white/10 bg-white/[0.05] p-6 shadow-2xl backdrop-blur-xl sm:p-8">
-                        <h2 className="flex items-center gap-2 border-b border-white/10 pb-3 text-lg font-bold text-white">
-                            <Award className="h-5 w-5 text-[#5bb4ff]" />
-                            Basic & Professional Details
+                        <h2 className="flex items-center gap-2 border-b border-white/10 pb-3 text-base font-bold text-white sm:text-lg">
+                            <Wind className="h-5 w-5 text-[#5bb4ff]" />
+                            Basic & Coaching Information
                         </h2>
 
                         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                             {/* Name */}
                             <div className="space-y-1.5">
-                                <label htmlFor="name" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                                <label htmlFor="name" className="block text-xs font-semibold tracking-wide text-slate-200 uppercase">
                                     Full Name <span className="text-rose-400">*</span>
                                 </label>
-                                <div className="relative">
-                                    <input
-                                        id="name"
-                                        type="text"
-                                        required
-                                        value={data.name}
-                                        onChange={(e) => setData('name', e.target.value)}
-                                        disabled={processing}
-                                        placeholder="e.g. Alex Henderson"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 px-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
-                                    />
-                                </div>
+                                <input
+                                    id="name"
+                                    type="text"
+                                    required
+                                    value={data.name}
+                                    onChange={(e) => setData('name', e.target.value)}
+                                    placeholder="e.g. Alex Henderson"
+                                    className="w-full rounded-xl border border-white/15 bg-slate-950/40 px-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
+                                />
                                 {errors.name && <p className="text-xs text-rose-400">{errors.name}</p>}
                             </div>
 
                             {/* Email */}
                             <div className="space-y-1.5">
-                                <label htmlFor="email" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                                <label htmlFor="email" className="block text-xs font-semibold tracking-wide text-slate-200 uppercase">
                                     Email Address <span className="text-rose-400">*</span>
                                 </label>
-                                <div className="relative">
-                                    <input
-                                        id="email"
-                                        type="email"
-                                        required
-                                        value={data.email}
-                                        onChange={(e) => setData('email', e.target.value)}
-                                        disabled={processing}
-                                        placeholder="name@example.com"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 px-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
-                                    />
-                                </div>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    required
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
+                                    placeholder="name@example.com"
+                                    className="w-full rounded-xl border border-white/15 bg-slate-950/40 px-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
+                                />
                                 {errors.email && <p className="text-xs text-rose-400">{errors.email}</p>}
                             </div>
 
-                            {/* Certifications */}
+                            {/* Teaching Spots / Primary Location */}
                             <div className="space-y-1.5">
-                                <label htmlFor="certifications" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
-                                    Certifications (IKO / VDWS)
+                                <label htmlFor="location" className="block text-xs font-semibold tracking-wide text-slate-200 uppercase">
+                                    Teaching Spots &amp; Base Location
                                 </label>
                                 <div className="relative">
-                                    <input
-                                        id="certifications"
-                                        type="text"
-                                        value={data.certifications}
-                                        onChange={(e) => setData('certifications', e.target.value)}
-                                        disabled={processing}
-                                        placeholder="e.g. IKO Level 2 Instructor, VDWS Pro"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 px-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
-                                    />
-                                </div>
-                                {errors.certifications && <p className="text-xs text-rose-400">{errors.certifications}</p>}
-                            </div>
-
-                            {/* Years of Experience */}
-                            <div className="space-y-1.5">
-                                <label htmlFor="experience_years" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
-                                    Years of Experience
-                                </label>
-                                <div className="relative">
-                                    <input
-                                        id="experience_years"
-                                        type="number"
-                                        min={0}
-                                        max={50}
-                                        value={data.experience_years}
-                                        onChange={(e) => setData('experience_years', e.target.value as any)}
-                                        disabled={processing}
-                                        placeholder="e.g. 5"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 px-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
-                                    />
-                                </div>
-                                {errors.experience_years && <p className="text-xs text-rose-400">{errors.experience_years}</p>}
-                            </div>
-
-                            {/* Location / Kite Center */}
-                            <div className="space-y-1.5">
-                                <label htmlFor="location" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
-                                    Location / Kite Center
-                                </label>
-                                <div className="relative">
+                                    <MapPin className="absolute top-3 left-3.5 h-4 w-4 text-[#5bb4ff]" />
                                     <input
                                         id="location"
                                         type="text"
                                         value={data.location}
                                         onChange={(e) => setData('location', e.target.value)}
-                                        disabled={processing}
-                                        placeholder="e.g. Kalpitiya Lagoon, Sri Lanka"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 px-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
+                                        placeholder="e.g. Kalpitiya Lagoon &amp; Kappalady, Sri Lanka"
+                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
                                     />
                                 </div>
                                 {errors.location && <p className="text-xs text-rose-400">{errors.location}</p>}
                             </div>
 
+                            {/* Years of Experience */}
+                            <div className="space-y-1.5">
+                                <label htmlFor="experience_years" className="block text-xs font-semibold tracking-wide text-slate-200 uppercase">
+                                    Years of Experience
+                                </label>
+                                <input
+                                    id="experience_years"
+                                    type="number"
+                                    min={0}
+                                    max={50}
+                                    value={data.experience_years}
+                                    onChange={(e) => setData('experience_years', e.target.value as any)}
+                                    placeholder="e.g. 6"
+                                    className="w-full rounded-xl border border-white/15 bg-slate-950/40 px-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
+                                />
+                                {errors.experience_years && <p className="text-xs text-rose-400">{errors.experience_years}</p>}
+                            </div>
+
                             {/* Hourly Rate */}
                             <div className="space-y-1.5">
-                                <label htmlFor="hourly_rate" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
-                                    Hourly Rate ($ USD)
+                                <label htmlFor="hourly_rate" className="block text-xs font-semibold tracking-wide text-slate-200 uppercase">
+                                    Hourly Rate ($ USD / hr)
                                 </label>
                                 <div className="relative">
+                                    <DollarSign className="absolute top-3 left-3.5 h-4 w-4 text-emerald-400" />
                                     <input
                                         id="hourly_rate"
                                         type="number"
@@ -291,48 +326,177 @@ export default function Profile({ instructor, status }: ProfileProps) {
                                         min={0}
                                         value={data.hourly_rate}
                                         onChange={(e) => setData('hourly_rate', e.target.value as any)}
-                                        disabled={processing}
                                         placeholder="e.g. 65.00"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 px-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
+                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
                                     />
                                 </div>
                                 {errors.hourly_rate && <p className="text-xs text-rose-400">{errors.hourly_rate}</p>}
                             </div>
+
+                            {/* Daily Rate */}
+                            <div className="space-y-1.5">
+                                <label htmlFor="daily_rate" className="block text-xs font-semibold tracking-wide text-slate-200 uppercase">
+                                    Full-Day Camp Rate ($ USD / day)
+                                </label>
+                                <div className="relative">
+                                    <DollarSign className="absolute top-3 left-3.5 h-4 w-4 text-emerald-400" />
+                                    <input
+                                        id="daily_rate"
+                                        type="number"
+                                        step="0.01"
+                                        min={0}
+                                        value={data.daily_rate}
+                                        onChange={(e) => setData('daily_rate', e.target.value as any)}
+                                        placeholder="e.g. 240.00"
+                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
+                                    />
+                                </div>
+                                {errors.daily_rate && <p className="text-xs text-rose-400">{errors.daily_rate}</p>}
+                            </div>
+                        </div>
+
+                        {/* Languages Section */}
+                        <div className="space-y-2 border-t border-white/10 pt-4">
+                            <label className="flex items-center gap-1.5 text-xs font-semibold tracking-wide text-slate-200 uppercase">
+                                <Globe className="h-4 w-4 text-[#5bb4ff]" />
+                                Spoken Languages for Coaching
+                            </label>
+                            <p className="text-xs text-slate-400">Select all languages you can conduct kitesurf lessons in:</p>
+
+                            <div className="flex flex-wrap gap-2 pt-1">
+                                {AVAILABLE_LANGUAGES.map((lang) => {
+                                    const isSelected = data.languages.includes(lang);
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={lang}
+                                            onClick={() => toggleLanguage(lang)}
+                                            className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
+                                                isSelected
+                                                    ? 'border-[#5bb4ff]/50 bg-[#1f6eff]/30 text-white shadow-sm shadow-blue-500/20'
+                                                    : 'border-white/10 bg-white/[0.04] text-slate-300 hover:bg-white/[0.08]'
+                                            }`}
+                                        >
+                                            {isSelected ? <Check className="h-3.5 w-3.5 text-[#5bb4ff]" /> : <Plus className="h-3.5 w-3.5 text-slate-500" />}
+                                            {lang}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Add other language */}
+                            <div className="mt-2 flex max-w-xs items-center gap-2">
+                                <input
+                                    type="text"
+                                    value={customLangInput}
+                                    onChange={(e) => setCustomLangInput(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                            addCustomLanguage();
+                                        }
+                                    }}
+                                    placeholder="Add other language..."
+                                    className="rounded-lg border border-white/15 bg-slate-950/40 px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-[#3b82f6] focus:outline-none"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={addCustomLanguage}
+                                    className="rounded-lg bg-white/10 px-3 py-1.5 text-xs font-medium text-slate-200 hover:bg-white/20"
+                                >
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Certifications & Document Upload */}
+                        <div className="space-y-4 border-t border-white/10 pt-4">
+                            <h3 className="flex items-center gap-2 text-xs font-semibold tracking-wide text-slate-200 uppercase">
+                                <Award className="h-4 w-4 text-[#5bb4ff]" />
+                                Certifications &amp; Licenses (IKO / VDWS / BKSA)
+                            </h3>
+
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div className="space-y-1.5">
+                                    <label htmlFor="certifications" className="block text-xs text-slate-300">
+                                        Certification Titles / Levels
+                                    </label>
+                                    <input
+                                        id="certifications"
+                                        type="text"
+                                        value={data.certifications}
+                                        onChange={(e) => setData('certifications', e.target.value)}
+                                        placeholder="e.g. IKO Level 2 Senior Instructor, VDWS Pro Coach"
+                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 px-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
+                                    />
+                                    {errors.certifications && <p className="text-xs text-rose-400">{errors.certifications}</p>}
+                                </div>
+
+                                <div className="space-y-1.5">
+                                    <label className="block text-xs text-slate-300">
+                                        Upload Certification Proof (PDF, PNG, JPG)
+                                    </label>
+                                    <input
+                                        ref={certDocInputRef}
+                                        type="file"
+                                        accept=".pdf,image/*"
+                                        onChange={handleCertDocChange}
+                                        className="hidden"
+                                    />
+                                    <div
+                                        onClick={() => certDocInputRef.current?.click()}
+                                        className="flex cursor-pointer items-center justify-between rounded-xl border border-dashed border-white/20 bg-slate-950/40 px-4 py-2.5 text-xs text-slate-300 transition hover:border-[#5bb4ff]/50 hover:bg-white/[0.04]"
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <FileText className="h-4 w-4 text-[#5bb4ff]" />
+                                            <span className="truncate max-w-[180px]">
+                                                {certFileName || 'Upload certificate scan / PDF'}
+                                            </span>
+                                        </div>
+                                        <Upload className="h-4 w-4 text-slate-400" />
+                                    </div>
+                                    {errors.cert_document && <p className="text-xs text-rose-400">{errors.cert_document}</p>}
+                                </div>
+                            </div>
                         </div>
 
                         {/* Bio / About */}
-                        <div className="space-y-1.5 pt-2">
-                            <label htmlFor="bio" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
-                                About Me / Bio
+                        <div className="space-y-1.5 border-t border-white/10 pt-4">
+                            <label htmlFor="bio" className="block text-xs font-semibold tracking-wide text-slate-200 uppercase">
+                                Bio / Teaching Philosophy
                             </label>
                             <textarea
                                 id="bio"
                                 rows={4}
                                 value={data.bio}
                                 onChange={(e) => setData('bio', e.target.value)}
-                                disabled={processing}
-                                placeholder="Describe your kitesurfing journey, teaching philosophy, spots you cover, and what students can expect from your lessons..."
-                                className="w-full resize-y rounded-xl border border-white/15 bg-slate-950/40 p-4 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
+                                placeholder="Tell prospective students about your kitesurfing background, credentials, what spots you favor, and why they should book coaching sessions with you..."
+                                className="w-full resize-y rounded-xl border border-white/15 bg-slate-950/40 p-4 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none"
                             />
                             {errors.bio && <p className="text-xs text-rose-400">{errors.bio}</p>}
                         </div>
 
-                        {/* Save Action Button */}
-                        <div className="flex flex-col items-center justify-end gap-4 border-t border-white/10 pt-4 sm:flex-row">
+                        {/* Submit Actions */}
+                        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-4 sm:flex-row">
+                            <div className="flex items-center gap-2 text-xs text-slate-400">
+                                <Info className="h-4 w-4 text-[#5bb4ff]" />
+                                All updates are instantly live on your public instructor card.
+                            </div>
+
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#4ba9ff] to-[#1f6eff] px-8 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/30 transition-all duration-300 hover:scale-[1.02] hover:from-[#5bb4ff] hover:to-[#2e7bff] hover:shadow-blue-500/50 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60 sm:w-auto sm:text-base"
+                                className="group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#4ba9ff] to-[#1f6eff] px-8 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/30 transition-all duration-300 hover:scale-[1.02] hover:from-[#5bb4ff] hover:to-[#2e7bff] hover:shadow-blue-500/50 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60 sm:w-auto"
                             >
                                 {processing ? (
                                     <>
-                                        <LoaderCircle className="h-5 w-5 animate-spin text-white" />
+                                        <LoaderCircle className="h-4 w-4 animate-spin text-white" />
                                         <span>Saving Profile...</span>
                                     </>
                                 ) : (
                                     <>
                                         <Save className="h-4 w-4" />
-                                        <span>Save Profile</span>
+                                        <span>Save &amp; Publish Profile</span>
                                     </>
                                 )}
                             </button>
