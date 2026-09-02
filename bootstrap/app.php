@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
+        $middleware->alias([
+            'instructor' => \App\Http\Middleware\EnsureUserIsInstructor::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

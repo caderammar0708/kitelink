@@ -1,41 +1,69 @@
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { type NavItem, type SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
+import { CalendarCheck, Compass, LayoutDashboard, Settings, User } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        url: '/dashboard',
-        icon: LayoutGrid,
-    },
-];
-
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        url: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        url: 'https://laravel.com/docs/starter-kits',
-        icon: BookOpen,
-    },
-];
-
 export function AppSidebar() {
+    const { auth } = usePage<SharedData>().props;
+    const isInstructor = auth?.user?.role === 'instructor';
+    const dashboardUrl = isInstructor ? '/instructor/dashboard' : '/dashboard';
+
+    const mainNavItems: NavItem[] = isInstructor
+        ? [
+              {
+                  title: 'Dashboard',
+                  url: '/instructor/dashboard',
+                  icon: LayoutDashboard,
+              },
+              {
+                  title: 'My Bookings',
+                  url: '/instructor/dashboard#bookings',
+                  icon: CalendarCheck,
+              },
+              {
+                  title: 'My Profile',
+                  url: '/instructor/profile',
+                  icon: User,
+              },
+              {
+                  title: 'Kite Centers',
+                  url: '/instructors',
+                  icon: Compass,
+              },
+              {
+                  title: 'Settings',
+                  url: '/settings/profile',
+                  icon: Settings,
+              },
+          ]
+        : [
+              {
+                  title: 'Dashboard',
+                  url: '/dashboard',
+                  icon: LayoutDashboard,
+              },
+              {
+                  title: 'Find Instructors',
+                  url: '/instructors',
+                  icon: Compass,
+              },
+              {
+                  title: 'Settings',
+                  url: '/settings/profile',
+                  icon: Settings,
+              },
+          ];
+
     return (
-        <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
+        <Sidebar collapsible="icon" variant="inset" className="border-r border-white/10 bg-[#070b12] text-slate-200">
+            <SidebarHeader className="border-b border-white/10 px-3 py-3">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
+                        <SidebarMenuButton size="lg" asChild className="rounded-xl transition-colors hover:bg-white/[0.06]">
+                            <Link href={dashboardUrl} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
@@ -43,14 +71,15 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
+            <SidebarContent className="py-2">
                 <NavMain items={mainNavItems} />
             </SidebarContent>
 
-            <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+            <SidebarFooter className="border-t border-white/10 p-2">
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
     );
 }
+
+export default AppSidebar;

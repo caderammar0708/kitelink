@@ -1,7 +1,10 @@
 @import 'tailwindcss';
+@import './welcome.css';
 
 @plugin 'tailwindcss-animate';
 
+@source '../views';
+@source '../js';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
 @custom-variant dark (&:is(.dark *));
@@ -67,12 +70,31 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
     *,
     ::after,
     ::before,
     ::backdrop,
     ::file-selector-button {
         border-color: var(--color-gray-200, currentColor);
+    }
+
+    html,
+    body {
+        min-height: 100vh;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #070b12;
+        color: #f8fafc;
+    }
+
+    #app {
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 0%;
     }
 }
 
@@ -150,9 +172,5 @@
 @layer base {
     * {
         @apply border-border;
-    }
-
-    body {
-        @apply bg-background text-foreground;
     }
 }

@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Instructor;
 
 class User extends Authenticatable
 {
@@ -21,7 +22,26 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'profile_picture',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var list<string>
+     */
+    protected $appends = [
+        'avatar',
+    ];
+
+    /**
+     * Get the user avatar URL.
+     */
+    public function getAvatarAttribute(): ?string
+    {
+        return $this->profile_picture;
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,5 +64,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function instructor()
+    {
+        return $this->hasOne(Instructor::class);
     }
 }
