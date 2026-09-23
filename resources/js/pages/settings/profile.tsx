@@ -25,6 +25,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: auth.user.name,
         email: auth.user.email,
+        notification_sound_enabled: auth.user.notification_sound_enabled ?? true,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -39,7 +40,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Profile information" description="Update your name and email address" />
+                    <HeadingSmall title="Profile information" description="Update your name, email address, and notification preferences" />
 
                     <form onSubmit={submit} className="space-y-6">
                         <div className="grid gap-2">
@@ -73,6 +74,22 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             />
 
                             <InputError className="mt-2" message={errors.email} />
+                        </div>
+
+                        <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                            <div className="space-y-0.5">
+                                <Label htmlFor="notification_sound_enabled" className="cursor-pointer text-sm font-medium text-white">
+                                    Notification Sound
+                                </Label>
+                                <p className="text-xs text-slate-400">Play an audible chime when new notifications and messages arrive</p>
+                            </div>
+                            <input
+                                id="notification_sound_enabled"
+                                type="checkbox"
+                                checked={data.notification_sound_enabled}
+                                onChange={(e) => setData('notification_sound_enabled', e.target.checked)}
+                                className="h-4 w-4 cursor-pointer rounded border-slate-700 bg-slate-900 text-[#1f6eff] focus:ring-0"
+                            />
                         </div>
 
                         {mustVerifyEmail && auth.user.email_verified_at === null && (

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Booking;
 use App\Models\Instructor;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
@@ -135,4 +136,72 @@ test('authenticated client can book a lesson with an instructor', function () {
         'students_count' => 2,
         'status' => 'pending',
     ]);
+});
+
+test('instructor show page passes null existingBooking when user is guest or has no active booking', function () {
+    $instructorUser = User::factory()->create(['role' => 'instructor']);
+    $instructor = Instructor::create([
+        'user_id' => $instructorUser->id,
+        'location' => 'Kalpitiya, Sri Lanka',
+        'hourly_rate' => 70,
+    ]);
+
+    // Guest
+    $this->get(route('instructors.show', $instructor))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('instructors/Show')
+            ->where('existingBooking', null)
+        );
+
+    // Authenticated client with no bookings
+    $client = User::factory()->create(['role' => 'client']);
+    $this->actingAs($client)
+        ->get(route('instructors.show', $instructor))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('instructors/Show')
+            ->where('existingBooking', null)
+        );
+});
+
+test('instructor show page passes active existingBooking when client has pending or confirmed booking', function () {
+    $client = User::factory()->create(['role' => 'client']);
+    $instructorUser = User::factory()->create(['role' => 'instructor']);
+    $instructor = Instructor::create([
+        'user_id' => $instructorUser->id,
+        'location' => 'El Gouna, Egypt',
+        'hourly_rate' => 90,
+    ]);
+
+    $booking = Booking::create([
+        'student_id' => $client->id,
+        'instructor_id' => $instructor->id,
+        'date' => now()->addDays(3)->toDateString(),
+        'time' => '08:30 AM - 10:30 AM (Morning Breeze)',
+        'students_count' => 1,
+        'lesson_type' => 'Beginner 1-on-1 Lesson (2h)',
+        'total_price' => 180.00,
+        'status' => 'pending',
+    ]);
+
+    $this->actingAs($client)
+        ->get(route('instructors.show', $instructor))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('instructors/Show')
+            ->where('existingBooking.id', $booking->id)
+            ->where('existingBooking.status', 'pending')
+        );
+
+    // Cancelled or completed bookings should not be returned as existing active booking
+    $booking->update(['status' => 'cancelled']);
+
+    $this->actingAs($client)
+        ->get(route('instructors.show', $instructor))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('instructors/Show')
+            ->where('existingBooking', null)
+        );
 });

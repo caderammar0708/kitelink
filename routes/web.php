@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\Client\BookingController as ClientBookingController;
+use App\Http\Controllers\Client\MessageController as ClientMessageController;
+use App\Http\Controllers\Client\ReviewController as ClientReviewController;
 use App\Http\Controllers\Instructor\AvailabilityController;
 use App\Http\Controllers\Instructor\BookingController as InstructorBookingController;
 use App\Http\Controllers\Instructor\BrowseInstructorController;
@@ -13,6 +16,7 @@ use App\Http\Controllers\Instructor\RevenueController;
 use App\Http\Controllers\Instructor\ReviewController;
 use App\Http\Controllers\Instructor\SettingsController as InstructorSettingsController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\NotificationController as GlobalNotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,6 +44,22 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+
+    // Client Dashboard & Features
+    Route::get('/client/bookings', [ClientBookingController::class, 'index'])->name('client.bookings');
+    Route::get('/bookings', fn () => redirect()->route('client.bookings'));
+
+    Route::get('/client/messages', [ClientMessageController::class, 'index'])->name('client.messages');
+    Route::post('/client/messages/start', [ClientMessageController::class, 'start'])->name('client.messages.start');
+    Route::get('/client/messages/{conversation}', [ClientMessageController::class, 'show'])->whereNumber('conversation')->name('client.messages.show');
+    Route::post('/client/messages/{conversation}', [ClientMessageController::class, 'store'])->whereNumber('conversation')->name('client.messages.store');
+
+    Route::post('/client/reviews', [ClientReviewController::class, 'store'])->name('client.reviews.store');
+
+    // Global Notifications
+    Route::get('/notifications', [GlobalNotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/read-all', [GlobalNotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+    Route::post('/notifications/{id}/read', [GlobalNotificationController::class, 'markAsRead'])->name('notifications.read');
 });
 
 // Instructor Portal

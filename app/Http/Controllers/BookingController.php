@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Instructor;
+use App\Notifications\NewBookingNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -23,12 +24,12 @@ class BookingController extends Controller
             'notes' => 'nullable|string|max:1000',
         ]);
 
-        $instructor = Instructor::findOrFail($validated['instructor_id']);
+        $instructor = Instructor::with('user')->findOrFail($validated['instructor_id']);
         $hourlyRate = (float) ($instructor->hourly_rate ?? 65.00);
         $studentsCount = (int) ($validated['students_count'] ?? 1);
         $totalPrice = $hourlyRate * 2 * $studentsCount; // default 2-hour session
 
-        Booking::create([
+        $booking = Booking::create([
             'student_id' => $request->user()->id,
             'instructor_id' => $instructor->id,
             'date' => $validated['date'],
@@ -40,6 +41,12 @@ class BookingController extends Controller
             'notes' => $validated['notes'] ?? null,
         ]);
 
-        return back()->with('status', 'Booking request submitted successfully! Your instructor will confirm your session shortly.');
+        if ($instructor->user) {
+            $instructor->user->notify(new NewBookingNotification($booking));
+        }
+
+        return back()
+            ->with('status', 'Booking request submitted successfully! Your instructor will confirm your session shortly.')
+            ->with('booking_id', $booking->id);
     }
 }

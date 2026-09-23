@@ -93,6 +93,16 @@ export function AppSidebar() {
                   icon: Compass,
               },
               {
+                  title: 'My Bookings',
+                  url: '/client/bookings',
+                  icon: CalendarCheck,
+              },
+              {
+                  title: 'Messages',
+                  url: '/client/messages',
+                  icon: MessageSquare,
+              },
+              {
                   title: 'Settings',
                   url: '/settings/profile',
                   icon: Settings,
@@ -114,7 +124,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent className="py-2">
-                <NavMain items={mainNavItems} />
+                <NavMain items={mainNavItems} label={isInstructor ? 'Instructor Menu' : 'Main Menu'} />
             </SidebarContent>
 
             <SidebarFooter className="border-t border-white/10 p-2">

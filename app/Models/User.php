@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'role',
         'profile_picture',
+        'notification_sound_enabled',
     ];
 
     /**
@@ -63,11 +64,17 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'notification_sound_enabled' => 'boolean',
         ];
     }
 
     public function instructor()
     {
         return $this->hasOne(Instructor::class);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'student_id');
     }
 }

@@ -1,5 +1,6 @@
+import AppLayout from '@/layouts/app-layout';
 import PublicLayout from '@/layouts/public-layout';
-import { type SharedData } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import {
     ArrowRight,
@@ -19,6 +20,15 @@ import {
 } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
+interface BookingItem {
+    id: number;
+    status: string;
+    date?: string;
+    time?: string;
+    lesson_type?: string;
+    total_price?: number | string;
+}
+
 interface InstructorProps {
     instructor: {
         id: number;
@@ -32,11 +42,13 @@ interface InstructorProps {
         school?: { name: string; location?: string };
         user?: { id: number; name: string; email: string; profile_picture?: string };
     };
+    existingBooking?: BookingItem | null;
 }
 
-export function Show({ instructor }: InstructorProps) {
+export function Show({ instructor, existingBooking = null }: InstructorProps) {
     const { auth } = usePage<SharedData>().props;
     const isAuthenticated = !!auth?.user;
+    const isInstructor = auth?.user?.role === 'instructor';
     const isOwner = auth?.user?.id === instructor.user?.id;
 
     const name = instructor.user?.name || 'Certified Kitesurf Coach';
@@ -44,6 +56,21 @@ export function Show({ instructor }: InstructorProps) {
     const location = instructor.location || 'Kalpitiya, Sri Lanka';
     const certs = instructor.certifications || 'IKO Level 2 Certified Instructor';
     const hourlyRate = Number(instructor.hourly_rate ?? 65);
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: isInstructor ? 'Instructor Dashboard' : 'Dashboard',
+            href: isInstructor ? '/instructor/dashboard' : '/dashboard',
+        },
+        {
+            title: 'Find Instructors',
+            href: '/instructors',
+        },
+        {
+            title: name,
+            href: `/instructors/${instructor.id}`,
+        },
+    ];
 
     // Tomorrow's date as default
     const tomorrow = new Date();
@@ -67,7 +94,8 @@ export function Show({ instructor }: InstructorProps) {
     const [selectedLessonType, setSelectedLessonType] = useState(lessonTypes[0].label);
     const [selectedTimeSlot, setSelectedTimeSlot] = useState(timeSlots[0]);
     const [studentsCount, setStudentsCount] = useState(1);
-    const [bookingSuccess, setBookingSuccess] = useState(false);
+    const [bookingSubmitted, setBookingSubmitted] = useState(!!existingBooking);
+    const [createdBookingId, setCreatedBookingId] = useState<number | null>(existingBooking?.id ?? null);
 
     const activeLesson = lessonTypes.find((l) => l.label === selectedLessonType) || lessonTypes[0];
     const estimatedPrice = Math.round(hourlyRate * activeLesson.hours * activeLesson.multiplier * studentsCount);
@@ -85,9 +113,13 @@ export function Show({ instructor }: InstructorProps) {
         e.preventDefault();
         post(route('bookings.store'), {
             preserveScroll: true,
-            onSuccess: () => {
-                setBookingSuccess(true);
+            onSuccess: (page) => {
+                setBookingSubmitted(true);
                 reset('notes');
+                const flashId = (page.props as any)?.flash?.booking_id || (page.props as any)?.booking_id;
+                if (flashId) {
+                    setCreatedBookingId(Number(flashId));
+                }
             },
         });
     };
@@ -120,11 +152,8 @@ export function Show({ instructor }: InstructorProps) {
         },
     ];
 
-    return (
-        <PublicLayout>
-            <Head title={`${name} - Certified Kitesurf Instructor | KiteLink`} />
-
-            <div className="mx-auto max-w-7xl space-y-8 sm:space-y-10">
+    const content = (
+        <div className={`space-y-8 sm:space-y-10 ${isAuthenticated ? 'p-4 sm:p-6 lg:p-8' : 'mx-auto max-w-7xl'}`}>
                 {/* Top Navigation / Breadcrumb */}
                 <div className="flex items-center justify-between">
                     <Link
@@ -317,20 +346,7 @@ export function Show({ instructor }: InstructorProps) {
                                 </div>
                             </div>
 
-                            {/* Booking Success Banner */}
-                            {bookingSuccess && (
-                                <div className="flex items-start gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-950/40 p-4 text-xs text-emerald-300 backdrop-blur-md sm:text-sm">
-                                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
-                                    <div>
-                                        <p className="font-bold text-white">Booking Request Sent!</p>
-                                        <p className="mt-0.5 text-emerald-300/90">
-                                            {name} will review your request and confirm your session time. Check your dashboard for updates.
-                                        </p>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Booking Form or Login Prompt */}
+                            {/* Booking Form, Success State, or Login Prompt */}
                             {!isAuthenticated ? (
                                 <div className="space-y-4 py-4 text-center">
                                     <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#5bb4ff]/30 bg-gradient-to-br from-[#1f6eff]/20 to-[#5bb4ff]/10 text-[#5bb4ff] shadow-md">
@@ -352,6 +368,36 @@ export function Show({ instructor }: InstructorProps) {
                                         <Link href={route('register')} className="font-semibold text-[#5bb4ff] hover:underline">
                                             Register in 30 seconds
                                         </Link>
+                                    </p>
+                                </div>
+                            ) : bookingSubmitted || existingBooking ? (
+                                <div className="space-y-4 rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-emerald-950/60 to-slate-950/80 p-6 text-xs text-emerald-300 shadow-xl shadow-black/40 backdrop-blur-md sm:text-sm">
+                                    <div className="flex items-start gap-3">
+                                        <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-emerald-400" />
+                                        <div className="space-y-1">
+                                            <p className="text-base font-bold text-white">Booking Request Sent!</p>
+                                            <p className="text-xs text-emerald-200/90 leading-relaxed sm:text-sm">
+                                                {name} has received your request and will confirm your session shortly.
+                                            </p>
+                                            {(existingBooking?.date || data.date) && (
+                                                <div className="mt-2 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-[11px] text-emerald-200">
+                                                    <span className="font-semibold text-white">Requested Session:</span>{' '}
+                                                    {existingBooking?.date || data.date} ({existingBooking?.time || data.time})
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="pt-2">
+                                        <Link
+                                            href={`/client/bookings${createdBookingId || existingBooking?.id ? `?highlight=${createdBookingId || existingBooking?.id}` : ''}`}
+                                            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-3 text-xs font-bold text-white shadow-lg shadow-emerald-900/40 transition-all hover:scale-[1.02] hover:from-emerald-400 hover:to-teal-400 sm:text-sm"
+                                        >
+                                            <span>View Booking Status</span>
+                                            <ArrowRight className="h-4 w-4" />
+                                        </Link>
+                                    </div>
+                                    <p className="text-center text-[11px] text-slate-400">
+                                        No upfront payment required. You can manage your booking or message your coach in My Bookings.
                                     </p>
                                 </div>
                             ) : (
@@ -483,7 +529,22 @@ export function Show({ instructor }: InstructorProps) {
                         </div>
                     </div>
                 </div>
-            </div>
+        </div>
+    );
+
+    if (isAuthenticated) {
+        return (
+            <AppLayout breadcrumbs={breadcrumbs}>
+                <Head title={`${name} - Certified Kitesurf Instructor | KiteLink`} />
+                {content}
+            </AppLayout>
+        );
+    }
+
+    return (
+        <PublicLayout>
+            <Head title={`${name} - Certified Kitesurf Instructor | KiteLink`} />
+            {content}
         </PublicLayout>
     );
 }

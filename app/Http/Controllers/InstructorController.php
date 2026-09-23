@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Instructor;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -48,12 +49,24 @@ class InstructorController extends Controller
     /**
      * Display the specified instructor's public profile.
      */
-    public function show(Instructor $instructor): Response
+    public function show(Request $request, Instructor $instructor): Response
     {
         $instructor->load(['user', 'school']);
 
+        $user = $request->user();
+        $existingBooking = null;
+
+        if ($user) {
+            $existingBooking = Booking::where('instructor_id', $instructor->id)
+                ->where('student_id', $user->id)
+                ->whereIn('status', ['pending', 'confirmed'])
+                ->latest()
+                ->first();
+        }
+
         return Inertia::render('instructors/Show', [
             'instructor' => $instructor,
+            'existingBooking' => $existingBooking,
         ]);
     }
 }

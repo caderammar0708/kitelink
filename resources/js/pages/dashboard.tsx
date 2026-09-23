@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { Compass, Sparkles, User, Wind } from 'lucide-react';
+import { CalendarCheck, Compass, MessageSquare, Settings, Sparkles, Wind } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -38,12 +38,19 @@ export default function Dashboard() {
                                 <Compass className="h-4 w-4" />
                                 Browse Instructors
                             </Link>
+                            <Link
+                                href="/client/bookings"
+                                className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.08] px-4 py-2.5 text-xs font-semibold text-slate-200 backdrop-blur-md transition-all duration-200 hover:bg-white/[0.14] hover:text-white active:scale-[0.98] sm:text-sm"
+                            >
+                                <CalendarCheck className="h-4 w-4 text-[#5bb4ff]" />
+                                My Bookings
+                            </Link>
                         </div>
                     </div>
                 </div>
 
                 {/* Quick Action Glass Cards */}
-                <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
                     <Link
                         href="/instructors"
                         className="group rounded-2xl border border-white/10 bg-white/[0.05] p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-[#5bb4ff]/40 hover:bg-white/[0.08]"
@@ -55,20 +62,34 @@ export default function Dashboard() {
                         <p className="text-xs text-slate-400">Search certified instructors across 40+ countries and book lessons directly.</p>
                     </Link>
 
-                    <div className="group rounded-2xl border border-white/10 bg-white/[0.05] p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-[#38bdf8]/40 hover:bg-white/[0.08]">
+                    <Link
+                        href="/client/bookings"
+                        className="group rounded-2xl border border-white/10 bg-white/[0.05] p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-[#38bdf8]/40 hover:bg-white/[0.08]"
+                    >
                         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-[#38bdf8]/30 bg-[#38bdf8]/15 text-[#38bdf8] transition-transform group-hover:scale-110">
-                            <Wind className="h-6 w-6" />
+                            <CalendarCheck className="h-6 w-6" />
                         </div>
-                        <h3 className="mb-1 text-lg font-bold text-white transition-colors group-hover:text-[#8acbff]">Wind & Season Forecasts</h3>
-                        <p className="text-xs text-slate-400">Check live wind conditions and seasonal stats for top global kite spots.</p>
-                    </div>
+                        <h3 className="mb-1 text-lg font-bold text-white transition-colors group-hover:text-[#8acbff]">My Bookings</h3>
+                        <p className="text-xs text-slate-400">View status of your lesson requests, confirmed sessions, and leave instructor reviews.</p>
+                    </Link>
+
+                    <Link
+                        href="/client/messages"
+                        className="group rounded-2xl border border-white/10 bg-white/[0.05] p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-indigo-400/40 hover:bg-white/[0.08]"
+                    >
+                        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-indigo-400/30 bg-indigo-400/15 text-indigo-400 transition-transform group-hover:scale-110">
+                            <MessageSquare className="h-6 w-6" />
+                        </div>
+                        <h3 className="mb-1 text-lg font-bold text-white transition-colors group-hover:text-indigo-300">Direct Messages</h3>
+                        <p className="text-xs text-slate-400">Chat directly with your confirmed coaches about session timing, gear, and spots.</p>
+                    </Link>
 
                     <Link
                         href="/settings/profile"
                         className="group rounded-2xl border border-white/10 bg-white/[0.05] p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-amber-400/40 hover:bg-white/[0.08]"
                     >
                         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-amber-400/30 bg-amber-400/15 text-amber-400 transition-transform group-hover:scale-110">
-                            <User className="h-6 w-6" />
+                            <Settings className="h-6 w-6" />
                         </div>
                         <h3 className="mb-1 text-lg font-bold text-white transition-colors group-hover:text-amber-300">Account Settings</h3>
                         <p className="text-xs text-slate-400">Update your profile credentials, password, and communication preferences.</p>

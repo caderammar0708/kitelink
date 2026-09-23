@@ -1,5 +1,7 @@
+import AppLayout from '@/layouts/app-layout';
 import PublicLayout from '@/layouts/public-layout';
-import { Head, Link } from '@inertiajs/react';
+import { type BreadcrumbItem, type SharedData } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { Award, ChevronRight, Compass, MapPin, Search, Star, Wind } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -25,6 +27,21 @@ interface IndexProps {
 }
 
 export function Index({ instructors = [], filters }: IndexProps) {
+    const { auth } = usePage<SharedData>().props;
+    const isAuthenticated = !!auth?.user;
+    const isInstructor = auth?.user?.role === 'instructor';
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: isInstructor ? 'Instructor Dashboard' : 'Dashboard',
+            href: isInstructor ? '/instructor/dashboard' : '/dashboard',
+        },
+        {
+            title: 'Find Instructors',
+            href: '/instructors',
+        },
+    ];
+
     const [search, setSearch] = useState(filters?.search || '');
     const [selectedLocation, setSelectedLocation] = useState(filters?.location || 'all');
 
@@ -52,11 +69,8 @@ export function Index({ instructors = [], filters }: IndexProps) {
         });
     }, [instructors, search, selectedLocation]);
 
-    return (
-        <PublicLayout>
-            <Head title="Find Certified Kitesurf Instructors - KiteLink" />
-
-            <div className="space-y-8 sm:space-y-10">
+    const content = (
+        <div className={`space-y-8 ${isAuthenticated ? 'p-4 sm:p-6 lg:p-8' : 'sm:space-y-10'}`}>
                 {/* Hero Header Section */}
                 <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-r from-blue-950/60 via-slate-900/80 to-slate-950/90 p-6 shadow-2xl shadow-black/60 backdrop-blur-2xl sm:p-10 lg:p-12">
                     <div className="pointer-events-none absolute -mr-12 -mt-12 top-0 right-0 h-80 w-80 rounded-full bg-[#3b82f6]/15 blur-3xl" />
@@ -248,7 +262,22 @@ export function Index({ instructors = [], filters }: IndexProps) {
                         })}
                     </div>
                 )}
-            </div>
+        </div>
+    );
+
+    if (isAuthenticated) {
+        return (
+            <AppLayout breadcrumbs={breadcrumbs}>
+                <Head title="Find Certified Kitesurf Instructors - KiteLink" />
+                {content}
+            </AppLayout>
+        );
+    }
+
+    return (
+        <PublicLayout>
+            <Head title="Find Certified Kitesurf Instructors - KiteLink" />
+            {content}
         </PublicLayout>
     );
 }

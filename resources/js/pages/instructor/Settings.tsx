@@ -23,6 +23,7 @@ interface SettingsProps {
         id: number;
         name: string;
         email: string;
+        notification_sound_enabled?: boolean;
     };
     status?: string;
 }
@@ -52,6 +53,7 @@ export default function Settings({ user, status }: SettingsProps) {
     });
 
     // Notification Preferences State
+    const [soundEnabled, setSoundEnabled] = useState(user?.notification_sound_enabled ?? true);
     const [preferences, setPreferences] = useState({
         bookingAlerts: true,
         messageAlerts: true,
@@ -81,9 +83,25 @@ export default function Settings({ user, status }: SettingsProps) {
         });
     };
 
+    const handleToggleSound = (enabled: boolean) => {
+        setSoundEnabled(enabled);
+        router.post(
+            route('instructor.settings.notifications'),
+            {
+                notification_sound_enabled: enabled,
+            },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setPrefSaved(true);
+                    setTimeout(() => setPrefSaved(false), 3000);
+                },
+            },
+        );
+    };
+
     const handleSavePreferences = () => {
-        setPrefSaved(true);
-        setTimeout(() => setPrefSaved(false), 3000);
+        handleToggleSound(soundEnabled);
     };
 
     const handleDeactivate = (e: React.FormEvent) => {
@@ -248,6 +266,19 @@ export default function Settings({ user, status }: SettingsProps) {
                     </div>
 
                     <div className="mt-4 space-y-3">
+                        <label className="flex cursor-pointer items-center justify-between rounded-xl border border-white/10 bg-white/[0.04] p-3 text-xs transition hover:bg-white/[0.08]">
+                            <div>
+                                <span className="font-semibold text-white">Audible Notification Sound</span>
+                                <p className="text-[11px] text-slate-400">Play an audible chime when new bookings, messages, or inquiries arrive</p>
+                            </div>
+                            <input
+                                type="checkbox"
+                                checked={soundEnabled}
+                                onChange={(e) => handleToggleSound(e.target.checked)}
+                                className="h-4 w-4 cursor-pointer rounded border-slate-700 bg-slate-900 text-[#1f6eff] focus:ring-0"
+                            />
+                        </label>
+
                         <label className="flex cursor-pointer items-center justify-between rounded-xl border border-white/5 bg-slate-950/30 p-3 text-xs transition hover:bg-white/[0.03]">
                             <div>
                                 <span className="font-semibold text-white">New Booking Inquiries &amp; Confirmations</span>
