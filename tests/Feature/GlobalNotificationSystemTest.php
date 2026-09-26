@@ -167,22 +167,20 @@ test('client can update notification_sound_enabled in profile', function () {
     ]);
 
     $this->actingAs($client)
-        ->patch('/settings/profile', [
-            'name' => 'Updated Client',
-            'email' => $client->email,
+        ->from('/client/settings')
+        ->post('/client/settings/notifications', [
             'notification_sound_enabled' => false,
         ])
-        ->assertRedirect('/settings/profile');
+        ->assertRedirect('/client/settings');
 
     expect($client->refresh()->notification_sound_enabled)->toBeFalse();
 
     $this->actingAs($client)
-        ->patch('/settings/profile', [
-            'name' => 'Updated Client',
-            'email' => $client->email,
+        ->from('/client/settings')
+        ->post('/client/settings/notifications', [
             'notification_sound_enabled' => true,
         ])
-        ->assertRedirect('/settings/profile');
+        ->assertRedirect('/client/settings');
 
     expect($client->refresh()->notification_sound_enabled)->toBeTrue();
 });

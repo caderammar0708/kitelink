@@ -104,19 +104,57 @@ test('public users can view instructors index and detail pages', function () {
         'location' => 'Kalpitiya, Sri Lanka',
         'hourly_rate' => 70,
         'bio' => 'IKO Senior Coach with 10 years experience.',
+        'status' => 'approved',
+        'is_active' => true,
     ]);
 
     $this->get('/instructors')->assertOk();
     $this->get('/instructors/'.$instructor->id)->assertOk();
 });
 
-test('authenticated client can book a lesson with an instructor', function () {
+test('public instructors index only shows active and approved instructors', function () {
+    $activeUser = User::factory()->create(['role' => 'instructor', 'name' => 'Active Approved Coach']);
+    $activeInstructor = Instructor::create([
+        'user_id' => $activeUser->id,
+        'location' => 'Kalpitiya, Sri Lanka',
+        'status' => 'approved',
+        'is_active' => true,
+    ]);
+
+    $pausedUser = User::factory()->create(['role' => 'instructor', 'name' => 'Paused Coach']);
+    $pausedInstructor = Instructor::create([
+        'user_id' => $pausedUser->id,
+        'location' => 'Kalpitiya, Sri Lanka',
+        'status' => 'approved',
+        'is_active' => false,
+    ]);
+
+    $pendingUser = User::factory()->create(['role' => 'instructor', 'name' => 'Pending Coach']);
+    $pendingInstructor = Instructor::create([
+        'user_id' => $pendingUser->id,
+        'location' => 'Kalpitiya, Sri Lanka',
+        'status' => 'pending',
+        'is_active' => true,
+    ]);
+
+    $response = $this->get('/instructors');
+    $response->assertOk();
+    $response->assertInertia(fn ($page) => $page
+        ->component('instructors/Index')
+        ->has('instructors', 1)
+        ->where('instructors.0.id', $activeInstructor->id)
+    );
+});
+
+test('authenticated client can book a lesson with an active approved instructor', function () {
     $client = User::factory()->create(['role' => 'client']);
     $instructorUser = User::factory()->create(['role' => 'instructor']);
     $instructor = Instructor::create([
         'user_id' => $instructorUser->id,
         'location' => 'Tarifa, Spain',
         'hourly_rate' => 80,
+        'status' => 'approved',
+        'is_active' => true,
     ]);
 
     $response = $this->actingAs($client)->post('/bookings', [
@@ -135,6 +173,33 @@ test('authenticated client can book a lesson with an instructor', function () {
         'instructor_id' => $instructor->id,
         'students_count' => 2,
         'status' => 'pending',
+    ]);
+});
+
+test('authenticated client cannot book a lesson with a paused instructor', function () {
+    $client = User::factory()->create(['role' => 'client']);
+    $instructorUser = User::factory()->create(['role' => 'instructor']);
+    $instructor = Instructor::create([
+        'user_id' => $instructorUser->id,
+        'location' => 'Tarifa, Spain',
+        'hourly_rate' => 80,
+        'status' => 'approved',
+        'is_active' => false,
+    ]);
+
+    $response = $this->actingAs($client)->post('/bookings', [
+        'instructor_id' => $instructor->id,
+        'date' => now()->addDays(2)->format('Y-m-d'),
+        'time' => '11:00 AM - 01:00 PM (Midday Session)',
+        'students_count' => 2,
+        'lesson_type' => 'Beginner 1-on-1 Lesson (2h)',
+    ]);
+
+    $response->assertSessionHasErrors(['instructor_id']);
+
+    $this->assertDatabaseMissing('bookings', [
+        'student_id' => $client->id,
+        'instructor_id' => $instructor->id,
     ]);
 });
 
@@ -203,5 +268,70 @@ test('instructor show page passes active existingBooking when client has pending
         ->assertInertia(fn ($page) => $page
             ->component('instructors/Show')
             ->where('existingBooking', null)
+        );
+});
+
+test('instructor can toggle listing availability status via patch request', function () {
+    $instructorUser = User::factory()->create(['role' => 'instructor']);
+    $instructor = Instructor::create([
+        'user_id' => $instructorUser->id,
+        'is_active' => true,
+    ]);
+
+    // Pause listing
+    $response = $this->actingAs($instructorUser)
+        ->patch('/instructor/profile/availability-status', [
+            'is_active' => false,
+        ]);
+
+    $response->assertSessionHas('status', 'Listing is now paused (Offline).');
+    $instructor->refresh();
+    expect($instructor->is_active)->toBeFalse();
+
+    // Re-activate listing
+    $response = $this->actingAs($instructorUser)
+        ->patch('/instructor/profile/availability-status', [
+            'is_active' => true,
+        ]);
+
+    $response->assertSessionHas('status', 'Listing is now active (Online).');
+    $instructor->refresh();
+    expect($instructor->is_active)->toBeTrue();
+});
+
+test('public instructor detail page displays saved profile fields accurately', function () {
+    $instructorUser = User::factory()->create([
+        'role' => 'instructor',
+        'name' => 'Carlos Kitepro',
+        'profile_picture' => '/storage/avatars/carlos.jpg',
+    ]);
+
+    $instructor = Instructor::create([
+        'user_id' => $instructorUser->id,
+        'bio' => 'Dedicated instructor specialized in wave riding and hydrofoiling.',
+        'certifications' => 'IKO Level 3 Senior Coach',
+        'experience_years' => 8,
+        'location' => 'Tarifa, Spain',
+        'languages' => ['English', 'Spanish', 'German'],
+        'hourly_rate' => 85.00,
+        'daily_rate' => 320.00,
+        'profile_photo' => '/storage/avatars/carlos.jpg',
+        'is_active' => true,
+    ]);
+
+    $this->get(route('instructors.show', $instructor))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('instructors/Show')
+            ->where('instructor.id', $instructor->id)
+            ->where('instructor.user.name', 'Carlos Kitepro')
+            ->where('instructor.bio', 'Dedicated instructor specialized in wave riding and hydrofoiling.')
+            ->where('instructor.certifications', 'IKO Level 3 Senior Coach')
+            ->where('instructor.experience_years', 8)
+            ->where('instructor.location', 'Tarifa, Spain')
+            ->where('instructor.languages', ['English', 'Spanish', 'German'])
+            ->where('instructor.hourly_rate', '85.00')
+            ->where('instructor.daily_rate', '320.00')
+            ->where('instructor.is_active', true)
         );
 });

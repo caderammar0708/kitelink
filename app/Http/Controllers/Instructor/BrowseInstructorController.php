@@ -23,6 +23,7 @@ class BrowseInstructorController extends Controller
         $query = Instructor::query()
             ->where('user_id', '!=', $user->id)
             ->where('is_active', true)
+            ->where('status', 'approved')
             ->with(['user:id,name,profile_picture', 'reviews:id,instructor_id,rating']);
 
         if ($search) {

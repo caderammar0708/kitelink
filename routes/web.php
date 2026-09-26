@@ -4,6 +4,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Client\BookingController as ClientBookingController;
 use App\Http\Controllers\Client\MessageController as ClientMessageController;
 use App\Http\Controllers\Client\ReviewController as ClientReviewController;
+use App\Http\Controllers\Client\SettingsController as ClientSettingsController;
 use App\Http\Controllers\Instructor\AvailabilityController;
 use App\Http\Controllers\Instructor\BookingController as InstructorBookingController;
 use App\Http\Controllers\Instructor\BrowseInstructorController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Instructor\ReviewController;
 use App\Http\Controllers\Instructor\SettingsController as InstructorSettingsController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\NotificationController as GlobalNotificationController;
+use App\Http\Controllers\WeatherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,6 +30,10 @@ Route::get('/', function () {
 Route::get('/join', function () {
     return Inertia::render('join');
 })->name('join');
+
+// Public Weather API (Meteosource proxy with rate limiting)
+Route::get('/api/weather', [WeatherController::class, 'getWeather'])->middleware('throttle:60,1')->name('api.weather');
+Route::get('/api/weather/search-locations', [WeatherController::class, 'searchLocations'])->middleware('throttle:60,1')->name('api.weather.search');
 
 // Public Instructor Discovery
 Route::get('/instructors', [InstructorController::class, 'index'])->name('instructors.index');
@@ -60,6 +66,33 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [GlobalNotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/read-all', [GlobalNotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
     Route::post('/notifications/{id}/read', [GlobalNotificationController::class, 'markAsRead'])->name('notifications.read');
+
+    // Client Settings
+    Route::get('/client/settings', [ClientSettingsController::class, 'index'])->name('client.settings');
+    Route::post('/client/settings/profile', [ClientSettingsController::class, 'updateProfile'])->name('client.settings.profile');
+    Route::post('/client/settings/password', [ClientSettingsController::class, 'updatePassword'])->name('client.settings.password');
+    Route::post('/client/settings/notifications', [ClientSettingsController::class, 'updateNotifications'])->name('client.settings.notifications');
+    Route::post('/client/settings/destroy', [ClientSettingsController::class, 'destroyAccount'])->name('client.settings.destroy');
+
+    // Unified Role-Aware Settings Redirect
+    Route::get('/settings', function (Request $request) {
+        if ($request->user()->role === 'instructor') {
+            return redirect()->route('instructor.settings');
+        }
+
+        return redirect()->route('client.settings');
+    })->name('settings');
+
+    // Legacy aliases redirecting to unified settings
+    Route::get('/settings/profile', fn () => redirect()->route('settings'));
+    Route::get('/settings/password', fn () => redirect()->route('settings'));
+    Route::get('/settings/appearance', fn () => redirect()->route('settings'));
+
+    // Weather Dashboard
+    Route::get('/weather', [WeatherController::class, 'index'])->name('weather');
+    Route::get('/client/weather', [WeatherController::class, 'index'])->name('client.weather');
+    Route::get('/instructor/weather', [WeatherController::class, 'index'])->name('instructor.weather');
+    Route::get('/school/weather', [WeatherController::class, 'index'])->name('school.weather');
 });
 
 // Instructor Portal
@@ -73,6 +106,8 @@ Route::middleware(['auth', 'instructor'])->prefix('instructor')->name('instructo
         ->name('profile');
     Route::post('/profile', [InstructorProfileController::class, 'update'])
         ->name('profile.update');
+    Route::match(['patch', 'post'], '/profile/availability-status', [InstructorProfileController::class, 'updateAvailabilityStatus'])
+        ->name('profile.availabilityStatus');
 
     // 3. Availability Calendar
     Route::get('/availability', [AvailabilityController::class, 'index'])
@@ -131,6 +166,8 @@ Route::middleware(['auth', 'instructor'])->prefix('instructor')->name('instructo
     // 11. Settings
     Route::get('/settings', [InstructorSettingsController::class, 'index'])
         ->name('settings');
+    Route::post('/settings/profile', [InstructorSettingsController::class, 'updateProfile'])
+        ->name('settings.profile');
     Route::post('/settings/password', [InstructorSettingsController::class, 'updatePassword'])
         ->name('settings.password');
     Route::post('/settings/email', [InstructorSettingsController::class, 'updateEmail'])
@@ -144,5 +181,4 @@ Route::middleware(['auth', 'instructor'])->prefix('instructor')->name('instructo
 // Fallback alias for legacy /instructor/{id}
 Route::get('/instructor/{instructor}', [InstructorController::class, 'show'])->whereNumber('instructor');
 
-require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

@@ -119,15 +119,15 @@ export default function Messages({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Instructor Inbox & Messages - KiteLink" />
 
-            <div className="relative min-h-full p-4 text-slate-100 selection:bg-[#3b82f6]/30 selection:text-white sm:p-6 lg:p-8">
+            <div className="relative min-h-full p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white sm:p-6 lg:p-8">
                 {/* 2-Column Chat Box Window */}
-                <div className="grid h-[calc(100vh-14rem)] min-h-[550px] grid-cols-1 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] shadow-2xl backdrop-blur-xl md:grid-cols-12">
+                <div className="grid h-[calc(100vh-14rem)] min-h-[550px] grid-cols-1 overflow-hidden rounded-3xl border border-slate-200/90 bg-white shadow-xl shadow-slate-200/50 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl md:grid-cols-12">
                     {/* Left Sidebar (4 cols on desktop) */}
-                    <div className="flex flex-col border-b border-white/10 md:col-span-4 md:border-r md:border-b-0">
+                    <div className="flex flex-col border-b border-slate-200 dark:border-white/10 md:col-span-4 md:border-r md:border-b-0">
                         {/* Header & Filter Tags */}
-                        <div className="border-b border-white/10 p-4">
-                            <h2 className="flex items-center gap-2 text-base font-bold text-white">
-                                <MessageSquare className="h-5 w-5 text-[#5bb4ff]" />
+                        <div className="border-b border-slate-200 p-4 dark:border-white/10">
+                            <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
+                                <MessageSquare className="h-5 w-5 text-blue-600 dark:text-[#5bb4ff]" />
                                 Direct Messages
                             </h2>
 
@@ -139,7 +139,7 @@ export default function Messages({
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Search chats..."
-                                    className="w-full rounded-xl border border-white/10 bg-slate-950/40 py-2 pr-3 pl-8 text-xs text-white placeholder-slate-500 focus:border-[#3b82f6] focus:outline-none"
+                                    className="w-full rounded-xl border border-slate-300 bg-slate-50 py-2 pr-3 pl-8 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-500"
                                 />
                             </div>
 
@@ -148,10 +148,10 @@ export default function Messages({
                                 <button
                                     type="button"
                                     onClick={() => setSelectedFilter('all')}
-                                    className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition ${
+                                    className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer ${
                                         selectedFilter === 'all'
-                                            ? 'bg-[#1f6eff] text-white'
-                                            : 'bg-white/[0.05] text-slate-400 hover:text-slate-200'
+                                            ? 'bg-blue-600 text-white shadow-xs dark:bg-[#1f6eff]'
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:bg-white/[0.05] dark:text-slate-400 dark:hover:text-slate-200'
                                     }`}
                                 >
                                     All
@@ -159,10 +159,10 @@ export default function Messages({
                                 <button
                                     type="button"
                                     onClick={() => setSelectedFilter('client')}
-                                    className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition ${
+                                    className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer ${
                                         selectedFilter === 'client'
-                                            ? 'bg-[#1f6eff] text-white'
-                                            : 'bg-white/[0.05] text-slate-400 hover:text-slate-200'
+                                            ? 'bg-blue-600 text-white shadow-xs dark:bg-[#1f6eff]'
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:bg-white/[0.05] dark:text-slate-400 dark:hover:text-slate-200'
                                     }`}
                                 >
                                     Clients
@@ -170,10 +170,10 @@ export default function Messages({
                                 <button
                                     type="button"
                                     onClick={() => setSelectedFilter('school')}
-                                    className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition ${
+                                    className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer ${
                                         selectedFilter === 'school'
-                                            ? 'bg-[#1f6eff] text-white'
-                                            : 'bg-white/[0.05] text-slate-400 hover:text-slate-200'
+                                            ? 'bg-blue-600 text-white shadow-xs dark:bg-[#1f6eff]'
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:bg-white/[0.05] dark:text-slate-400 dark:hover:text-slate-200'
                                     }`}
                                 >
                                     Kite Schools
@@ -182,7 +182,7 @@ export default function Messages({
                         </div>
 
                         {/* Conversations List */}
-                        <div className="flex-1 overflow-y-auto divide-y divide-white/5">
+                        <div className="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-white/5">
                             {filteredConversations.length === 0 ? (
                                 <div className="p-8 text-center text-xs text-slate-500">
                                     No conversations found.
@@ -198,13 +198,13 @@ export default function Messages({
                                             onClick={() => handleSelectConversation(conv.id)}
                                             className={`flex cursor-pointer items-center justify-between p-3.5 transition ${
                                                 isSelected
-                                                    ? 'bg-[#1f6eff]/20 border-l-2 border-[#5bb4ff]'
-                                                    : 'hover:bg-white/[0.04]'
+                                                    ? 'border-l-2 border-blue-600 bg-blue-50/80 dark:border-[#5bb4ff] dark:bg-[#1f6eff]/20'
+                                                    : 'hover:bg-slate-50 dark:hover:bg-white/[0.04]'
                                             }`}
                                         >
                                             <div className="flex items-center gap-3 min-w-0">
                                                 <div className="relative">
-                                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-slate-800 text-xs font-bold text-[#8acbff]">
+                                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-slate-100 text-xs font-bold text-blue-600 dark:border-white/15 dark:bg-slate-800 dark:text-[#8acbff]">
                                                         {conv.other_user?.avatar ? (
                                                             <img
                                                                 src={conv.other_user.avatar}
@@ -227,18 +227,18 @@ export default function Messages({
 
                                                 <div className="min-w-0 flex-1">
                                                     <div className="flex items-center justify-between">
-                                                        <span className="truncate text-xs font-bold text-white">
+                                                        <span className="truncate text-xs font-bold text-slate-900 dark:text-white">
                                                             {conv.other_user?.name || 'User'}
                                                         </span>
                                                     </div>
-                                                    <p className="truncate text-[11px] text-slate-400">
+                                                    <p className="truncate text-[11px] text-slate-500 dark:text-slate-400">
                                                         {conv.last_message?.body || 'Start conversation...'}
                                                     </p>
                                                 </div>
                                             </div>
 
                                             {conv.unread_count > 0 && (
-                                                <span className="ml-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#1f6eff] px-1 text-[10px] font-bold text-white">
+                                                <span className="ml-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold text-white dark:bg-[#1f6eff]">
                                                     {conv.unread_count}
                                                 </span>
                                             )}
@@ -250,13 +250,13 @@ export default function Messages({
                     </div>
 
                     {/* Right Panel: Active Chat Thread (8 cols) */}
-                    <div className="flex flex-col md:col-span-8 bg-slate-950/20">
+                    <div className="flex flex-col bg-slate-50/40 dark:bg-slate-950/20 md:col-span-8">
                         {activeConversationId && otherUser ? (
                             <>
                                 {/* Active Chat Top Bar */}
-                                <div className="flex items-center justify-between border-b border-white/10 bg-white/[0.02] p-4 backdrop-blur-sm">
+                                <div className="flex items-center justify-between border-b border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.02]">
                                     <div className="flex items-center gap-3">
-                                        <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-slate-800 text-xs font-bold text-[#8acbff]">
+                                        <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-slate-100 text-xs font-bold text-blue-600 dark:border-white/15 dark:bg-slate-800 dark:text-[#8acbff]">
                                             {otherUser.avatar ? (
                                                 <img src={otherUser.avatar} alt={otherUser.name} className="h-full w-full object-cover" />
                                             ) : (
@@ -264,8 +264,8 @@ export default function Messages({
                                             )}
                                         </div>
                                         <div>
-                                            <h3 className="text-sm font-bold text-white">{otherUser.name}</h3>
-                                            <span className="text-[11px] text-slate-400 capitalize">
+                                            <h3 className="text-sm font-bold text-slate-900 dark:text-white">{otherUser.name}</h3>
+                                            <span className="text-[11px] text-slate-500 capitalize dark:text-slate-400">
                                                 {otherUser.role === 'school' ? 'Kite Center Partner' : 'Student Rider'}
                                             </span>
                                         </div>
@@ -290,19 +290,19 @@ export default function Messages({
                                                     <div
                                                         className={`max-w-xs rounded-2xl p-3.5 text-xs sm:max-w-md ${
                                                             isMine
-                                                                ? 'rounded-br-xs bg-gradient-to-r from-[#1f6eff] to-[#38bdf8] text-white shadow-md'
-                                                                : 'rounded-bl-xs border border-white/10 bg-white/[0.08] text-slate-100 backdrop-blur-md'
+                                                                ? 'rounded-br-xs bg-gradient-to-r from-blue-600 to-[#1f6eff] text-white shadow-sm'
+                                                                : 'rounded-bl-xs border border-slate-200 bg-white text-slate-900 shadow-xs dark:border-white/10 dark:bg-white/[0.08] dark:text-slate-100'
                                                         }`}
                                                     >
                                                         <p className="leading-relaxed">{msg.body}</p>
                                                         <div
                                                             className={`mt-1 flex items-center justify-end gap-1 text-[10px] ${
-                                                                isMine ? 'text-white/70' : 'text-slate-400'
+                                                                isMine ? 'text-blue-100' : 'text-slate-400'
                                                             }`}
                                                         >
                                                             <span>{new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                                             {isMine && (
-                                                                msg.read_at ? <CheckCheck className="h-3 w-3 text-white" /> : <Check className="h-3 w-3" />
+                                                                msg.read_at ? <CheckCheck className="h-3 w-3 text-sky-200" /> : <Check className="h-3 w-3 text-blue-100" />
                                                             )}
                                                         </div>
                                                     </div>
@@ -316,7 +316,7 @@ export default function Messages({
                                 {/* Chat Input Bar */}
                                 <form
                                     onSubmit={handleSendMessage}
-                                    className="border-t border-white/10 bg-white/[0.02] p-3 backdrop-blur-sm sm:p-4"
+                                    className="border-t border-slate-200 bg-white p-3 dark:border-white/10 dark:bg-white/[0.02] sm:p-4"
                                 >
                                     <div className="flex items-center gap-2">
                                         <input
@@ -324,12 +324,12 @@ export default function Messages({
                                             value={inputMessage}
                                             onChange={(e) => setInputMessage(e.target.value)}
                                             placeholder="Type your reply here..."
-                                            className="flex-1 rounded-xl border border-white/15 bg-slate-950/60 px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:border-[#3b82f6] focus:outline-none"
+                                            className="flex-1 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 shadow-xs focus:border-blue-600 focus:outline-none dark:border-white/15 dark:bg-slate-950/60 dark:text-white dark:placeholder-slate-500"
                                         />
                                         <button
                                             type="submit"
                                             disabled={!inputMessage.trim() || sending}
-                                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-[#4ba9ff] to-[#1f6eff] text-white shadow-md transition hover:scale-105 disabled:opacity-40"
+                                            className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-[#1f6eff] text-white shadow-sm transition hover:scale-105 disabled:opacity-40"
                                         >
                                             <Send className="h-4 w-4" />
                                         </button>
@@ -337,12 +337,12 @@ export default function Messages({
                                 </form>
                             </>
                         ) : (
-                            <div className="flex h-full flex-col items-center justify-center p-8 text-center text-slate-400">
-                                <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-slate-500">
+                            <div className="flex h-full flex-col items-center justify-center p-8 text-center text-slate-500 dark:text-slate-400">
+                                <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-200 bg-blue-50 text-blue-600 shadow-xs dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-500">
                                     <MessageSquare className="h-7 w-7" />
                                 </div>
-                                <h3 className="text-sm font-bold text-white">Select a conversation</h3>
-                                <p className="mt-1 max-w-xs text-xs">
+                                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Select a conversation</h3>
+                                <p className="mt-1 max-w-xs text-xs text-slate-500 dark:text-slate-400">
                                     Choose a client or school on the left to view messages and reply in real time.
                                 </p>
                             </div>

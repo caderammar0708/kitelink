@@ -16,6 +16,8 @@ class InstructorController extends Controller
     public function index(Request $request): Response
     {
         $query = Instructor::with(['user', 'school'])
+            ->where('is_active', true)
+            ->where('status', 'approved')
             ->whereHas('user', function ($q) {
                 $q->where('role', 'instructor');
             });
@@ -51,7 +53,7 @@ class InstructorController extends Controller
      */
     public function show(Request $request, Instructor $instructor): Response
     {
-        $instructor->load(['user', 'school']);
+        $instructor->load(['user', 'school', 'reviews.student']);
 
         $user = $request->user();
         $existingBooking = null;

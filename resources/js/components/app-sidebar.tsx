@@ -8,6 +8,7 @@ import {
     Briefcase,
     CalendarCheck,
     CalendarDays,
+    CloudSun,
     Compass,
     DollarSign,
     LayoutDashboard,
@@ -66,6 +67,11 @@ export function AppSidebar() {
                   icon: Briefcase,
               },
               {
+                  title: 'Weather & Wind',
+                  url: '/instructor/weather',
+                  icon: CloudSun,
+              },
+              {
                   title: 'Browse Instructors',
                   url: '/instructor/browse',
                   icon: Compass,
@@ -93,6 +99,11 @@ export function AppSidebar() {
                   icon: Compass,
               },
               {
+                  title: 'Weather & Wind',
+                  url: '/client/weather',
+                  icon: CloudSun,
+              },
+              {
                   title: 'My Bookings',
                   url: '/client/bookings',
                   icon: CalendarCheck,
@@ -104,17 +115,17 @@ export function AppSidebar() {
               },
               {
                   title: 'Settings',
-                  url: '/settings/profile',
+                  url: '/client/settings',
                   icon: Settings,
               },
           ];
 
     return (
-        <Sidebar collapsible="icon" variant="inset" className="border-r border-white/10 bg-[#070b12] text-slate-200">
-            <SidebarHeader className="border-b border-white/10 px-3 py-3">
+        <Sidebar collapsible="icon" variant="inset" className="border-r border-slate-200/80 bg-white text-slate-800 transition-colors duration-200 dark:border-white/10 dark:bg-[#070b12] dark:text-slate-200">
+            <SidebarHeader className="border-b border-slate-200/80 px-3 py-3 dark:border-white/10">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild className="rounded-xl transition-colors hover:bg-white/[0.06]">
+                        <SidebarMenuButton size="lg" asChild className="rounded-xl transition-colors hover:bg-slate-100 dark:hover:bg-white/[0.06]">
                             <Link href={dashboardUrl} prefetch>
                                 <AppLogo />
                             </Link>
@@ -127,7 +138,7 @@ export function AppSidebar() {
                 <NavMain items={mainNavItems} label={isInstructor ? 'Instructor Menu' : 'Main Menu'} />
             </SidebarContent>
 
-            <SidebarFooter className="border-t border-white/10 p-2">
+            <SidebarFooter className="border-t border-slate-200/80 p-2 dark:border-white/10">
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

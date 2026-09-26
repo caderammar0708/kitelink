@@ -178,37 +178,37 @@ export default function Availability({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Availability Calendar - KiteLink" />
 
-            <div className="relative min-h-full space-y-6 p-4 text-slate-100 selection:bg-[#3b82f6]/30 selection:text-white sm:p-6 lg:p-8">
+            <div className="relative min-h-full space-y-6 p-4 text-slate-900 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* Header Banner */}
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
-                            <CalendarIcon className="h-7 w-7 text-[#5bb4ff]" />
+                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+                            <CalendarIcon className="h-7 w-7 text-blue-600 dark:text-[#5bb4ff]" />
                             Availability Calendar
                         </h1>
-                        <p className="mt-1 text-xs text-slate-400 sm:text-sm">
+                        <p className="mt-1 text-xs text-slate-600 sm:text-sm dark:text-slate-400">
                             Mark open dates and time slots for student bookings. Confirmed bookings are automatically blocked.
                         </p>
                     </div>
 
                     {/* Month Navigator */}
                     <div className="flex items-center gap-3">
-                        <div className="flex items-center rounded-2xl border border-white/15 bg-white/[0.06] p-1 shadow-lg backdrop-blur-md">
+                        <div className="flex items-center rounded-2xl border border-slate-200 bg-white p-1 shadow-sm dark:border-white/15 dark:bg-white/[0.06] dark:shadow-lg dark:backdrop-blur-md">
                             <button
                                 type="button"
                                 onClick={() => navigateMonth(-1)}
-                                className="rounded-xl p-2 text-slate-300 transition hover:bg-white/10 hover:text-white"
+                                className="rounded-xl p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
                                 title="Previous Month"
                             >
                                 <ChevronLeft className="h-4 w-4" />
                             </button>
-                            <span className="min-w-[140px] text-center text-sm font-bold text-white">
+                            <span className="min-w-[140px] text-center text-sm font-bold text-slate-900 dark:text-white">
                                 {MONTH_NAMES[month - 1]} {year}
                             </span>
                             <button
                                 type="button"
                                 onClick={() => navigateMonth(1)}
-                                className="rounded-xl p-2 text-slate-300 transition hover:bg-white/10 hover:text-white"
+                                className="rounded-xl p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
                                 title="Next Month"
                             >
                                 <ChevronRight className="h-4 w-4" />
@@ -220,22 +220,22 @@ export default function Availability({
                 {/* Calendar & Control Panel Layout */}
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
                     {/* Main Monthly Calendar Grid (8 cols) */}
-                    <div className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.05] p-5 shadow-2xl backdrop-blur-xl sm:p-6 lg:col-span-8">
+                    <div className="space-y-4 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm sm:p-6 lg:col-span-8 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl">
                         {/* Quick Selection Toolbar */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-4 text-xs">
+                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-4 text-xs dark:border-white/10">
                             <div className="flex items-center gap-2">
-                                <span className="text-slate-400">Quick Select:</span>
+                                <span className="text-slate-500 dark:text-slate-400">Quick Select:</span>
                                 <button
                                     type="button"
                                     onClick={selectAllWeekdays}
-                                    className="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1 text-slate-300 transition hover:bg-white/10"
+                                    className="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1 text-slate-700 transition hover:bg-slate-200 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/10"
                                 >
                                     Weekdays
                                 </button>
                                 <button
                                     type="button"
                                     onClick={selectEntireMonth}
-                                    className="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1 text-slate-300 transition hover:bg-white/10"
+                                    className="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1 text-slate-700 transition hover:bg-slate-200 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/10"
                                 >
                                     All Month
                                 </button>
@@ -243,7 +243,7 @@ export default function Availability({
                                     <button
                                         type="button"
                                         onClick={clearSelection}
-                                        className="text-rose-400 hover:underline"
+                                        className="font-medium text-rose-600 hover:underline dark:text-rose-400"
                                     >
                                         Clear ({selectedDates.length})
                                     </button>
@@ -251,23 +251,23 @@ export default function Availability({
                             </div>
 
                             {/* Legend */}
-                            <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
+                            <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 dark:text-slate-400">
                                 <span className="flex items-center gap-1.5">
-                                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" /> Open Slot
+                                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Open Slot
                                 </span>
                                 <span className="flex items-center gap-1.5">
-                                    <span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Booked Lesson
+                                    <span className="h-2.5 w-2.5 rounded-full bg-blue-600 dark:bg-blue-500" /> Booked Lesson
                                 </span>
                                 <span className="flex items-center gap-1.5">
-                                    <span className="h-2.5 w-2.5 rounded-full bg-slate-600" /> Off / Unavailable
+                                    <span className="h-2.5 w-2.5 rounded-full bg-slate-400 dark:bg-slate-600" /> Off / Unavailable
                                 </span>
                             </div>
                         </div>
 
                         {/* Days of Week Header */}
-                        <div className="grid grid-cols-7 gap-1.5 text-center text-xs font-bold text-slate-400">
+                        <div className="grid grid-cols-7 gap-1.5 text-center text-xs font-bold text-slate-500 dark:text-slate-400">
                             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                                <div key={day} className="py-2 uppercase tracking-wider">
+                                <div key={day} className="py-2 tracking-wider uppercase">
                                     {day}
                                 </div>
                             ))}
@@ -297,33 +297,33 @@ export default function Availability({
                                         onClick={() => toggleDateSelection(dateStr)}
                                         className={`group relative flex min-h-[85px] cursor-pointer flex-col justify-between rounded-xl border p-2 transition-all duration-200 sm:min-h-[95px] ${
                                             isSelected
-                                                ? 'border-[#5bb4ff] bg-[#1f6eff]/25 ring-2 ring-[#5bb4ff]/50'
+                                                ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-500/40 dark:border-[#5bb4ff] dark:bg-[#1f6eff]/25 dark:ring-[#5bb4ff]/50'
                                                 : hasBookings
-                                                  ? 'border-blue-500/40 bg-blue-950/30 hover:border-blue-400'
+                                                  ? 'border-blue-300 bg-blue-50/70 hover:border-blue-400 dark:border-blue-500/40 dark:bg-blue-950/30 dark:hover:border-blue-400'
                                                   : isAvailable
-                                                    ? 'border-emerald-500/30 bg-emerald-950/20 hover:border-emerald-400'
+                                                    ? 'border-emerald-300 bg-emerald-50/70 hover:border-emerald-400 dark:border-emerald-500/30 dark:bg-emerald-950/20 dark:hover:border-emerald-400'
                                                     : isExplicitlyOff
-                                                      ? 'border-slate-800 bg-slate-950/40 opacity-60 hover:opacity-100'
-                                                      : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.05]'
+                                                      ? 'border-slate-200 bg-slate-100/60 opacity-60 hover:opacity-100 dark:border-slate-800 dark:bg-slate-950/40'
+                                                      : 'border-slate-200 bg-slate-50/40 hover:border-slate-300 hover:bg-slate-100/70 dark:border-white/10 dark:bg-white/[0.02] dark:hover:border-white/20 dark:hover:bg-white/[0.05]'
                                         }`}
                                     >
                                         <div className="flex items-center justify-between">
                                             <span
                                                 className={`text-xs font-bold ${
                                                     isSelected
-                                                        ? 'text-[#5bb4ff]'
+                                                        ? 'text-blue-700 dark:text-[#5bb4ff]'
                                                         : hasBookings
-                                                          ? 'text-blue-300'
+                                                          ? 'text-blue-800 dark:text-blue-300'
                                                           : isAvailable
-                                                            ? 'text-emerald-400'
-                                                            : 'text-slate-300'
+                                                            ? 'text-emerald-700 dark:text-emerald-400'
+                                                            : 'text-slate-700 dark:text-slate-300'
                                                 }`}
                                             >
                                                 {dayNum}
                                             </span>
 
                                             {isSelected && (
-                                                <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#1f6eff] text-[10px] font-bold text-white">
+                                                <div className="flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white dark:bg-[#1f6eff]">
                                                     ✓
                                                 </div>
                                             )}
@@ -332,21 +332,21 @@ export default function Availability({
                                         {/* Status Indicators in Cell */}
                                         <div className="mt-1 space-y-1">
                                             {hasBookings && (
-                                                <div className="flex items-center gap-1 rounded bg-blue-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-blue-300">
+                                                <div className="flex items-center gap-1 rounded bg-blue-100 px-1.5 py-0.5 text-[10px] font-semibold text-blue-800 dark:bg-blue-500/20 dark:text-blue-300">
                                                     <Lock className="h-2.5 w-2.5" />
                                                     <span className="truncate">{dayBookings[0].student?.name || 'Booked'}</span>
                                                 </div>
                                             )}
 
                                             {!hasBookings && isAvailable && (
-                                                <div className="flex items-center gap-1 rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-medium text-emerald-400">
+                                                <div className="flex items-center gap-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-medium text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-400">
                                                     <Wind className="h-2.5 w-2.5" />
                                                     <span>Open</span>
                                                 </div>
                                             )}
 
                                             {!hasBookings && isExplicitlyOff && (
-                                                <span className="block text-[10px] text-slate-500">Day Off</span>
+                                                <span className="block text-[10px] text-slate-400 dark:text-slate-500">Day Off</span>
                                             )}
                                         </div>
                                     </div>
@@ -358,12 +358,12 @@ export default function Availability({
                     {/* Right Control & Management Panel (4 cols) */}
                     <div className="space-y-6 lg:col-span-4">
                         {/* Slot Setter Card */}
-                        <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 shadow-2xl backdrop-blur-xl sm:p-6">
-                            <h2 className="flex items-center gap-2 text-base font-bold text-white">
-                                <Clock className="h-5 w-5 text-[#5bb4ff]" />
+                        <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm sm:p-6 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl">
+                            <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
+                                <Clock className="h-5 w-5 text-blue-600 dark:text-[#5bb4ff]" />
                                 Set Availability Slot
                             </h2>
-                            <p className="mt-1 text-xs text-slate-400">
+                            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                                 {selectedDates.length > 0
                                     ? `Applying to ${selectedDates.length} selected date(s)`
                                     : 'Select dates on the calendar matrix to update availability'}
@@ -372,7 +372,7 @@ export default function Availability({
                             <div className="mt-5 space-y-4">
                                 {/* Preset Time Slots */}
                                 <div>
-                                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                                    <label className="block text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                                         Time Slot Template
                                     </label>
                                     <div className="mt-2 space-y-2">
@@ -383,13 +383,13 @@ export default function Availability({
                                                 onClick={() => setSelectedTimeSlot(slot)}
                                                 className={`flex w-full items-center justify-between rounded-xl border p-3 text-left text-xs transition ${
                                                     selectedTimeSlot.label === slot.label
-                                                        ? 'border-[#5bb4ff]/60 bg-[#1f6eff]/20 text-white font-semibold'
-                                                        : 'border-white/10 bg-white/[0.03] text-slate-300 hover:bg-white/[0.07]'
+                                                        ? 'border-blue-400 bg-blue-50 font-semibold text-blue-900 dark:border-[#5bb4ff]/60 dark:bg-[#1f6eff]/20 dark:text-white'
+                                                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-300 dark:hover:bg-white/[0.07]'
                                                 }`}
                                             >
                                                 <span>{slot.label}</span>
                                                 {selectedTimeSlot.label === slot.label && (
-                                                    <Check className="h-4 w-4 text-[#5bb4ff]" />
+                                                    <Check className="h-4 w-4 text-blue-600 dark:text-[#5bb4ff]" />
                                                 )}
                                             </button>
                                         ))}
@@ -402,7 +402,7 @@ export default function Availability({
                                         type="button"
                                         disabled={selectedDates.length === 0 || processing}
                                         onClick={() => handleSaveAvailability(true)}
-                                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-4 py-3 text-xs font-bold text-white shadow-lg shadow-emerald-700/20 transition hover:from-emerald-400 hover:to-teal-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
+                                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-3 text-xs font-bold text-white shadow-lg shadow-emerald-700/20 transition hover:from-emerald-500 hover:to-teal-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
                                     >
                                         <CheckCircle2 className="h-4 w-4" />
                                         Mark as Available ({selectedDates.length})
@@ -412,9 +412,9 @@ export default function Availability({
                                         type="button"
                                         disabled={selectedDates.length === 0 || processing}
                                         onClick={() => handleSaveAvailability(false)}
-                                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-900/80 px-4 py-2.5 text-xs font-bold text-slate-300 transition hover:bg-slate-800 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
+                                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-slate-100 px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-200 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300 dark:hover:bg-slate-800"
                                     >
-                                        <X className="h-4 w-4 text-rose-400" />
+                                        <X className="h-4 w-4 text-rose-500 dark:text-rose-400" />
                                         Mark as Unavailable / Off
                                     </button>
                                 </div>
@@ -422,38 +422,38 @@ export default function Availability({
                         </div>
 
                         {/* Upcoming Confirmed Lessons Widget */}
-                        <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 shadow-2xl backdrop-blur-xl sm:p-6">
-                            <h3 className="flex items-center gap-2 text-sm font-bold text-white">
-                                <Lock className="h-4 w-4 text-blue-400" />
+                        <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm sm:p-6 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl">
+                            <h3 className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white">
+                                <Lock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                                 Confirmed Bookings ({confirmedBookings.length})
                             </h3>
-                            <p className="mt-0.5 text-xs text-slate-400">
+                            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                                 Reserved slots for this month
                             </p>
 
                             <div className="mt-4 space-y-2.5">
                                 {confirmedBookings.length === 0 ? (
-                                    <p className="py-4 text-center text-xs text-slate-500">
+                                    <p className="py-4 text-center text-xs text-slate-400 dark:text-slate-500">
                                         No confirmed bookings yet this month.
                                     </p>
                                 ) : (
                                     confirmedBookings.slice(0, 5).map((b) => (
                                         <div
                                             key={b.id}
-                                            className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs"
+                                            className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50 p-3 text-xs dark:border-white/10 dark:bg-white/[0.03]"
                                         >
                                             <div className="flex items-center gap-2.5">
-                                                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/20 text-xs font-bold text-blue-300">
+                                                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-100 text-xs font-bold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
                                                     {b.student?.name?.charAt(0) || 'S'}
                                                 </div>
                                                 <div>
-                                                    <span className="block font-semibold text-white">
+                                                    <span className="block font-semibold text-slate-900 dark:text-white">
                                                         {b.student?.name || 'Student'}
                                                     </span>
-                                                    <span className="text-[11px] text-slate-400">{b.date} {b.time ? `• ${b.time}` : ''}</span>
+                                                    <span className="text-[11px] text-slate-500 dark:text-slate-400">{b.date} {b.time ? `• ${b.time}` : ''}</span>
                                                 </div>
                                             </div>
-                                            <span className="rounded bg-blue-500/10 px-2 py-0.5 text-[10px] font-semibold text-blue-300">
+                                            <span className="rounded bg-blue-100 px-2 py-0.5 text-[10px] font-semibold text-blue-700 dark:bg-blue-500/10 dark:text-blue-300">
                                                 Confirmed
                                             </span>
                                         </div>

@@ -15,8 +15,8 @@ import {
     Save,
     Settings as SettingsIcon,
     Sun,
+    Trash2,
     User as UserIcon,
-    UserX,
 } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -32,12 +32,12 @@ interface SettingsProps {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Instructor Dashboard',
-        href: '/instructor/dashboard',
+        title: 'Dashboard',
+        href: '/dashboard',
     },
     {
         title: 'Account Settings',
-        href: '/instructor/settings',
+        href: '/client/settings',
     },
 ];
 
@@ -63,27 +63,26 @@ export default function Settings({ user, status }: SettingsProps) {
     const [preferences, setPreferences] = useState({
         bookingAlerts: true,
         messageAlerts: true,
-        payoutNotifs: true,
-        seasonalSpotUpdates: false,
+        promotions: false,
     });
     const [prefSaved, setPrefSaved] = useState(false);
 
-    // Deactivate Form
-    const deactivateForm = useForm({
+    // Delete Account Form
+    const deleteAccountForm = useForm({
         password: '',
     });
-    const [showDeactivateModal, setShowDeactivateModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const handleProfileSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        profileForm.post(route('instructor.settings.email'), {
+        profileForm.post(route('client.settings.profile'), {
             preserveScroll: true,
         });
     };
 
     const handlePasswordSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        passwordForm.post(route('instructor.settings.password'), {
+        passwordForm.post(route('client.settings.password'), {
             preserveScroll: true,
             onSuccess: () => passwordForm.reset(),
         });
@@ -92,7 +91,7 @@ export default function Settings({ user, status }: SettingsProps) {
     const handleToggleSound = (enabled: boolean) => {
         setSoundEnabled(enabled);
         router.post(
-            route('instructor.settings.notifications'),
+            route('client.settings.notifications'),
             {
                 notification_sound_enabled: enabled,
             },
@@ -110,11 +109,11 @@ export default function Settings({ user, status }: SettingsProps) {
         handleToggleSound(soundEnabled);
     };
 
-    const handleDeactivate = (e: React.FormEvent) => {
+    const handleDeleteAccount = (e: React.FormEvent) => {
         e.preventDefault();
-        deactivateForm.post(route('instructor.settings.deactivate'), {
+        deleteAccountForm.post(route('client.settings.destroy'), {
             preserveScroll: true,
-            onSuccess: () => setShowDeactivateModal(false),
+            onSuccess: () => setShowDeleteModal(false),
         });
     };
 
@@ -128,7 +127,7 @@ export default function Settings({ user, status }: SettingsProps) {
         {
             id: 'dark',
             label: 'Dark Mode',
-            description: 'Deep obsidian and ocean dark theme, optimized for low-light coaching.',
+            description: 'Deep obsidian and ocean dark theme, easy on the eyes.',
             icon: Moon,
         },
         {
@@ -151,7 +150,7 @@ export default function Settings({ user, status }: SettingsProps) {
                         Account &amp; Security Settings
                     </h1>
                     <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
-                        Manage your profile details, password, notification channels, theme appearance, and account security
+                        Manage your profile information, password, notification channels, theme appearance, and account
                     </p>
                 </div>
 
@@ -170,7 +169,7 @@ export default function Settings({ user, status }: SettingsProps) {
                         Profile Information &amp; Email
                     </h2>
                     <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                        Update your account full name and email address. Session alerts and student notifications will be delivered here.
+                        Update your account name and email address. Session confirmations and instructor chats will be sent here.
                     </p>
 
                     <form onSubmit={handleProfileSubmit} className="mt-5 space-y-4 text-xs">
@@ -301,7 +300,7 @@ export default function Settings({ user, status }: SettingsProps) {
                                 Notification Channels
                             </h2>
                             <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                                Choose which updates you want delivered via email and in-app alerts
+                                Configure which updates you want delivered via email and in-app alerts
                             </p>
                         </div>
 
@@ -316,7 +315,7 @@ export default function Settings({ user, status }: SettingsProps) {
                         <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-slate-50/70 p-3 text-xs transition hover:bg-slate-100/80 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]">
                             <div>
                                 <span className="font-semibold text-slate-900 dark:text-white">Audible Notification Sound</span>
-                                <p className="text-[11px] text-slate-500 dark:text-slate-400">Play an audible chime when new bookings, messages, or inquiries arrive</p>
+                                <p className="text-[11px] text-slate-500 dark:text-slate-400">Play an audible chime when booking confirmations or messages arrive</p>
                             </div>
                             <input
                                 type="checkbox"
@@ -328,8 +327,8 @@ export default function Settings({ user, status }: SettingsProps) {
 
                         <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200/70 bg-slate-50/40 p-3 text-xs transition hover:bg-slate-100/70 dark:border-white/5 dark:bg-slate-950/30 dark:hover:bg-white/[0.03]">
                             <div>
-                                <span className="font-semibold text-slate-900 dark:text-white">New Booking Inquiries &amp; Confirmations</span>
-                                <p className="text-[11px] text-slate-500 dark:text-slate-400">Get notified instantly when a student requests a coaching session</p>
+                                <span className="font-semibold text-slate-900 dark:text-white">Lesson Confirmations &amp; Session Updates</span>
+                                <p className="text-[11px] text-slate-500 dark:text-slate-400">Get notified when instructors accept or reschedule your coaching sessions</p>
                             </div>
                             <input
                                 type="checkbox"
@@ -341,26 +340,13 @@ export default function Settings({ user, status }: SettingsProps) {
 
                         <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200/70 bg-slate-50/40 p-3 text-xs transition hover:bg-slate-100/70 dark:border-white/5 dark:bg-slate-950/30 dark:hover:bg-white/[0.03]">
                             <div>
-                                <span className="font-semibold text-slate-900 dark:text-white">Direct Student &amp; School Messages</span>
-                                <p className="text-[11px] text-slate-500 dark:text-slate-400">Email alerts when a client or partner school sends a chat</p>
+                                <span className="font-semibold text-slate-900 dark:text-white">Direct Messages from Coaches</span>
+                                <p className="text-[11px] text-slate-500 dark:text-slate-400">Alerts when an instructor sends you session instructions or chat replies</p>
                             </div>
                             <input
                                 type="checkbox"
                                 checked={preferences.messageAlerts}
                                 onChange={(e) => setPreferences({ ...preferences, messageAlerts: e.target.checked })}
-                                className="h-4 w-4 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-[#1f6eff] dark:focus:ring-0"
-                            />
-                        </label>
-
-                        <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200/70 bg-slate-50/40 p-3 text-xs transition hover:bg-slate-100/70 dark:border-white/5 dark:bg-slate-950/30 dark:hover:bg-white/[0.03]">
-                            <div>
-                                <span className="font-semibold text-slate-900 dark:text-white">Payout &amp; Escrow Transfer Confirmations</span>
-                                <p className="text-[11px] text-slate-500 dark:text-slate-400">Receipts and confirmation whenever lesson funds are deposited</p>
-                            </div>
-                            <input
-                                type="checkbox"
-                                checked={preferences.payoutNotifs}
-                                onChange={(e) => setPreferences({ ...preferences, payoutNotifs: e.target.checked })}
                                 className="h-4 w-4 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-[#1f6eff] dark:focus:ring-0"
                             />
                         </label>
@@ -386,7 +372,7 @@ export default function Settings({ user, status }: SettingsProps) {
                                 Appearance &amp; Theme
                             </h2>
                             <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                                Choose your interface theme preference for your coach workstation
+                                Choose your interface theme preference for KiteLink
                             </p>
                         </div>
 
@@ -440,65 +426,65 @@ export default function Settings({ user, status }: SettingsProps) {
                         Danger Zone
                     </h2>
                     <p className="mt-1 text-xs text-rose-600/80 dark:text-slate-400">
-                        Deactivating will temporarily hide your public listing from search results.
+                        Permanently delete your account and remove all personal information, bookings, and messages.
                     </p>
 
                     <div className="mt-5 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
-                            <h4 className="text-xs font-bold text-slate-900 dark:text-white">Deactivate Instructor Profile</h4>
+                            <h4 className="text-xs font-bold text-slate-900 dark:text-white">Delete Account</h4>
                             <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                                You can reactivate anytime from your profile settings.
+                                This action is permanent and cannot be undone.
                             </p>
                         </div>
 
                         <button
                             type="button"
-                            onClick={() => setShowDeactivateModal(true)}
+                            onClick={() => setShowDeleteModal(true)}
                             className="inline-flex items-center gap-1.5 rounded-xl border border-rose-300 bg-rose-100 px-4 py-2 text-xs font-bold text-rose-700 transition hover:bg-rose-200 dark:border-rose-500/40 dark:bg-rose-500/15 dark:text-rose-300 dark:hover:bg-rose-500/25"
                         >
-                            <UserX className="h-4 w-4" />
-                            Deactivate Profile
+                            <Trash2 className="h-4 w-4" />
+                            Delete Account
                         </button>
                     </div>
                 </div>
             </div>
 
-            {/* Deactivation Modal */}
-            {showDeactivateModal && (
+            {/* Account Deletion Modal */}
+            {showDeleteModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm dark:bg-black/75 dark:backdrop-blur-md">
                     <div className="relative w-full max-w-md rounded-2xl border border-rose-200 bg-white p-6 shadow-2xl text-slate-800 dark:border-rose-500/30 dark:bg-[#070b12] dark:text-slate-100">
-                        <h3 className="text-base font-bold text-slate-900 dark:text-white">Confirm Account Deactivation</h3>
+                        <h3 className="text-base font-bold text-slate-900 dark:text-white">Confirm Account Deletion</h3>
                         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                            Please enter your current password to pause your instructor listing.
+                            Please enter your current password to permanently delete your account. This action cannot be reversed.
                         </p>
 
-                        <form onSubmit={handleDeactivate} className="mt-4 space-y-3">
+                        <form onSubmit={handleDeleteAccount} className="mt-4 space-y-3">
                             <input
                                 type="password"
                                 required
-                                placeholder="Enter current password..."
-                                value={deactivateForm.data.password}
-                                onChange={(e) => deactivateForm.setData('password', e.target.value)}
+                                placeholder="Enter your password..."
+                                value={deleteAccountForm.data.password}
+                                onChange={(e) => deleteAccountForm.setData('password', e.target.value)}
                                 className="w-full rounded-xl border border-slate-300 bg-white p-2.5 text-xs text-slate-900 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 focus:outline-none dark:border-white/15 dark:bg-slate-950/60 dark:text-white"
                             />
-                            {deactivateForm.errors.password && (
-                                <p className="text-xs text-rose-500 dark:text-rose-400">{deactivateForm.errors.password}</p>
+                            {deleteAccountForm.errors.password && (
+                                <p className="text-xs text-rose-500 dark:text-rose-400">{deleteAccountForm.errors.password}</p>
                             )}
 
                             <div className="flex items-center justify-end gap-2 pt-2">
                                 <button
                                     type="button"
-                                    onClick={() => setShowDeactivateModal(false)}
+                                    onClick={() => setShowDeleteModal(false)}
                                     className="rounded-xl px-3 py-2 text-xs text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    disabled={deactivateForm.processing}
+                                    disabled={deleteAccountForm.processing}
                                     className="rounded-xl bg-rose-600 px-4 py-2 text-xs font-bold text-white shadow hover:bg-rose-700"
                                 >
-                                    Confirm Deactivate
+                                    Confirm Delete
                                 </button>
                             </div>
                         </form>

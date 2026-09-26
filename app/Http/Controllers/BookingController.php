@@ -25,6 +25,11 @@ class BookingController extends Controller
         ]);
 
         $instructor = Instructor::with('user')->findOrFail($validated['instructor_id']);
+
+        if (! $instructor->is_active || $instructor->status !== 'approved') {
+            return back()->withErrors(['instructor_id' => 'This instructor is currently not accepting new bookings.']);
+        }
+
         $hourlyRate = (float) ($instructor->hourly_rate ?? 65.00);
         $studentsCount = (int) ($validated['students_count'] ?? 1);
         $totalPrice = $hourlyRate * 2 * $studentsCount; // default 2-hour session

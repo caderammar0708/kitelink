@@ -8,9 +8,9 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: { child
     return (
         <AppShell variant="sidebar">
             <AppSidebar />
-            <AppContent variant="sidebar" className="border-sidebar-border/30 min-h-screen bg-[#070b12] text-slate-100">
+            <AppContent variant="sidebar" className="border-sidebar-border/30 min-h-screen bg-slate-50 text-slate-900 transition-colors duration-200 dark:bg-[#070b12] dark:text-slate-100">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
-                <div className="flex-1 bg-gradient-to-b from-[#070b12] via-[#0a0e1a] to-[#070b12]">{children}</div>
+                <div className="flex-1 bg-slate-50 transition-colors duration-200 dark:bg-gradient-to-b dark:from-[#070b12] dark:via-[#0a0e1a] dark:to-[#070b12]">{children}</div>
             </AppContent>
         </AppShell>
     );

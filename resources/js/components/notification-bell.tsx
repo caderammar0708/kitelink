@@ -273,7 +273,7 @@ export function NotificationBell({ className = '' }: { className?: string }) {
             <button
                 type="button"
                 onClick={toggleOpen}
-                className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-300 transition-colors hover:border-white/20 hover:bg-white/[0.08] hover:text-white focus:outline-none"
+                className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-slate-100/80 text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-200 hover:text-slate-900 focus:outline-none dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:border-white/20 dark:hover:bg-white/[0.08] dark:hover:text-white"
                 aria-label="View notifications"
             >
                 <Bell className="h-4 w-4" />
@@ -282,20 +282,20 @@ export function NotificationBell({ className = '' }: { className?: string }) {
                 {hasUnread && (
                     <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-400 opacity-75" />
-                        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-[#070b12]" />
+                        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white dark:ring-[#070b12]" />
                     </span>
                 )}
             </button>
 
             {/* Dropdown Panel */}
             {open && (
-                <div className="absolute right-0 z-50 mt-2 w-80 sm:w-96 rounded-2xl border border-white/10 bg-[#0c1220]/95 p-0 shadow-2xl backdrop-blur-2xl ring-1 ring-black/40 animate-in fade-in zoom-in-95 duration-150">
+                <div className="absolute right-0 z-50 mt-2 w-80 sm:w-96 rounded-2xl border border-slate-200 bg-white/95 p-0 shadow-2xl backdrop-blur-2xl ring-1 ring-slate-900/5 animate-in fade-in zoom-in-95 duration-150 dark:border-white/10 dark:bg-[#0c1220]/95 dark:ring-black/40">
                     {/* Header */}
-                    <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+                    <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-white/10">
                         <div className="flex items-center gap-2">
-                            <span className="text-sm font-semibold text-white">Notifications</span>
+                            <span className="text-sm font-semibold text-slate-900 dark:text-white">Notifications</span>
                             {hasUnread && (
-                                <span className="rounded-full bg-rose-500/20 px-2 py-0.5 text-[10px] font-semibold text-rose-300">
+                                <span className="rounded-full bg-rose-500/20 px-2 py-0.5 text-[10px] font-semibold text-rose-600 dark:text-rose-300">
                                     New
                                 </span>
                             )}
@@ -306,7 +306,7 @@ export function NotificationBell({ className = '' }: { className?: string }) {
                                 type="button"
                                 onClick={handleMarkAllAsRead}
                                 disabled={isMarkingAll}
-                                className="flex cursor-pointer items-center gap-1 text-[11px] font-medium text-slate-400 transition hover:text-sky-400 disabled:opacity-50"
+                                className="flex cursor-pointer items-center gap-1 text-[11px] font-medium text-slate-500 transition hover:text-blue-600 disabled:opacity-50 dark:text-slate-400 dark:hover:text-sky-400"
                             >
                                 <Check className="h-3 w-3" />
                                 Mark all as read
@@ -315,13 +315,13 @@ export function NotificationBell({ className = '' }: { className?: string }) {
                     </div>
 
                     {/* Notifications List */}
-                    <div className="max-h-[380px] divide-y divide-white/5 overflow-y-auto">
+                    <div className="max-h-[380px] divide-y divide-slate-100 overflow-y-auto dark:divide-white/5">
                         {notifications.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-slate-400 mb-2">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 mb-2 dark:bg-white/5 dark:text-slate-400">
                                     <Wind className="h-5 w-5" />
                                 </div>
-                                <p className="text-xs font-medium text-slate-300">No notifications yet</p>
+                                <p className="text-xs font-medium text-slate-700 dark:text-slate-300">No notifications yet</p>
                                 <p className="text-[11px] text-slate-500 mt-0.5">
                                     We'll notify you here when bookings, messages, or updates arrive.
                                 </p>
@@ -336,8 +336,8 @@ export function NotificationBell({ className = '' }: { className?: string }) {
                                         onClick={() => handleNotificationClick(item)}
                                         className={`flex w-full cursor-pointer items-start gap-3 p-3.5 text-left transition ${
                                             isUnread
-                                                ? 'border-l-2 border-[#3b82f6] bg-blue-500/[0.08] hover:bg-blue-500/[0.14]'
-                                                : 'opacity-75 hover:opacity-100 hover:bg-white/[0.04]'
+                                                ? 'border-l-2 border-[#3b82f6] bg-blue-50/80 hover:bg-blue-100/60 dark:bg-blue-500/[0.08] dark:hover:bg-blue-500/[0.14]'
+                                                : 'opacity-80 hover:opacity-100 hover:bg-slate-50 dark:hover:bg-white/[0.04]'
                                         }`}
                                     >
                                         {renderIcon(item.data.type || item.type)}
@@ -346,21 +346,21 @@ export function NotificationBell({ className = '' }: { className?: string }) {
                                             <div className="flex items-center justify-between gap-2">
                                                 <p
                                                     className={`truncate text-xs ${
-                                                        isUnread ? 'font-semibold text-white' : 'font-medium text-slate-300'
+                                                        isUnread ? 'font-semibold text-slate-900 dark:text-white' : 'font-medium text-slate-700 dark:text-slate-300'
                                                     }`}
                                                 >
                                                     {item.data.title || 'Notification'}
                                                 </p>
                                                 {isUnread && (
-                                                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-blue-400" />
+                                                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
                                                 )}
                                             </div>
 
-                                            <p className="mt-0.5 line-clamp-2 text-[11px] text-slate-400 leading-relaxed">
+                                             <p className="mt-0.5 line-clamp-2 text-[11px] text-slate-600 leading-relaxed dark:text-slate-400">
                                                 {item.data.message || ''}
                                             </p>
 
-                                            <p className="mt-1 text-[10px] text-slate-500">
+                                            <p className="mt-1 text-[10px] text-slate-400 dark:text-slate-500">
                                                 {item.created_at_human}
                                             </p>
                                         </div>

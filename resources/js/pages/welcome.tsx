@@ -1,3 +1,4 @@
+import WeatherWidget from '@/components/weather-widget';
 import { Link, usePage } from '@inertiajs/react';
 import { useRef } from 'react';
 
@@ -213,6 +214,10 @@ export default function KiteLinkLanding() {
                         kite without a wetsuit all year. While the wind direction shifts between seasons, the adventure remains the same: reliable
                         wind, warm water, and a variety of spots to explore for every beginner or advanced kitesurfer.
                     </p>
+
+                    <div style={{ marginTop: '1.5rem' }}>
+                        <WeatherWidget defaultPlaceId="kalpitiya-1242089" />
+                    </div>
                 </div>
 
                 {/* WEATHER / SEASONS */}

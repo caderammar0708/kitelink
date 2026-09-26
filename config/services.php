@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'meteosource' => [
+        'url' => env('METEOSOURCE_API_URL', 'https://www.meteosource.com/api/v1/free'),
+        'key' => env('METEOSOURCE_API_KEY'),
+    ],
+
 ];

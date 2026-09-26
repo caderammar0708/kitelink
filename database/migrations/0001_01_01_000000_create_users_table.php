@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('profile_picture')->nullable();
+            $table->enum('role', ['client', 'instructor', 'school', 'admin'])->default('client');
+            $table->boolean('notification_sound_enabled')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

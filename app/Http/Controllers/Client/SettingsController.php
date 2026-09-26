@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Instructor;
+namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -14,13 +14,13 @@ use Inertia\Response;
 class SettingsController extends Controller
 {
     /**
-     * Display instructor account and security settings.
+     * Display client account and preference settings.
      */
     public function index(Request $request): Response
     {
         $user = $request->user();
 
-        return Inertia::render('instructor/Settings', [
+        return Inertia::render('client/Settings', [
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -32,24 +32,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Update instructor login password.
-     */
-    public function updatePassword(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'current_password' => ['required', 'current_password'],
-            'password' => ['required', Password::defaults(), 'confirmed'],
-        ]);
-
-        $request->user()->update([
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        return back()->with('status', 'Password updated successfully!');
-    }
-
-    /**
-     * Update instructor profile information (name and email).
+     * Update client profile details (name and email).
      */
     public function updateProfile(Request $request): RedirectResponse
     {
@@ -69,31 +52,26 @@ class SettingsController extends Controller
     }
 
     /**
-     * Update instructor account email address.
+     * Update client account password.
      */
-    public function updateEmail(Request $request): RedirectResponse
+    public function updatePassword(Request $request): RedirectResponse
     {
-        $user = $request->user();
-
         $validated = $request->validate([
-            'name' => ['nullable', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.$user->id],
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 
-        $data = ['email' => $validated['email']];
-        if (! empty($validated['name'])) {
-            $data['name'] = $validated['name'];
-        }
+        $request->user()->update([
+            'password' => Hash::make($validated['password']),
+        ]);
 
-        $user->update($data);
-
-        return back()->with('status', 'Profile details updated successfully!');
+        return back()->with('status', 'Password updated successfully!');
     }
 
     /**
-     * Update communication & alert preferences.
+     * Update client notification sound and alert preferences.
      */
-    public function updateNotificationPreferences(Request $request): RedirectResponse
+    public function updateNotifications(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'notification_sound_enabled' => ['nullable', 'boolean'],
@@ -109,9 +87,9 @@ class SettingsController extends Controller
     }
 
     /**
-     * Deactivate instructor account.
+     * Permanently delete client account.
      */
-    public function deactivate(Request $request): RedirectResponse
+    public function destroyAccount(Request $request): RedirectResponse
     {
         $request->validate([
             'password' => ['required', 'current_password'],

@@ -116,15 +116,15 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Instructor Bookings - KiteLink" />
 
-            <div className="relative min-h-full space-y-6 p-4 text-slate-100 selection:bg-[#3b82f6]/30 selection:text-white sm:p-6 lg:p-8">
+            <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white sm:p-6 lg:p-8">
                 {/* Header Banner */}
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
-                            <CalendarCheck className="h-7 w-7 text-[#5bb4ff]" />
+                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                            <CalendarCheck className="h-7 w-7 text-blue-600 dark:text-[#5bb4ff]" />
                             Bookings Management
                         </h1>
-                        <p className="mt-1 text-xs text-slate-400 sm:text-sm">
+                        <p className="mt-1 text-xs text-slate-600 dark:text-slate-400 sm:text-sm">
                             Manage lesson requests, review student details, and track your completed kitesurfing sessions
                         </p>
                     </div>
@@ -132,16 +132,16 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                     <div className="flex items-center gap-3">
                         <Link
                             href="/instructor/availability"
-                            className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.06] px-4 py-2 text-xs font-semibold text-white backdrop-blur-md transition hover:bg-white/[0.12]"
+                            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 hover:text-slate-900 dark:border-white/15 dark:bg-white/[0.06] dark:text-white dark:hover:bg-white/[0.12]"
                         >
-                            <Calendar className="h-4 w-4 text-[#5bb4ff]" />
+                            <Calendar className="h-4 w-4 text-blue-600 dark:text-[#5bb4ff]" />
                             Open Calendar Dates
                         </Link>
                     </div>
                 </div>
 
                 {/* Tab Navigation */}
-                <div className="flex flex-wrap items-center gap-2 border-b border-white/10 pb-3">
+                <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3 dark:border-white/10">
                     {tabs.map((t) => {
                         const isActive = tab === t.key;
                         return (
@@ -149,16 +149,16 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                                 type="button"
                                 key={t.key}
                                 onClick={() => handleTabChange(t.key)}
-                                className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all sm:text-sm ${
+                                className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all sm:text-sm cursor-pointer ${
                                     isActive
-                                        ? 'border border-[#5bb4ff]/40 bg-[#1f6eff]/20 text-white shadow-lg shadow-blue-600/20'
-                                        : 'border border-transparent text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'
+                                        ? 'border border-blue-200 bg-blue-50 text-blue-700 shadow-sm dark:border-[#5bb4ff]/40 dark:bg-[#1f6eff]/20 dark:text-white'
+                                        : 'border border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/[0.04] dark:hover:text-slate-200'
                                 }`}
                             >
                                 <span>{t.label}</span>
                                 <span
-                                    className={`rounded-full px-2 py-0.5 text-[11px] ${
-                                        isActive ? 'bg-[#5bb4ff]/30 text-white' : 'bg-white/10 text-slate-400'
+                                    className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${
+                                        isActive ? 'bg-blue-100 text-blue-700 dark:bg-[#5bb4ff]/30 dark:text-white' : 'bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-400'
                                     }`}
                                 >
                                     {t.count}
@@ -177,23 +177,23 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Search by student, email, date, lesson type..."
-                            className="w-full rounded-xl border border-white/10 bg-slate-950/40 py-2.5 pr-4 pl-10 text-xs text-white placeholder-slate-500 backdrop-blur-sm focus:border-[#3b82f6] focus:outline-none"
+                            className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-xs text-slate-900 placeholder-slate-400 shadow-xs focus:border-blue-600 focus:outline-none dark:border-white/10 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-500"
                         />
                     </div>
 
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
                         Showing {filteredBookings.length} {filteredBookings.length === 1 ? 'booking' : 'bookings'}
                     </span>
                 </div>
 
                 {/* Bookings List Cards */}
                 {filteredBookings.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-slate-950/20 px-4 py-16 text-center">
-                        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#5bb4ff]/30 bg-gradient-to-br from-[#1f6eff]/20 to-[#5bb4ff]/10 text-[#5bb4ff]">
+                    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white px-4 py-16 text-center shadow-xs dark:border-white/10 dark:bg-slate-950/20">
+                        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-200 bg-blue-50 text-blue-600 shadow-sm dark:border-[#5bb4ff]/30 dark:bg-gradient-to-br dark:from-[#1f6eff]/20 dark:to-[#5bb4ff]/10 dark:text-[#5bb4ff]">
                             <CalendarCheck className="h-7 w-7" />
                         </div>
-                        <h3 className="text-base font-bold text-white">No {tab} bookings found</h3>
-                        <p className="mt-1 text-xs text-slate-400">
+                        <h3 className="text-base font-bold text-slate-900 dark:text-white">No {tab} bookings found</h3>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                             {tab === 'pending'
                                 ? 'You have responded to all incoming student inquiries.'
                                 : `No bookings currently in the ${tab} state.`}
@@ -208,12 +208,12 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                             return (
                                 <div
                                     key={booking.id}
-                                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] p-5 shadow-xl backdrop-blur-xl transition-all hover:border-white/20 hover:bg-white/[0.07] sm:p-6"
+                                    className="group relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm transition-all hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-white/[0.05] dark:hover:border-white/20 dark:hover:bg-white/[0.07] sm:p-6"
                                 >
                                     <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
                                         {/* Left: Student Info & Lesson Details */}
                                         <div className="flex items-start gap-4">
-                                            <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-slate-800 text-sm font-bold text-[#8acbff] shadow-md">
+                                            <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-slate-100 text-sm font-bold text-blue-600 shadow-sm dark:border-white/15 dark:bg-slate-800 dark:text-[#8acbff]">
                                                 {booking.student?.profile_picture ? (
                                                     <img
                                                         src={booking.student.profile_picture}
@@ -227,59 +227,59 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
 
                                             <div className="space-y-1.5">
                                                 <div className="flex flex-wrap items-center gap-2">
-                                                    <h3 className="text-base font-bold text-white">
+                                                    <h3 className="text-base font-bold text-slate-900 dark:text-white">
                                                         {booking.student?.name || 'Student Rider'}
                                                     </h3>
-                                                    <span className="text-xs text-slate-400">
+                                                    <span className="text-xs text-slate-500 dark:text-slate-400">
                                                         ({booking.student?.email || 'email not provided'})
                                                     </span>
                                                     <span
                                                         className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
                                                             isPending
-                                                                ? 'border-amber-500/30 bg-amber-500/15 text-amber-300'
+                                                                ? 'border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-300'
                                                                 : isUpcoming
-                                                                  ? 'border-blue-500/30 bg-blue-500/15 text-blue-300'
+                                                                  ? 'border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/15 dark:text-blue-300'
                                                                   : booking.status === 'completed'
-                                                                    ? 'border-emerald-500/30 bg-emerald-500/15 text-emerald-300'
-                                                                    : 'border-rose-500/30 bg-rose-500/15 text-rose-300'
+                                                                    ? 'border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300'
+                                                                    : 'border-rose-300 bg-rose-50 text-rose-800 dark:border-rose-500/30 dark:bg-rose-500/15 dark:text-rose-300'
                                                         }`}
                                                     >
                                                         {booking.status}
                                                     </span>
                                                 </div>
 
-                                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-300">
-                                                    <span className="flex items-center gap-1">
-                                                        <Calendar className="h-3.5 w-3.5 text-[#5bb4ff]" />
+                                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600 dark:text-slate-300">
+                                                    <span className="flex items-center gap-1 font-medium text-slate-800 dark:text-slate-200">
+                                                        <Calendar className="h-3.5 w-3.5 text-blue-600 dark:text-[#5bb4ff]" />
                                                         <strong>{booking.date}</strong>
                                                     </span>
                                                     {booking.time && (
                                                         <span className="flex items-center gap-1">
-                                                            <Clock className="h-3.5 w-3.5 text-[#5bb4ff]" />
+                                                            <Clock className="h-3.5 w-3.5 text-blue-600 dark:text-[#5bb4ff]" />
                                                             {booking.time}
                                                         </span>
                                                     )}
                                                     <span className="flex items-center gap-1">
-                                                        <Wind className="h-3.5 w-3.5 text-[#38bdf8]" />
+                                                        <Wind className="h-3.5 w-3.5 text-sky-600 dark:text-[#38bdf8]" />
                                                         {booking.lesson_type || 'Private Coaching'}
                                                     </span>
                                                     {booking.students_count && booking.students_count > 1 && (
                                                         <span className="flex items-center gap-1">
-                                                            <Users className="h-3.5 w-3.5 text-[#8acbff]" />
+                                                            <Users className="h-3.5 w-3.5 text-blue-600 dark:text-[#8acbff]" />
                                                             {booking.students_count} Students
                                                         </span>
                                                     )}
                                                     {booking.location && (
-                                                        <span className="flex items-center gap-1 text-slate-400">
-                                                            <MapPin className="h-3.5 w-3.5" />
+                                                        <span className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
+                                                            <MapPin className="h-3.5 w-3.5 text-blue-600 dark:text-[#5bb4ff]" />
                                                             {booking.location}
                                                         </span>
                                                     )}
                                                 </div>
 
                                                 {booking.notes && (
-                                                    <p className="mt-2 rounded-xl bg-slate-950/40 p-2.5 text-xs text-slate-300">
-                                                        <span className="font-semibold text-slate-400">Student Note: </span>
+                                                    <p className="mt-2 rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs text-slate-700 dark:border-transparent dark:bg-slate-950/40 dark:text-slate-300">
+                                                        <span className="font-semibold text-slate-500 dark:text-slate-400">Student Note: </span>
                                                         {booking.notes}
                                                     </p>
                                                 )}
@@ -287,12 +287,12 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                                         </div>
 
                                         {/* Right: Price & Action Buttons */}
-                                        <div className="flex flex-col items-end justify-between gap-3 border-t border-white/10 pt-4 lg:border-t-0 lg:pt-0">
+                                        <div className="flex flex-col items-end justify-between gap-3 border-t border-slate-200 pt-4 dark:border-white/10 lg:border-t-0 lg:pt-0">
                                             <div className="text-right">
-                                                <span className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                                                <span className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider dark:text-slate-400">
                                                     Session Total
                                                 </span>
-                                                <span className="text-2xl font-extrabold text-emerald-400">
+                                                <span className="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400">
                                                     ${booking.total_price ?? 65}
                                                 </span>
                                             </div>
@@ -300,9 +300,9 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                                             <div className="flex flex-wrap items-center gap-2">
                                                 <Link
                                                     href="/instructor/messages"
-                                                    className="inline-flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.06] px-3 py-2 text-xs font-semibold text-slate-200 transition hover:bg-white/10"
+                                                    className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:border-white/15 dark:bg-white/[0.06] dark:text-slate-200 dark:hover:bg-white/10"
                                                 >
-                                                    <MessageSquare className="h-3.5 w-3.5 text-[#5bb4ff]" />
+                                                    <MessageSquare className="h-3.5 w-3.5 text-blue-600 dark:text-[#5bb4ff]" />
                                                     Message
                                                 </Link>
 
@@ -312,7 +312,7 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                                                             type="button"
                                                             disabled={actionLoading === booking.id}
                                                             onClick={() => handleAccept(booking.id)}
-                                                            className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-4 py-2 text-xs font-bold text-white shadow-md transition hover:from-emerald-400 hover:to-teal-500 disabled:opacity-50"
+                                                            className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50"
                                                         >
                                                             <CheckCircle2 className="h-3.5 w-3.5" />
                                                             Accept
@@ -321,7 +321,7 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                                                             type="button"
                                                             disabled={actionLoading === booking.id}
                                                             onClick={() => handleDecline(booking.id)}
-                                                            className="inline-flex items-center gap-1.5 rounded-xl border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-xs font-bold text-rose-300 transition hover:bg-rose-500/20 disabled:opacity-50"
+                                                            className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-rose-300 bg-rose-50 px-3 py-2 text-xs font-bold text-rose-700 transition hover:bg-rose-100 disabled:opacity-50 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300 dark:hover:bg-rose-500/20"
                                                         >
                                                             <XCircle className="h-3.5 w-3.5" />
                                                             Decline

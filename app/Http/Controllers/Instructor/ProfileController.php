@@ -61,10 +61,14 @@ class ProfileController extends Controller
         ]);
 
         /** @var Instructor $instructor */
-        $instructor = $user->instructor()->first();
-        if (! $instructor) {
-            $instructor = new Instructor(['user_id' => $user->id]);
-        }
+        $instructor = $user->instructor()->firstOrCreate(
+            ['user_id' => $user->id],
+            [
+                'status' => 'approved',
+                'is_freelance' => true,
+                'is_active' => true,
+            ]
+        );
 
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');
@@ -75,8 +79,6 @@ class ProfileController extends Controller
 
         if ($request->hasFile('cert_document')) {
             $certPath = $request->file('cert_document')->store('certifications', 'public');
-            // Store certificate note or path in certifications metadata
-            $certDocUrl = '/storage/'.$certPath;
             if (! empty($validated['certifications'])) {
                 $instructor->certifications = $validated['certifications'];
             }
@@ -93,9 +95,38 @@ class ProfileController extends Controller
         $instructor->languages = $validated['languages'] ?? [];
         $instructor->hourly_rate = isset($validated['hourly_rate']) && $validated['hourly_rate'] !== '' ? (float) $validated['hourly_rate'] : null;
         $instructor->daily_rate = isset($validated['daily_rate']) && $validated['daily_rate'] !== '' ? (float) $validated['daily_rate'] : null;
-        $instructor->is_active = $request->boolean('is_active', true);
+        if ($request->has('is_active')) {
+            $instructor->is_active = $request->boolean('is_active');
+        }
         $instructor->save();
 
         return back()->with('status', 'Profile updated successfully!');
+    }
+
+    /**
+     * Toggle or update the instructor's active listing availability status.
+     */
+    public function updateAvailabilityStatus(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        /** @var Instructor $instructor */
+        $instructor = $user->instructor()->firstOrCreate(
+            ['user_id' => $user->id],
+            [
+                'status' => 'approved',
+                'is_freelance' => true,
+                'is_active' => true,
+            ]
+        );
+
+        $validated = $request->validate([
+            'is_active' => ['required', 'boolean'],
+        ]);
+
+        $instructor->is_active = (bool) $validated['is_active'];
+        $instructor->save();
+
+        return back()->with('status', $instructor->is_active ? 'Listing is now active (Online).' : 'Listing is now paused (Offline).');
     }
 }
