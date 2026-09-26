@@ -58,8 +58,8 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $this->call([
-            InstructorDashboardSeeder::class,
-        ]);
+        // $this->call([
+        //     InstructorDashboardSeeder::class,
+        // ]);
     }
 }
