@@ -23,11 +23,17 @@ class DashboardController extends Controller
         if (! $instructor) {
             $instructor = Instructor::create([
                 'user_id' => $user->id,
-                'status' => 'approved',
+                'status' => 'pending',
                 'is_freelance' => true,
                 'is_active' => true,
             ]);
             $instructor->load(['school', 'user']);
+        }
+
+        if ($instructor->status !== 'approved') {
+            return Inertia::render('instructor/AwaitingApproval', [
+                'instructor' => $instructor,
+            ]);
         }
 
         // Calculate profile completion

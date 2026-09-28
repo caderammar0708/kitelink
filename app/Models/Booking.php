@@ -12,6 +12,7 @@ class Booking extends Model
     protected $fillable = [
         'student_id',
         'instructor_id',
+        'school_id',
         'date',
         'time',
         'students_count',
@@ -29,6 +30,11 @@ class Booking extends Model
     public function instructor()
     {
         return $this->belongsTo(Instructor::class);
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(School::class);
     }
 
     public function review()

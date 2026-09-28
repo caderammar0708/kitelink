@@ -6,6 +6,7 @@ import { usePage } from '@inertiajs/react';
 
 export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: BreadcrumbItemType[] }) {
     const { auth } = usePage<SharedData>().props;
+    const isAdmin = auth?.user?.role === 'admin';
     const isInstructor = auth?.user?.role === 'instructor';
 
     return (
@@ -15,9 +16,15 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                 <Breadcrumbs breadcrumbs={breadcrumbs} />
             </div>
             <div className="flex items-center gap-3">
-                <span className="hidden items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 sm:inline-flex dark:border-[#5bb4ff]/20 dark:bg-[#5bb4ff]/10 dark:text-[#7bc9ff]">
+                <span className={`hidden items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium sm:inline-flex ${
+                    isAdmin
+                        ? 'border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-300'
+                        : isInstructor
+                          ? 'border-blue-200 bg-blue-50 text-blue-700 dark:border-[#5bb4ff]/20 dark:bg-[#5bb4ff]/10 dark:text-[#7bc9ff]'
+                          : 'border-slate-200 bg-slate-50 text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-300'
+                }`}>
                     <i className="fas fa-wind text-[10px]" />
-                    {isInstructor ? 'Instructor Portal' : 'Client Portal'}
+                    {isAdmin ? 'Admin Portal' : isInstructor ? 'Instructor Portal' : 'Client Portal'}
                 </span>
                 <NotificationBell />
             </div>

@@ -24,7 +24,7 @@ class ProfileController extends Controller
         if (! $instructor) {
             $instructor = Instructor::create([
                 'user_id' => $user->id,
-                'status' => 'approved',
+                'status' => 'pending',
                 'is_freelance' => true,
                 'is_active' => true,
             ]);
@@ -64,7 +64,7 @@ class ProfileController extends Controller
         $instructor = $user->instructor()->firstOrCreate(
             ['user_id' => $user->id],
             [
-                'status' => 'approved',
+                'status' => 'pending',
                 'is_freelance' => true,
                 'is_active' => true,
             ]
@@ -79,6 +79,7 @@ class ProfileController extends Controller
 
         if ($request->hasFile('cert_document')) {
             $certPath = $request->file('cert_document')->store('certifications', 'public');
+            $instructor->certification_proof = '/storage/'.$certPath;
             if (! empty($validated['certifications'])) {
                 $instructor->certifications = $validated['certifications'];
             }
@@ -98,6 +99,13 @@ class ProfileController extends Controller
         if ($request->has('is_active')) {
             $instructor->is_active = $request->boolean('is_active');
         }
+
+        // If instructor was rejected, editing and saving automatically resubmits for approval
+        if ($instructor->status === 'rejected') {
+            $instructor->status = 'pending';
+            $instructor->rejection_reason = null;
+        }
+
         $instructor->save();
 
         return back()->with('status', 'Profile updated successfully!');

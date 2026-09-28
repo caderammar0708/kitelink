@@ -50,6 +50,15 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        $user = Auth::user();
+        if ($user && ($user->is_suspended || $user->instructor?->status === 'suspended' || $user->school?->status === 'suspended')) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => 'Your account has been suspended by an administrator. Please contact support.',
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 

@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\ApprovalController;
+use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SchoolController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Auth\VerificationPendingController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Client\BookingController as ClientBookingController;
 use App\Http\Controllers\Client\MessageController as ClientMessageController;
@@ -18,6 +24,9 @@ use App\Http\Controllers\Instructor\ReviewController;
 use App\Http\Controllers\Instructor\SettingsController as InstructorSettingsController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\NotificationController as GlobalNotificationController;
+use App\Http\Controllers\School\InstructorRosterController;
+use App\Http\Controllers\School\ProfileController;
+use App\Http\Controllers\School\SettingsController;
 use App\Http\Controllers\WeatherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,9 +50,20 @@ Route::get('/instructors/{instructor}', [InstructorController::class, 'show'])->
 
 // Authenticated Routes
 Route::middleware(['auth'])->group(function () {
+    // Verification Pending Gate (standalone page for pending/rejected instructors & schools)
+    Route::get('/verification-pending', [VerificationPendingController::class, 'show'])->name('verification.pending');
+    Route::post('/verification-pending/resubmit', [VerificationPendingController::class, 'resubmit'])->name('verification.pending.resubmit');
+
     Route::get('dashboard', function (Request $request) {
-        if ($request->user()->role === 'instructor') {
+        $user = $request->user();
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        if ($user->role === 'instructor') {
             return redirect()->route('instructor.dashboard');
+        }
+        if ($user->role === 'school') {
+            return redirect()->route('school.dashboard');
         }
 
         return Inertia::render('dashboard');
@@ -76,8 +96,14 @@ Route::middleware(['auth'])->group(function () {
 
     // Unified Role-Aware Settings Redirect
     Route::get('/settings', function (Request $request) {
+        if ($request->user()->role === 'admin') {
+            return redirect()->route('admin.settings');
+        }
         if ($request->user()->role === 'instructor') {
             return redirect()->route('instructor.settings');
+        }
+        if ($request->user()->role === 'school') {
+            return redirect()->route('school.settings');
         }
 
         return redirect()->route('client.settings');
@@ -93,6 +119,40 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/client/weather', [WeatherController::class, 'index'])->name('client.weather');
     Route::get('/instructor/weather', [WeatherController::class, 'index'])->name('instructor.weather');
     Route::get('/school/weather', [WeatherController::class, 'index'])->name('school.weather');
+});
+
+// School Portal
+Route::middleware(['auth', 'school'])->prefix('school')->name('school.')->group(function () {
+    // 1. Dashboard
+    Route::get('/dashboard', [App\Http\Controllers\School\DashboardController::class, 'index'])->name('dashboard');
+
+    // 2. School Profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // 3. Manage Instructors Roster
+    Route::get('/instructors', [InstructorRosterController::class, 'index'])->name('instructors');
+    Route::post('/instructors/invite', [InstructorRosterController::class, 'invite'])->name('instructors.invite');
+    Route::post('/instructors/coach', [InstructorRosterController::class, 'storeCoach'])->name('instructors.storeCoach');
+    Route::delete('/instructors/{instructor}', [InstructorRosterController::class, 'remove'])->name('instructors.remove');
+
+    // 4. Bookings across School Roster
+    Route::get('/bookings', [App\Http\Controllers\School\BookingController::class, 'index'])->name('bookings');
+    Route::post('/bookings/{booking}/status', [App\Http\Controllers\School\BookingController::class, 'updateStatus'])->name('bookings.status');
+
+    // 5. Messages
+    Route::get('/messages', [App\Http\Controllers\School\MessageController::class, 'index'])->name('messages');
+    Route::get('/messages/{conversation}', [App\Http\Controllers\School\MessageController::class, 'show'])->name('messages.show');
+    Route::post('/messages/{conversation}', [App\Http\Controllers\School\MessageController::class, 'store'])->name('messages.store');
+    Route::post('/messages/start', [App\Http\Controllers\School\MessageController::class, 'start'])->name('messages.start');
+
+    // 6. Settings
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+    Route::post('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile');
+    Route::post('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password');
+    Route::post('/settings/email', [SettingsController::class, 'updateEmail'])->name('settings.email');
+    Route::post('/settings/notifications', [SettingsController::class, 'updateNotifications'])->name('settings.notifications');
+    Route::post('/settings/deactivate', [SettingsController::class, 'deactivate'])->name('settings.deactivate');
 });
 
 // Instructor Portal
@@ -180,5 +240,61 @@ Route::middleware(['auth', 'instructor'])->prefix('instructor')->name('instructo
 
 // Fallback alias for legacy /instructor/{id}
 Route::get('/instructor/{instructor}', [InstructorController::class, 'show'])->whereNumber('instructor');
+
+// Admin Portal Routes
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // 1. Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // 2. Approvals
+    Route::get('/approvals', [ApprovalController::class, 'index'])->name('approvals');
+    Route::post('/approvals/instructors/{instructor}/approve', [ApprovalController::class, 'approveInstructor'])->name('approvals.instructors.approve');
+    Route::post('/approvals/instructors/{instructor}/reject', [ApprovalController::class, 'rejectInstructor'])->name('approvals.instructors.reject');
+    Route::post('/approvals/instructors/{instructor}/request-info', [ApprovalController::class, 'requestInfoInstructor'])->name('approvals.instructors.requestInfo');
+
+    Route::post('/approvals/schools/{school}/approve', [ApprovalController::class, 'approveSchool'])->name('approvals.schools.approve');
+    Route::post('/approvals/schools/{school}/reject', [ApprovalController::class, 'rejectSchool'])->name('approvals.schools.reject');
+    Route::post('/approvals/schools/{school}/request-info', [ApprovalController::class, 'requestInfoSchool'])->name('approvals.schools.requestInfo');
+
+    // 3. Instructors Management
+    Route::get('/instructors', [App\Http\Controllers\Admin\InstructorController::class, 'index'])->name('instructors');
+    Route::post('/instructors/{instructor}/suspend', [App\Http\Controllers\Admin\InstructorController::class, 'suspend'])->name('instructors.suspend');
+    Route::post('/instructors/{instructor}/reactivate', [App\Http\Controllers\Admin\InstructorController::class, 'reactivate'])->name('instructors.reactivate');
+    Route::delete('/instructors/{instructor}', [App\Http\Controllers\Admin\InstructorController::class, 'destroy'])->name('instructors.destroy');
+
+    // 4. Schools Management
+    Route::get('/schools', [SchoolController::class, 'index'])->name('schools');
+    Route::post('/schools/{school}/suspend', [SchoolController::class, 'suspend'])->name('schools.suspend');
+    Route::post('/schools/{school}/reactivate', [SchoolController::class, 'reactivate'])->name('schools.reactivate');
+    Route::delete('/schools/{school}', [SchoolController::class, 'destroy'])->name('schools.destroy');
+
+    // 5. Clients Management
+    Route::get('/clients', [ClientController::class, 'index'])->name('clients');
+    Route::post('/clients/{user}/suspend', [ClientController::class, 'suspend'])->name('clients.suspend');
+    Route::post('/clients/{user}/reactivate', [ClientController::class, 'reactivate'])->name('clients.reactivate');
+    Route::delete('/clients/{user}', [ClientController::class, 'destroy'])->name('clients.destroy');
+
+    // 6. Bookings Management
+    Route::get('/bookings', [App\Http\Controllers\Admin\BookingController::class, 'index'])->name('bookings');
+    Route::post('/bookings/{booking}/cancel', [App\Http\Controllers\Admin\BookingController::class, 'cancel'])->name('bookings.cancel');
+
+    // 7. Reviews Moderation
+    Route::get('/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('reviews');
+    Route::post('/reviews/{review}/toggle-visibility', [App\Http\Controllers\Admin\ReviewController::class, 'toggleVisibility'])->name('reviews.toggleVisibility');
+    Route::delete('/reviews/{review}', [App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    // 8. Messages Monitor
+    Route::get('/messages', [App\Http\Controllers\Admin\MessageController::class, 'index'])->name('messages');
+
+    // 9. Weather
+    Route::get('/weather', [WeatherController::class, 'index'])->name('weather');
+
+    // 10. Notifications
+    Route::get('/notifications', [App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications');
+
+    // 11. Settings & Audit Logs
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+});
 
 require __DIR__.'/auth.php';

@@ -53,22 +53,36 @@ export function NotificationBell({ className = '' }: { className?: string }) {
         return headers;
     };
 
-    // Initialize audio element
-    useEffect(() => {
-        audioRef.current = new Audio('/sounds/notification.mp3');
-        audioRef.current.volume = 0.5;
-    }, []);
-
     // Helper to play notification sound
     const playChime = () => {
         if (!soundEnabled) return;
         try {
-            if (audioRef.current) {
-                audioRef.current.currentTime = 0;
-                audioRef.current.play().catch(() => {
-                    // Browser autoplay policy might prevent play until user interaction
-                });
+            const AudioContextClass =
+                window.AudioContext ||
+                (window as unknown as { webkitAudioContext: typeof window.AudioContext }).webkitAudioContext;
+            if (AudioContextClass) {
+                const ctx = new AudioContextClass();
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, now);
+                osc.frequency.exponentialRampToValueAtTime(1174.66, now + 0.15);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.35);
+                return;
             }
+
+            if (!audioRef.current) {
+                audioRef.current = new Audio('/sounds/notification.mp3');
+                audioRef.current.volume = 0.5;
+            }
+            audioRef.current.currentTime = 0;
+            audioRef.current.play().catch(() => {});
         } catch {
             // Ignore audio error
         }
@@ -256,6 +270,13 @@ export function NotificationBell({ className = '' }: { className?: string }) {
                 return (
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-purple-500/15 text-purple-400">
                         <Briefcase className="h-4 w-4" />
+                    </div>
+                );
+            case 'account_status':
+            case 'approval':
+                return (
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-teal-500/15 text-teal-400">
+                        <Check className="h-4 w-4" />
                     </div>
                 );
             default:

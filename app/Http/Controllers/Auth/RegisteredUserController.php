@@ -11,8 +11,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
@@ -38,43 +36,92 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => 'nullable|in:client,instructor,school',
-        ]);
+        $role = $request->input('role', 'client');
 
-        $userData = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ];
+        if ($role === 'school') {
+            $request->validate([
+                'school_name' => 'nullable|string|max:255',
+                'name' => 'nullable|string|max:255',
+                'registration_number' => 'nullable|string|max:100',
+                'contact_name' => 'nullable|string|max:255',
+                'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+                'phone' => 'nullable|string|max:50',
+                'location' => 'nullable|string|max:255',
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'role' => 'required|in:school',
+            ]);
 
-        if (Schema::hasColumn('users', 'role')) {
-            $userData['role'] = $request->role ?? 'client';
-        }
+            $schoolName = $request->input('school_name') ?: $request->input('name') ?: 'Kite School';
+            $contactPerson = $request->input('contact_name') ?: $request->input('name') ?: 'School Admin';
 
-        $user = User::create($userData);
+            $user = User::create([
+                'name' => $contactPerson,
+                'email' => $request->input('email'),
+                'phone' => $request->input('phone'),
+                'password' => Hash::make($request->input('password')),
+                'role' => 'school',
+            ]);
 
-        if (($request->role ?? null) === 'instructor') {
-            if (Schema::hasTable('instructors')) {
-                Instructor::create(['user_id' => $user->id]);
-            } else {
-                Log::warning('Attempted to create instructor record but instructors table does not exist.', ['user_id' => $user->id]);
-            }
-        } elseif (($request->role ?? null) === 'school') {
-            if (Schema::hasTable('schools')) {
-                School::firstOrCreate(
-                    ['name' => $user->name],
-                    ['slug' => Str::slug($user->name)]
-                );
-            }
+            School::create([
+                'user_id' => $user->id,
+                'name' => $schoolName,
+                'slug' => Str::slug($schoolName).'-'.strtolower(Str::random(4)),
+                'registration_number' => $request->input('registration_number'),
+                'contact_name' => $contactPerson,
+                'phone' => $request->input('phone'),
+                'location' => $request->input('location'),
+                'status' => 'pending',
+                'is_active' => true,
+            ]);
+        } elseif ($role === 'instructor') {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+                'phone' => 'nullable|string|max:50',
+                'license_number' => 'required|string|max:100',
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'role' => 'required|in:instructor',
+            ]);
+
+            $user = User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'phone' => $request->input('phone'),
+                'password' => Hash::make($request->input('password')),
+                'role' => 'instructor',
+            ]);
+
+            Instructor::create([
+                'user_id' => $user->id,
+                'phone' => $request->input('phone'),
+                'license_number' => $request->input('license_number'),
+                'status' => 'pending',
+                'is_freelance' => true,
+                'is_active' => true,
+            ]);
+        } else {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'role' => 'nullable|in:client',
+            ]);
+
+            $user = User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'role' => 'client',
+            ]);
         }
 
         event(new Registered($user));
 
         Auth::login($user);
+
+        if (in_array($user->role, ['instructor', 'school'], true)) {
+            return redirect()->route('verification.pending');
+        }
 
         return to_route('dashboard');
     }

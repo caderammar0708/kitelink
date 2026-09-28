@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Review extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'booking_id',
@@ -16,6 +17,7 @@ class Review extends Model
         'instructor_id',
         'rating',
         'comment',
+        'is_hidden',
         'instructor_reply',
         'replied_at',
     ];
@@ -25,7 +27,13 @@ class Review extends Model
         return [
             'replied_at' => 'datetime',
             'rating' => 'integer',
+            'is_hidden' => 'boolean',
         ];
+    }
+
+    public function scopeVisible($query)
+    {
+        return $query->where('is_hidden', false);
     }
 
     public function booking(): BelongsTo
