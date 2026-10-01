@@ -14,6 +14,7 @@ import {
     DollarSign,
     LayoutDashboard,
     MessageSquare,
+    Package,
     Settings,
     ShieldCheck,
     Star,
@@ -168,6 +169,11 @@ export function AppSidebar() {
             icon: Users,
         },
         {
+            title: 'Packages',
+            url: '/school/packages',
+            icon: Package,
+        },
+        {
             title: 'Bookings',
             url: '/school/bookings',
             icon: CalendarCheck,
@@ -199,6 +205,11 @@ export function AppSidebar() {
             title: 'Find Instructors',
             url: '/instructors',
             icon: Compass,
+        },
+        {
+            title: 'Find Schools',
+            url: '/schools',
+            icon: Building2,
         },
         {
             title: 'Weather & Wind',

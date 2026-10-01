@@ -25,7 +25,7 @@ class NewBookingNotification extends Notification
             'type' => 'booking',
             'title' => "New Booking Request from {$studentName}",
             'message' => "{$studentName} requested a {$this->booking->lesson_type} for {$this->booking->date} ($".number_format((float) $this->booking->total_price, 2).').',
-            'link' => '/instructor/bookings?tab=pending',
+            'link' => (($notifiable->role ?? null) === 'school') ? '/school/bookings?tab=pending' : '/instructor/bookings?tab=pending',
             'booking_id' => $this->booking->id,
             'status' => 'pending',
         ];

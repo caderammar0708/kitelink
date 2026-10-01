@@ -1,5 +1,6 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { NotificationBell } from '@/components/notification-bell';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { type BreadcrumbItem as BreadcrumbItemType, type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
@@ -26,6 +27,7 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                     <i className="fas fa-wind text-[10px]" />
                     {isAdmin ? 'Admin Portal' : isInstructor ? 'Instructor Portal' : 'Client Portal'}
                 </span>
+                <ThemeToggle />
                 <NotificationBell />
             </div>
         </header>

@@ -1,3 +1,4 @@
+import { ThemeToggle } from '@/components/theme-toggle';
 import { Link } from '@inertiajs/react';
 import { ReactNode } from 'react';
 
@@ -41,6 +42,7 @@ export function AuthLayout({ children, title, description, headerRight }: AuthLa
                 </Link>
 
                 <div className="flex items-center gap-3">
+                    <ThemeToggle />
                     {headerRight || (
                         <Link
                             href={route('login')}

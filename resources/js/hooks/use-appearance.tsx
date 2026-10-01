@@ -27,19 +27,48 @@ export function initializeTheme() {
 }
 
 export function useAppearance() {
-    const [appearance, setAppearance] = useState<Appearance>('system');
+    const [appearance, setAppearance] = useState<Appearance>(() => {
+        if (typeof window !== 'undefined') {
+            return (localStorage.getItem('appearance') as Appearance) || 'system';
+        }
+        return 'system';
+    });
 
     const updateAppearance = (mode: Appearance) => {
         setAppearance(mode);
         localStorage.setItem('appearance', mode);
         applyTheme(mode);
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('appearance-change', { detail: mode }));
+        }
     };
 
     useEffect(() => {
-        const savedAppearance = localStorage.getItem('appearance') as Appearance | null;
-        updateAppearance(savedAppearance || 'system');
+        const savedAppearance = (localStorage.getItem('appearance') as Appearance | null) || 'system';
+        setAppearance(savedAppearance);
 
-        return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
+        const handleCustomChange = (e: Event) => {
+            const customEvent = e as CustomEvent<Appearance>;
+            setAppearance(customEvent.detail);
+        };
+
+        const handleStorage = (e: StorageEvent) => {
+            if (e.key === 'appearance') {
+                const newMode = (e.newValue as Appearance) || 'system';
+                setAppearance(newMode);
+                applyTheme(newMode);
+            }
+        };
+
+        window.addEventListener('appearance-change', handleCustomChange);
+        window.addEventListener('storage', handleStorage);
+        mediaQuery.addEventListener('change', handleSystemThemeChange);
+
+        return () => {
+            window.removeEventListener('appearance-change', handleCustomChange);
+            window.removeEventListener('storage', handleStorage);
+            mediaQuery.removeEventListener('change', handleSystemThemeChange);
+        };
     }, []);
 
     return { appearance, updateAppearance };

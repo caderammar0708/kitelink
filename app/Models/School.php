@@ -65,4 +65,9 @@ class School extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function packages(): HasMany
+    {
+        return $this->hasMany(SchoolPackage::class);
+    }
 }

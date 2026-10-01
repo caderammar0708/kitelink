@@ -13,6 +13,7 @@ class Booking extends Model
         'student_id',
         'instructor_id',
         'school_id',
+        'package_id',
         'date',
         'time',
         'students_count',
@@ -35,6 +36,11 @@ class Booking extends Model
     public function school()
     {
         return $this->belongsTo(School::class);
+    }
+
+    public function package()
+    {
+        return $this->belongsTo(SchoolPackage::class, 'package_id');
     }
 
     public function review()

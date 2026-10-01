@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { CalendarCheck, Compass, MessageSquare, Settings, Sparkles, Wind } from 'lucide-react';
+import { Building2, CalendarCheck, Compass, MessageSquare, Settings, Sparkles, Wind } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -60,6 +60,17 @@ export default function Dashboard() {
                         </div>
                         <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-[#8acbff]">Find Instructors</h3>
                         <p className="text-xs text-slate-500 dark:text-slate-400">Search certified instructors across 40+ countries and book lessons directly.</p>
+                    </Link>
+
+                    <Link
+                        href="/schools"
+                        className="group rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-sky-400 hover:shadow-md dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:hover:border-[#5bb4ff]/40 dark:hover:bg-white/[0.08]"
+                    >
+                        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 text-blue-600 transition-transform group-hover:scale-110 dark:border-[#3b82f6]/30 dark:bg-[#3b82f6]/15 dark:text-[#5bb4ff]">
+                            <Building2 className="h-6 w-6" />
+                        </div>
+                        <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-[#8acbff]">Find Schools</h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Explore certified kite centers, gear rental packages, and coaching camps.</p>
                     </Link>
 
                     <Link

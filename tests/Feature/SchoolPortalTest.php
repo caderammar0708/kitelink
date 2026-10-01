@@ -4,6 +4,7 @@ use App\Models\AdminAction;
 use App\Models\Booking;
 use App\Models\Instructor;
 use App\Models\School;
+use App\Models\SchoolPackage;
 use App\Models\User;
 
 test('pending school viewing dashboard sees verification pending page', function () {
@@ -206,4 +207,69 @@ test('school can add new coach to roster and remove coach', function () {
     $instructor->refresh();
     expect($instructor->school_id)->toBeNull()
         ->and($instructor->is_freelance)->toBeTrue();
+});
+
+test('approved school can view, create, edit, toggle, and delete packages', function () {
+    $user = User::factory()->create(['role' => 'school']);
+    $school = School::create([
+        'user_id' => $user->id,
+        'name' => 'Kalpitiya Wave Station',
+        'status' => 'approved',
+        'is_active' => true,
+    ]);
+
+    $this->actingAs($user);
+
+    // 1. View packages index
+    $indexResponse = $this->get('/school/packages');
+    $indexResponse->assertOk();
+    $indexResponse->assertInertia(fn ($page) => $page->component('school/Packages')->has('packages', 0));
+
+    // 2. Create a package
+    $createResponse = $this->post('/school/packages', [
+        'name' => 'Zero to Hero 3-Day Course',
+        'type' => 'course',
+        'duration_label' => '3 Days',
+        'price' => 280.00,
+        'description' => 'Comprehensive beginner package with equipment and safety boat.',
+        'features' => ['Equipment included', 'IKO Level 1 & 2', 'Rescue boat'],
+        'is_active' => true,
+    ]);
+
+    $createResponse->assertSessionHas('status');
+
+    $package = SchoolPackage::where('school_id', $school->id)->first();
+    expect($package)->not->toBeNull()
+        ->and($package->name)->toBe('Zero to Hero 3-Day Course')
+        ->and($package->type)->toBe('course')
+        ->and($package->features)->toHaveCount(3)
+        ->and($package->is_active)->toBeTrue();
+
+    // 3. Update the package
+    $updateResponse = $this->put("/school/packages/{$package->id}", [
+        'name' => 'Zero to Hero 3-Day Course (Updated)',
+        'type' => 'course',
+        'duration_label' => '3 Days',
+        'price' => 310.00,
+        'description' => 'Updated description.',
+        'features' => ['Equipment included', 'IKO Level 1 & 2', 'Rescue boat', 'Video analysis'],
+        'is_active' => true,
+    ]);
+
+    $updateResponse->assertSessionHas('status');
+    $package->refresh();
+    expect($package->name)->toBe('Zero to Hero 3-Day Course (Updated)')
+        ->and((float) $package->price)->toEqual(310.00)
+        ->and($package->features)->toHaveCount(4);
+
+    // 4. Toggle package active status
+    $toggleResponse = $this->patch("/school/packages/{$package->id}/toggle");
+    $toggleResponse->assertSessionHas('status');
+    $package->refresh();
+    expect($package->is_active)->toBeFalse();
+
+    // 5. Delete package
+    $deleteResponse = $this->delete("/school/packages/{$package->id}");
+    $deleteResponse->assertSessionHas('status');
+    expect(SchoolPackage::find($package->id))->toBeNull();
 });

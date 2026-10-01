@@ -13,6 +13,7 @@ import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
 import { NotificationBell } from './notification-bell';
+import { ThemeToggle } from './theme-toggle';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
@@ -153,6 +154,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 ))}
                             </div>
                         </div>
+                        <ThemeToggle />
                         <NotificationBell />
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>

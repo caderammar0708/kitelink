@@ -60,6 +60,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AdminSeeder::class,
+            SchoolPackageSeeder::class,
         ]);
     }
 }

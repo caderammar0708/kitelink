@@ -1,3 +1,4 @@
+import { ThemeToggle } from '@/components/theme-toggle';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { LayoutDashboard, UserPlus } from 'lucide-react';
@@ -43,6 +44,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
 
                     {/* Nav Links & Actions */}
                     <nav className="flex items-center gap-3">
+                        <ThemeToggle />
                         {isAuthenticated ? (
                             <Link
                                 href={route('dashboard')}
@@ -87,6 +89,9 @@ export function PublicLayout({ children }: PublicLayoutProps) {
                     <div className="flex items-center gap-6 text-slate-400">
                         <Link href={route('instructors.index')} className="transition-colors hover:text-white">
                             Instructors
+                        </Link>
+                        <Link href={route('schools.index')} className="transition-colors hover:text-white">
+                            Kite Centers
                         </Link>
                         <Link href="/join" className="transition-colors hover:text-white">
                             Become a Partner

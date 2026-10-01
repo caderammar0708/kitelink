@@ -24,7 +24,9 @@ use App\Http\Controllers\Instructor\ReviewController;
 use App\Http\Controllers\Instructor\SettingsController as InstructorSettingsController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\NotificationController as GlobalNotificationController;
+use App\Http\Controllers\PublicSchoolController;
 use App\Http\Controllers\School\InstructorRosterController;
+use App\Http\Controllers\School\PackageController;
 use App\Http\Controllers\School\ProfileController;
 use App\Http\Controllers\School\SettingsController;
 use App\Http\Controllers\WeatherController;
@@ -47,6 +49,11 @@ Route::get('/api/weather/search-locations', [WeatherController::class, 'searchLo
 // Public Instructor Discovery
 Route::get('/instructors', [InstructorController::class, 'index'])->name('instructors.index');
 Route::get('/instructors/{instructor}', [InstructorController::class, 'show'])->name('instructors.show');
+
+// Public Kite Centers (Schools) Discovery
+Route::get('/schools', [PublicSchoolController::class, 'index'])->name('schools.index');
+Route::get('/schools/{school}', [PublicSchoolController::class, 'show'])->name('schools.show');
+Route::get('/kite-centers', fn () => redirect()->route('schools.index'));
 
 // Authenticated Routes
 Route::middleware(['auth'])->group(function () {
@@ -136,7 +143,14 @@ Route::middleware(['auth', 'school'])->prefix('school')->name('school.')->group(
     Route::post('/instructors/coach', [InstructorRosterController::class, 'storeCoach'])->name('instructors.storeCoach');
     Route::delete('/instructors/{instructor}', [InstructorRosterController::class, 'remove'])->name('instructors.remove');
 
-    // 4. Bookings across School Roster
+    // 4. Packages Management
+    Route::get('/packages', [PackageController::class, 'index'])->name('packages');
+    Route::post('/packages', [PackageController::class, 'store'])->name('packages.store');
+    Route::match(['put', 'post'], '/packages/{package}', [PackageController::class, 'update'])->name('packages.update');
+    Route::match(['patch', 'post'], '/packages/{package}/toggle', [PackageController::class, 'toggle'])->name('packages.toggle');
+    Route::delete('/packages/{package}', [PackageController::class, 'destroy'])->name('packages.destroy');
+
+    // 5. Bookings across School Roster
     Route::get('/bookings', [App\Http\Controllers\School\BookingController::class, 'index'])->name('bookings');
     Route::post('/bookings/{booking}/status', [App\Http\Controllers\School\BookingController::class, 'updateStatus'])->name('bookings.status');
 
