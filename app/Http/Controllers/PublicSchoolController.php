@@ -21,6 +21,9 @@ class PublicSchoolController extends Controller
                     ->where('is_active', true)
                     ->with('user');
             },
+            'packages' => function ($q) {
+                $q->where('is_active', true);
+            },
         ])
             ->where('status', 'approved')
             ->where('is_active', true)

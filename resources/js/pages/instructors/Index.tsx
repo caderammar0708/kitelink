@@ -1,8 +1,9 @@
+import ExpandableProfileCard from '@/components/expandable-profile-card';
 import AppLayout from '@/layouts/app-layout';
 import PublicLayout from '@/layouts/public-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
-import { Award, ChevronRight, Compass, MapPin, Search, Star, Wind } from 'lucide-react';
+import { Head, usePage } from '@inertiajs/react';
+import { Award, Compass, MapPin, Search, Wind } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 interface InstructorItem {
@@ -12,6 +13,8 @@ interface InstructorItem {
     experience_years?: number;
     location?: string;
     hourly_rate?: number | string;
+    daily_rate?: number | string;
+    languages?: string[] | string | null;
     profile_photo?: string;
     is_freelance?: boolean;
     school?: { name: string };
@@ -187,82 +190,91 @@ export function Index({ instructors = [], filters }: IndexProps) {
                 ) : (
                     <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
                         {filteredInstructors.map((ins) => {
-                            const photo = ins.profile_photo || ins.user?.profile_picture;
+                            const photo = ins.profile_photo || ins.user?.profile_picture || null;
                             const name = ins.user?.name || 'Certified Instructor';
-                            const location = ins.location || null;
+                            const location = ins.location || 'Location upon request';
                             const certs = ins.certifications || null;
                             const rate = ins.hourly_rate ?? 65;
 
-                            return (
-                                <Link
-                                    key={ins.id}
-                                    href={`/instructors/${ins.id}`}
-                                    className="group relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-400 hover:shadow-md dark:border-white/15 dark:bg-white/[0.06] dark:shadow-2xl dark:hover:border-[#5bb4ff]/60 dark:hover:bg-white/[0.10] sm:p-7"
-                                >
-                                    <div className="pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full bg-blue-500/5 blur-2xl transition-all group-hover:bg-blue-500/10 dark:bg-[#3b82f6]/10 dark:group-hover:bg-[#5bb4ff]/20" />
+                            const formattedLanguages: string[] = (() => {
+                                if (!ins.languages) return [];
+                                if (Array.isArray(ins.languages)) return ins.languages;
+                                if (typeof ins.languages === 'string') {
+                                    try {
+                                        const parsed = JSON.parse(ins.languages);
+                                        if (Array.isArray(parsed)) return parsed;
+                                    } catch {
+                                        return ins.languages.split(',').map((l) => l.trim()).filter(Boolean);
+                                    }
+                                }
+                                return [];
+                            })();
 
-                                    <div>
-                                        {/* Card Top / Avatar + Info */}
-                                        <div className="mb-5 flex items-start gap-4">
-                                            <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-blue-200 bg-slate-100 shadow-xs transition-transform duration-300 group-hover:scale-105 sm:h-18 sm:w-18 dark:border-[#5bb4ff]/40 dark:bg-slate-900">
-                                                {photo ? (
-                                                    <img src={photo} alt={name} className="h-full w-full object-cover" />
-                                                ) : (
-                                                    <span className="bg-gradient-to-br from-blue-600 to-sky-500 bg-clip-text text-2xl font-black text-transparent dark:from-[#b8e6ff] dark:to-[#4da6ff]">
-                                                        {name.charAt(0)}
-                                                    </span>
-                                                )}
-                                            </div>
+                            const certTags = certs ? certs.split(',').map((c) => c.trim()).filter(Boolean) : [];
+                            const tags = [...certTags, ...formattedLanguages];
 
-                                            <div className="min-w-0 flex-1">
-                                                <h3 className="truncate text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 sm:text-xl dark:text-white dark:group-hover:text-[#8acbff]">
-                                                    {name}
-                                                </h3>
-                                                {location && (
-                                                    <p className="mt-1 flex items-center gap-1.5 truncate text-xs text-slate-600 dark:text-slate-300/80">
-                                                        <MapPin className="h-3.5 w-3.5 shrink-0 text-blue-600 dark:text-[#5bb4ff]" />
-                                                        <span>{location}</span>
-                                                    </p>
-                                                )}
-                                                <div className="mt-2 flex items-center gap-2">
-                                                    {certs && (
-                                                        <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-[11px] font-semibold tracking-wider text-blue-700 uppercase dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/15 dark:text-[#8acbff]">
-                                                            <Award className="h-3 w-3 text-blue-600 dark:text-[#5bb4ff]" />
-                                                            {certs.split(',')[0]}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Bio Snippet */}
-                                        {ins.bio ? (
-                                            <p className="mb-5 line-clamp-3 text-xs leading-relaxed text-slate-600 sm:text-sm dark:text-slate-300/80">
-                                                {ins.bio}
-                                            </p>
-                                        ) : (
-                                            <p className="mb-5 text-xs italic text-slate-400">
-                                                Certified Kitesurfing Instructor
-                                            </p>
-                                        )}
-                                    </div>
-
-                                    {/* Card Bottom / Rate & Action */}
-                                    <div className="flex items-center justify-between border-t border-slate-100 pt-4 dark:border-white/10">
-                                        <div>
-                                            <span className="block text-[10px] font-medium tracking-wider text-slate-500 uppercase dark:text-slate-400">Rate</span>
-                                            <span className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400">
-                                                ${rate}
-                                                <span className="text-xs font-normal text-slate-500 dark:text-slate-400">/hr</span>
-                                            </span>
-                                        </div>
-
-                                        <span className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#4ba9ff] to-[#1f6eff] px-4 py-2 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all duration-200 group-hover:scale-105 group-hover:from-[#5bb4ff] group-hover:to-[#2e7bff]">
-                                            View Profile
-                                            <ChevronRight className="h-3.5 w-3.5" />
+                            const details = [
+                                {
+                                    label: 'Hourly Rate',
+                                    value: (
+                                        <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">
+                                            ${rate} <span className="text-xs font-normal text-slate-500 dark:text-slate-400">/ hour</span>
                                         </span>
-                                    </div>
-                                </Link>
+                                    ),
+                                },
+                                ...(ins.daily_rate ? [{
+                                    label: 'Daily Rate',
+                                    value: (
+                                        <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">
+                                            ${ins.daily_rate} <span className="text-xs font-normal text-slate-500 dark:text-slate-400">/ day</span>
+                                        </span>
+                                    ),
+                                }] : []),
+                                ...(formattedLanguages.length > 0 ? [{
+                                    label: 'Languages',
+                                    value: formattedLanguages.join(', '),
+                                }] : []),
+                                ...(ins.experience_years ? [{
+                                    label: 'Experience',
+                                    value: `${ins.experience_years} ${ins.experience_years === 1 ? 'Year' : 'Years'} Teaching`,
+                                }] : []),
+                                ...(ins.school?.name ? [{
+                                    label: 'School Affiliation',
+                                    value: ins.school.name,
+                                }] : [
+                                    {
+                                        label: 'Type',
+                                        value: ins.is_freelance ? 'Freelance Instructor' : 'Independent Coach',
+                                    }
+                                ]),
+                            ];
+
+                            return (
+                                <ExpandableProfileCard
+                                    key={ins.id}
+                                    id={ins.id}
+                                    title={name}
+                                    location={location}
+                                    imageSrc={photo}
+                                    profileUrl={`/instructors/${ins.id}`}
+                                    profileButtonText="View Full Profile"
+                                    bio={ins.bio || 'Certified kitesurf instructor dedicated to safe progression, wave riding, and freestyle technique.'}
+                                    details={details}
+                                    tags={tags}
+                                    topBadge={
+                                        certs ? (
+                                            <span className="inline-flex items-center gap-1 rounded-full border border-blue-200/90 bg-white/95 px-2.5 py-0.5 text-[11px] font-bold tracking-wider text-blue-700 uppercase shadow-xs backdrop-blur-md dark:border-[#5bb4ff]/30 dark:bg-[#070b12]/80 dark:text-[#8acbff]">
+                                                <Award className="h-3 w-3 text-blue-600 dark:text-[#5bb4ff]" />
+                                                {certs.split(',')[0]}
+                                            </span>
+                                        ) : null
+                                    }
+                                    cornerBadge={
+                                        <span className="inline-flex items-center rounded-full border border-emerald-300/40 bg-emerald-950/80 px-2.5 py-0.5 text-xs font-bold text-emerald-300 shadow-xs backdrop-blur-md">
+                                            ${rate}/hr
+                                        </span>
+                                    }
+                                />
                             );
                         })}
                     </div>

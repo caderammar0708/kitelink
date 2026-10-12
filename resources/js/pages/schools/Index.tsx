@@ -1,11 +1,11 @@
+import ExpandableProfileCard from '@/components/expandable-profile-card';
 import AppLayout from '@/layouts/app-layout';
 import PublicLayout from '@/layouts/public-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import {
     Award,
     Building2,
-    ChevronRight,
     Compass,
     MapPin,
     Search,
@@ -25,6 +25,16 @@ interface InstructorItem {
     user?: { name: string; profile_picture?: string };
 }
 
+interface SchoolPackageItem {
+    id: number;
+    name: string;
+    type?: string;
+    duration_label?: string;
+    price: number | string;
+    description?: string;
+    features?: string[] | null;
+}
+
 interface SchoolItem {
     id: number;
     name: string;
@@ -39,6 +49,7 @@ interface SchoolItem {
     website?: string | null;
     contact_name?: string | null;
     instructors?: InstructorItem[];
+    packages?: SchoolPackageItem[];
 }
 
 interface IndexProps {
@@ -231,111 +242,128 @@ export function Index({ schools = [], filters }: IndexProps) {
             ) : (
                 <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {filteredSchools.map((school) => {
-                        const coverPhoto = school.photos?.[0] || school.logo;
+                        const coverPhoto = school.photos?.[0] || school.logo || null;
                         const instructorsCount = school.instructors?.length || 0;
                         const facilities = Array.isArray(school.facilities) ? school.facilities : [];
+                        const certTags = school.certifications ? school.certifications.split(',').map((c) => c.trim()).filter(Boolean) : [];
+                        const tags = [...facilities, ...certTags];
+
+                        const details = [
+                            {
+                                label: 'Coaches Roster',
+                                value: `${instructorsCount} Certified ${instructorsCount === 1 ? 'Instructor' : 'Instructors'}`,
+                            },
+                            ...(school.packages && school.packages.length > 0 ? [{
+                                label: 'Lesson Packages',
+                                value: (
+                                    <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">
+                                        From ${Math.min(...school.packages.map((p) => Number(p.price) || 0))}
+                                    </span>
+                                ),
+                            }] : []),
+                            ...(school.phone ? [{
+                                label: 'Phone / WhatsApp',
+                                value: school.phone,
+                            }] : []),
+                            ...(school.website ? [{
+                                label: 'Website',
+                                value: school.website.replace(/^https?:\/\//, ''),
+                            }] : []),
+                        ];
+
+                        const content = (
+                            <div className="space-y-4 pt-1">
+                                {school.packages && school.packages.length > 0 && (
+                                    <div>
+                                        <h4 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                                            Lesson Packages ({school.packages.length})
+                                        </h4>
+                                        <div className="grid grid-cols-1 gap-1.5">
+                                            {school.packages.slice(0, 3).map((pkg) => (
+                                                <div
+                                                    key={pkg.id}
+                                                    className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50/70 px-3 py-2 text-xs dark:border-white/10 dark:bg-white/[0.03]"
+                                                >
+                                                    <div className="min-w-0 pr-2">
+                                                        <div className="font-semibold text-slate-800 dark:text-slate-200 truncate">
+                                                            {pkg.name}
+                                                        </div>
+                                                        {pkg.duration_label && (
+                                                            <div className="text-[10px] text-slate-500 dark:text-slate-400">
+                                                                {pkg.duration_label}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <span className="font-extrabold text-emerald-600 dark:text-emerald-400 shrink-0">
+                                                        ${pkg.price}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {school.instructors && school.instructors.length > 0 && (
+                                    <div>
+                                        <h4 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                                            Instructor Roster ({school.instructors.length})
+                                        </h4>
+                                        <div className="flex flex-wrap gap-2">
+                                            {school.instructors.slice(0, 4).map((ins) => {
+                                                const insPhoto = ins.profile_photo || ins.user?.profile_picture;
+                                                const insName = ins.user?.name || 'Instructor';
+                                                return (
+                                                    <div
+                                                        key={ins.id}
+                                                        className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white py-1 pr-3 pl-1 text-xs dark:border-white/10 dark:bg-white/[0.05]"
+                                                    >
+                                                        <div className="flex h-5 w-5 items-center justify-center overflow-hidden rounded-full bg-blue-100 text-[10px] font-bold text-blue-700 dark:bg-blue-900/50 dark:text-[#8acbff]">
+                                                            {insPhoto ? (
+                                                                <img src={insPhoto} alt={insName} className="h-full w-full object-cover" />
+                                                            ) : (
+                                                                insName.charAt(0)
+                                                            )}
+                                                        </div>
+                                                        <span className="text-slate-700 dark:text-slate-300 font-medium truncate max-w-[120px]">
+                                                            {insName}
+                                                        </span>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
 
                         return (
-                            <Link
+                            <ExpandableProfileCard
                                 key={school.id}
-                                href={`/schools/${school.id}`}
-                                className="group relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-400 hover:shadow-md dark:border-white/15 dark:bg-white/[0.06] dark:shadow-2xl dark:hover:border-[#5bb4ff]/60 dark:hover:bg-white/[0.10] sm:p-7"
-                            >
-                                <div className="pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full bg-blue-500/5 blur-2xl transition-all group-hover:bg-blue-500/10 dark:bg-[#3b82f6]/10 dark:group-hover:bg-[#5bb4ff]/20" />
-
-                                <div>
-                                    {/* Cover image or Logo thumbnail header */}
-                                    <div className="relative mb-5 h-44 w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 shadow-xs dark:border-white/10 dark:bg-slate-900">
-                                        {coverPhoto ? (
-                                            <img
-                                                src={coverPhoto}
-                                                alt={school.name}
-                                                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                            />
-                                        ) : (
-                                            <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-blue-600/20 via-sky-500/10 to-indigo-600/20 p-4 text-center">
-                                                <Building2 className="h-10 w-10 text-blue-600 dark:text-[#5bb4ff]" />
-                                                <span className="mt-2 text-xs font-bold text-slate-700 dark:text-slate-300">
-                                                    Kiteboarding Center
-                                                </span>
-                                            </div>
-                                        )}
-
-                                        {school.certifications && (
-                                            <div className="absolute top-3 left-3">
-                                                <span className="inline-flex items-center gap-1 rounded-full border border-blue-200/90 bg-white/95 px-3 py-1 text-[11px] font-bold tracking-wider text-blue-700 shadow-xs uppercase backdrop-blur-md dark:border-[#5bb4ff]/30 dark:bg-[#070b12]/80 dark:text-[#8acbff]">
-                                                    <Award className="h-3 w-3 text-blue-600 dark:text-[#5bb4ff]" />
-                                                    {school.certifications.split(',')[0]}
-                                                </span>
-                                            </div>
-                                        )}
-
-                                        <div className="absolute right-3 bottom-3">
-                                            <span className="inline-flex items-center gap-1 rounded-full border border-slate-200/90 bg-white/95 px-2.5 py-1 text-[11px] font-bold text-slate-800 shadow-xs backdrop-blur-md dark:border-white/15 dark:bg-[#070b12]/80 dark:text-slate-200">
-                                                <Users className="h-3 w-3 text-blue-600 dark:text-[#5bb4ff]" />
-                                                {instructorsCount} {instructorsCount === 1 ? 'Coach' : 'Coaches'}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* School Title & Location */}
-                                    <div className="mb-3">
-                                        <h3 className="truncate text-xl font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-[#8acbff]">
-                                            {school.name}
-                                        </h3>
-                                        {school.location && (
-                                            <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300/80">
-                                                <MapPin className="h-3.5 w-3.5 shrink-0 text-blue-600 dark:text-[#5bb4ff]" />
-                                                <span className="truncate">{school.location}</span>
-                                            </p>
-                                        )}
-                                    </div>
-
-                                    {/* Description Snippet */}
-                                    {school.description ? (
-                                        <p className="mb-4 line-clamp-2 text-xs leading-relaxed text-slate-600 sm:text-sm dark:text-slate-300/80">
-                                            {school.description}
-                                        </p>
-                                    ) : (
-                                        <p className="mb-4 text-xs italic text-slate-400">
-                                            Certified kitesurf center offering courses, gear rentals, and coaching.
-                                        </p>
-                                    )}
-
-                                    {/* Facilities Pills */}
-                                    {facilities.length > 0 && (
-                                        <div className="mb-4 flex flex-wrap gap-1.5">
-                                            {facilities.slice(0, 3).map((facility, idx) => (
-                                                <span
-                                                    key={idx}
-                                                    className="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300"
-                                                >
-                                                    <span className="h-1.5 w-1.5 rounded-full bg-blue-500 dark:bg-[#5bb4ff]" />
-                                                    {facility}
-                                                </span>
-                                            ))}
-                                            {facilities.length > 3 && (
-                                                <span className="inline-flex items-center rounded-md border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-500 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-400">
-                                                    +{facilities.length - 3} more
-                                                </span>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Card Bottom / View Profile CTA */}
-                                <div className="flex items-center justify-between border-t border-slate-100 pt-4 dark:border-white/10">
-                                    <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400">
-                                        <Wind className="h-3.5 w-3.5 text-blue-600 dark:text-[#5bb4ff]" />
-                                        <span>Direct Booking</span>
-                                    </div>
-
-                                    <span className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#4ba9ff] to-[#1f6eff] px-4 py-2 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all duration-200 group-hover:scale-105 group-hover:from-[#5bb4ff] group-hover:to-[#2e7bff]">
-                                        View Profile
-                                        <ChevronRight className="h-3.5 w-3.5" />
+                                id={school.id}
+                                title={school.name}
+                                location={school.location || 'Location upon request'}
+                                imageSrc={coverPhoto}
+                                profileUrl={`/schools/${school.id}`}
+                                profileButtonText="View Full Profile"
+                                bio={school.description || 'Certified kitesurf center offering courses, gear rentals, and coaching.'}
+                                details={details}
+                                tags={tags}
+                                content={content}
+                                topBadge={
+                                    school.certifications ? (
+                                        <span className="inline-flex items-center gap-1 rounded-full border border-blue-200/90 bg-white/95 px-2.5 py-0.5 text-[11px] font-bold tracking-wider text-blue-700 uppercase shadow-xs backdrop-blur-md dark:border-[#5bb4ff]/30 dark:bg-[#070b12]/80 dark:text-[#8acbff]">
+                                            <Award className="h-3 w-3 text-blue-600 dark:text-[#5bb4ff]" />
+                                            {school.certifications.split(',')[0]}
+                                        </span>
+                                    ) : null
+                                }
+                                cornerBadge={
+                                    <span className="inline-flex items-center gap-1 rounded-full border border-slate-200/90 bg-white/95 px-2.5 py-0.5 text-[11px] font-bold text-slate-800 shadow-xs backdrop-blur-md dark:border-white/15 dark:bg-[#070b12]/80 dark:text-slate-200">
+                                        <Users className="h-3 w-3 text-blue-600 dark:text-[#5bb4ff]" />
+                                        {instructorsCount} {instructorsCount === 1 ? 'Coach' : 'Coaches'}
                                     </span>
-                                </div>
-                            </Link>
+                                }
+                            />
                         );
                     })}
                 </div>
