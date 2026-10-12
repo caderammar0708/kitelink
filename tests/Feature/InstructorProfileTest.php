@@ -335,3 +335,27 @@ test('public instructor detail page displays saved profile fields accurately', f
             ->where('instructor.is_active', true)
         );
 });
+
+test('public instructor detail page returns json payload when requested with wantsJson', function () {
+    $instructorUser = User::factory()->create([
+        'role' => 'instructor',
+        'name' => 'Carlos Kitepro',
+    ]);
+
+    $instructor = Instructor::create([
+        'user_id' => $instructorUser->id,
+        'bio' => 'Dedicated instructor specialized in wave riding and hydrofoiling.',
+        'is_active' => true,
+    ]);
+
+    $this->getJson(route('instructors.show', $instructor))
+        ->assertOk()
+        ->assertJsonStructure([
+            'instructor' => [
+                'id',
+                'user' => ['name'],
+                'bio',
+            ],
+            'existingBooking',
+        ]);
+});

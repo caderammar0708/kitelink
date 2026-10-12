@@ -1,4 +1,7 @@
 import ExpandableProfileCard from '@/components/expandable-profile-card';
+import InstructorProfileContent, {
+    InstructorProfileSkeleton,
+} from '@/components/instructor-profile-content';
 import AppLayout from '@/layouts/app-layout';
 import PublicLayout from '@/layouts/public-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
@@ -261,6 +264,30 @@ export function Index({ instructors = [], filters }: IndexProps) {
                                     bio={ins.bio || 'Certified kitesurf instructor dedicated to safe progression, wave riding, and freestyle technique.'}
                                     details={details}
                                     tags={tags}
+                                    renderFullProfile={({ data, isLoading, onClose, layoutId }) => {
+                                        if (isLoading && !data) {
+                                            return (
+                                                <div className="space-y-6">
+                                                    <InstructorProfileSkeleton name={name} photo={photo} location={location} />
+                                                </div>
+                                            );
+                                        }
+
+                                        const instructorData = data?.instructor || {
+                                            ...ins,
+                                            user: ins.user || { name },
+                                        };
+
+                                        return (
+                                            <InstructorProfileContent
+                                                instructor={instructorData}
+                                                existingBooking={data?.existingBooking}
+                                                layoutId={layoutId}
+                                                onClose={onClose}
+                                                hideTopNav
+                                            />
+                                        );
+                                    }}
                                     topBadge={
                                         certs ? (
                                             <span className="inline-flex items-center gap-1 rounded-full border border-blue-200/90 bg-white/95 px-2.5 py-0.5 text-[11px] font-bold tracking-wider text-blue-700 uppercase shadow-xs backdrop-blur-md dark:border-[#5bb4ff]/30 dark:bg-[#070b12]/80 dark:text-[#8acbff]">

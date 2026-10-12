@@ -274,3 +274,25 @@ test('authenticated client can book a school package', function () {
         ->and((float) $booking->total_price)->toEqual(45.00)
         ->and($booking->status)->toBe('pending');
 });
+
+test('public school detail page returns json payload when requested with wantsJson', function () {
+    $schoolUser = User::factory()->create(['role' => 'school']);
+    $school = School::create([
+        'user_id' => $schoolUser->id,
+        'name' => 'Lagoon Center',
+        'location' => 'Kalpitiya, Sri Lanka',
+        'status' => 'approved',
+        'is_active' => true,
+    ]);
+
+    $this->getJson("/schools/{$school->id}")
+        ->assertOk()
+        ->assertJsonStructure([
+            'school' => [
+                'id',
+                'name',
+                'location',
+            ],
+            'reviews',
+        ]);
+});

@@ -1,4 +1,7 @@
 import ExpandableProfileCard from '@/components/expandable-profile-card';
+import SchoolProfileContent, {
+    SchoolProfileSkeleton,
+} from '@/components/school-profile-content';
 import AppLayout from '@/layouts/app-layout';
 import PublicLayout from '@/layouts/public-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
@@ -349,6 +352,27 @@ export function Index({ schools = [], filters }: IndexProps) {
                                 details={details}
                                 tags={tags}
                                 content={content}
+                                renderFullProfile={({ data, isLoading, onClose, layoutId }) => {
+                                    if (isLoading && !data) {
+                                        return (
+                                            <div className="space-y-6">
+                                                <SchoolProfileSkeleton name={school.name} photo={coverPhoto} location={school.location} />
+                                            </div>
+                                        );
+                                    }
+
+                                    const schoolData = data?.school || school;
+
+                                    return (
+                                        <SchoolProfileContent
+                                            school={schoolData}
+                                            reviews={data?.reviews || []}
+                                            layoutId={layoutId}
+                                            onClose={onClose}
+                                            hideTopNav
+                                        />
+                                    );
+                                }}
                                 topBadge={
                                     school.certifications ? (
                                         <span className="inline-flex items-center gap-1 rounded-full border border-blue-200/90 bg-white/95 px-2.5 py-0.5 text-[11px] font-bold tracking-wider text-blue-700 uppercase shadow-xs backdrop-blur-md dark:border-[#5bb4ff]/30 dark:bg-[#070b12]/80 dark:text-[#8acbff]">

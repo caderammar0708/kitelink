@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Instructor;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -51,7 +52,7 @@ class InstructorController extends Controller
     /**
      * Display the specified instructor's public profile.
      */
-    public function show(Request $request, Instructor $instructor): Response
+    public function show(Request $request, Instructor $instructor): Response|JsonResponse
     {
         $instructor->load(['user', 'school', 'reviews.student']);
 
@@ -64,6 +65,13 @@ class InstructorController extends Controller
                 ->whereIn('status', ['pending', 'confirmed'])
                 ->latest()
                 ->first();
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'instructor' => $instructor,
+                'existingBooking' => $existingBooking,
+            ]);
         }
 
         return Inertia::render('instructors/Show', [

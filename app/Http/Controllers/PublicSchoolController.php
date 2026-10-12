@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\School;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -62,7 +63,7 @@ class PublicSchoolController extends Controller
     /**
      * Display the specified kite center's public profile.
      */
-    public function show(Request $request, School $school): Response
+    public function show(Request $request, School $school): Response|JsonResponse
     {
         abort_if($school->status !== 'approved' || ! $school->is_active, 404);
 
@@ -101,6 +102,13 @@ class PublicSchoolController extends Controller
             })
             ->sortByDesc('created_at')
             ->values();
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'school' => $school,
+                'reviews' => $reviews,
+            ]);
+        }
 
         return Inertia::render('schools/Show', [
             'school' => $school,
