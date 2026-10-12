@@ -1,22 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import {
-    ArrowRight,
-    Briefcase,
-    Building2,
-    Calendar,
-    CheckCircle2,
-    Clock,
-    DollarSign,
-    Handshake,
-    MapPin,
-    MessageSquare,
-    Send,
-    Sparkles,
-    X,
-    XCircle,
-} from 'lucide-react';
+import { Briefcase, Building2, Calendar, CheckCircle2, DollarSign, Handshake, MapPin, Send, X } from 'lucide-react';
 import { useState } from 'react';
 
 interface School {
@@ -70,7 +55,7 @@ export default function HireRequests({ hireRequests = [] }: HireRequestsProps) {
             {
                 preserveScroll: true,
                 onFinish: () => setActionLoading(null),
-            }
+            },
         );
     };
 
@@ -82,7 +67,7 @@ export default function HireRequests({ hireRequests = [] }: HireRequestsProps) {
             {
                 preserveScroll: true,
                 onFinish: () => setActionLoading(null),
-            }
+            },
         );
     };
 
@@ -105,7 +90,7 @@ export default function HireRequests({ hireRequests = [] }: HireRequestsProps) {
                     setCounterNote('');
                 },
                 onFinish: () => setActionLoading(null),
-            }
+            },
         );
     };
 
@@ -174,7 +159,7 @@ export default function HireRequests({ hireRequests = [] }: HireRequestsProps) {
                                             </div>
 
                                             <span
-                                                className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                                                className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase ${
                                                     isPending
                                                         ? 'border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-500/40 dark:bg-amber-500/15 dark:text-amber-300'
                                                         : isAccepted
@@ -191,7 +176,7 @@ export default function HireRequests({ hireRequests = [] }: HireRequestsProps) {
                                         {/* Contract Period & Rate */}
                                         <div className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200/80 bg-slate-50 p-3 text-xs dark:border-white/5 dark:bg-slate-950/40">
                                             <div>
-                                                <span className="block text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">
+                                                <span className="block text-[10px] font-semibold text-slate-500 uppercase dark:text-slate-400">
                                                     Contract Dates
                                                 </span>
                                                 <span className="mt-0.5 flex items-center gap-1 font-semibold text-slate-900 dark:text-white">
@@ -201,12 +186,11 @@ export default function HireRequests({ hireRequests = [] }: HireRequestsProps) {
                                             </div>
 
                                             <div>
-                                                <span className="block text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">
+                                                <span className="block text-[10px] font-semibold text-slate-500 uppercase dark:text-slate-400">
                                                     Offered Compensation
                                                 </span>
                                                 <span className="mt-0.5 flex items-center gap-1 font-extrabold text-emerald-600 dark:text-emerald-400">
-                                                    <DollarSign className="h-3.5 w-3.5" />
-                                                    ${req.proposed_rate} / day
+                                                    <DollarSign className="h-3.5 w-3.5" />${req.proposed_rate} / day
                                                 </span>
                                             </div>
                                         </div>
@@ -214,8 +198,7 @@ export default function HireRequests({ hireRequests = [] }: HireRequestsProps) {
                                         {/* Message from School */}
                                         {req.message && (
                                             <div className="text-xs text-slate-700 dark:text-slate-300">
-                                                <span className="font-semibold text-slate-500 dark:text-slate-400">School Note: </span>
-                                                "{req.message}"
+                                                <span className="font-semibold text-slate-500 dark:text-slate-400">School Note: </span>"{req.message}"
                                             </div>
                                         )}
 
@@ -272,7 +255,7 @@ export default function HireRequests({ hireRequests = [] }: HireRequestsProps) {
             {/* Counter-Offer Modal */}
             {counterModalRequest && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-md dark:bg-black/75">
-                    <div className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl text-slate-900 dark:border-white/20 dark:bg-[#070b12] dark:text-slate-100">
+                    <div className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-slate-900 shadow-2xl dark:border-white/20 dark:bg-[#070b12] dark:text-slate-100">
                         <button
                             type="button"
                             onClick={() => setCounterModalRequest(null)}
@@ -290,7 +273,7 @@ export default function HireRequests({ hireRequests = [] }: HireRequestsProps) {
 
                         <form onSubmit={handleSendCounter} className="mt-4 space-y-4 text-xs">
                             <div>
-                                <label className="block text-[11px] font-semibold uppercase text-slate-700 dark:text-slate-300">
+                                <label className="block text-[11px] font-semibold text-slate-700 uppercase dark:text-slate-300">
                                     Proposed Daily Rate ($ USD / day)
                                 </label>
                                 <div className="relative mt-1">
@@ -307,7 +290,7 @@ export default function HireRequests({ hireRequests = [] }: HireRequestsProps) {
                             </div>
 
                             <div>
-                                <label className="block text-[11px] font-semibold uppercase text-slate-700 dark:text-slate-300">
+                                <label className="block text-[11px] font-semibold text-slate-700 uppercase dark:text-slate-300">
                                     Optional Note to School Manager
                                 </label>
                                 <textarea

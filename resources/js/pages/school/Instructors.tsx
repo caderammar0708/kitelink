@@ -1,26 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import {
-    Award,
-    CalendarCheck,
-    Check,
-    DollarSign,
-    GraduationCap,
-    LoaderCircle,
-    Mail,
-    Phone,
-    Plus,
-    PlusCircle,
-    Search,
-    Shield,
-    Trash2,
-    User,
-    UserCheck,
-    UserPlus,
-    Users,
-    X,
-} from 'lucide-react';
+import { Award, CalendarCheck, DollarSign, Mail, Phone, Plus, PlusCircle, Trash2, UserCheck, Users, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface SchoolData {
@@ -92,11 +73,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
     };
 
     const handleQuickAdd = (instructorId: number) => {
-        router.post(
-            '/school/instructors/invite',
-            { instructor_id: instructorId },
-            { preserveScroll: true }
-        );
+        router.post('/school/instructors/invite', { instructor_id: instructorId }, { preserveScroll: true });
     };
 
     const handleCreateSubmit = (e: React.FormEvent) => {
@@ -133,7 +110,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                         <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                             Manage School Instructors
                         </h1>
-                        <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             Add, invite, and manage certified instructors on the {school.name} team roster.
                         </p>
                     </div>
@@ -143,7 +120,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                         <button
                             type="button"
                             onClick={() => setShowInviteModal(true)}
-                            className="inline-flex items-center gap-1.5 rounded-xl border border-purple-200 bg-purple-50 px-4 py-2.5 text-xs sm:text-sm font-bold text-purple-700 transition hover:bg-purple-100 dark:border-purple-900/40 dark:bg-purple-950/20 dark:text-purple-300 dark:hover:bg-purple-900/30"
+                            className="inline-flex items-center gap-1.5 rounded-xl border border-purple-200 bg-purple-50 px-4 py-2.5 text-xs font-bold text-purple-700 transition hover:bg-purple-100 sm:text-sm dark:border-purple-900/40 dark:bg-purple-950/20 dark:text-purple-300 dark:hover:bg-purple-900/30"
                         >
                             <UserCheck className="h-4 w-4" />
                             Invite Existing Coach
@@ -152,7 +129,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                         <button
                             type="button"
                             onClick={() => setShowCreateModal(true)}
-                            className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md shadow-purple-500/25 transition hover:bg-purple-500 active:scale-95"
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-purple-500/25 transition hover:bg-purple-500 active:scale-95 sm:text-sm"
                         >
                             <Plus className="h-4 w-4" />
                             Add New Coach Directly
@@ -164,9 +141,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                                Current Roster
-                            </h2>
+                            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Current Roster</h2>
                             <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-extrabold text-purple-800 dark:bg-purple-900/40 dark:text-purple-300">
                                 {roster.length} {roster.length === 1 ? 'Coach' : 'Coaches'}
                             </span>
@@ -175,13 +150,11 @@ export default function Instructors({ school, roster, availableInstructors }: In
 
                     {roster.length === 0 ? (
                         <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-200 p-12 text-center dark:border-white/10">
-                            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-purple-50 text-purple-600 mb-4 dark:bg-white/5 dark:text-purple-400">
+                            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-purple-50 text-purple-600 dark:bg-white/5 dark:text-purple-400">
                                 <Users className="h-8 w-8" />
                             </div>
-                            <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                                No Instructors on Your Roster Yet
-                            </h3>
-                            <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md">
+                            <h3 className="text-base font-bold text-slate-900 dark:text-white">No Instructors on Your Roster Yet</h3>
+                            <p className="mt-1 max-w-md text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                                 Build your school team! You can invite existing registered KiteLink instructors or add a coach profile directly.
                             </p>
                             <div className="mt-6 flex flex-wrap gap-3">
@@ -231,10 +204,8 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                                     )}
 
                                                     <div>
-                                                        <h3 className="font-bold text-base text-slate-900 dark:text-white">
-                                                            {coachName}
-                                                        </h3>
-                                                        <div className="flex items-center gap-1 text-xs text-purple-600 dark:text-purple-400 font-semibold">
+                                                        <h3 className="text-base font-bold text-slate-900 dark:text-white">{coachName}</h3>
+                                                        <div className="flex items-center gap-1 text-xs font-semibold text-purple-600 dark:text-purple-400">
                                                             <Award className="h-3 w-3" />
                                                             {coach.certifications || 'Certified Instructor'}
                                                         </div>
@@ -245,7 +216,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                                     type="button"
                                                     onClick={() => setCoachToRemove(coach)}
                                                     title="Remove from roster"
-                                                    className="rounded-xl p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition dark:hover:bg-rose-950/30 dark:hover:text-rose-400"
+                                                    className="rounded-xl p-1.5 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/30 dark:hover:text-rose-400"
                                                 >
                                                     <Trash2 className="h-4 w-4" />
                                                 </button>
@@ -266,18 +237,13 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                             </div>
 
                                             {/* Bio snippet if available */}
-                                            {coach.bio && (
-                                                <p className="line-clamp-2 text-xs text-slate-500 dark:text-slate-400">
-                                                    {coach.bio}
-                                                </p>
-                                            )}
+                                            {coach.bio && <p className="line-clamp-2 text-xs text-slate-500 dark:text-slate-400">{coach.bio}</p>}
                                         </div>
 
                                         {/* Bottom Footer Info */}
                                         <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs dark:divide-white/5 dark:border-white/5">
                                             <span className="inline-flex items-center gap-1 font-bold text-slate-900 dark:text-white">
-                                                <DollarSign className="h-3.5 w-3.5 text-emerald-500" />
-                                                ${coach.hourly_rate ?? 60} / hour
+                                                <DollarSign className="h-3.5 w-3.5 text-emerald-500" />${coach.hourly_rate ?? 60} / hour
                                             </span>
                                             <span className="inline-flex items-center gap-1 text-slate-500 dark:text-slate-400">
                                                 <CalendarCheck className="h-3.5 w-3.5 text-blue-500" />
@@ -295,9 +261,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                 {availableInstructors.length > 0 && (
                     <div className="mt-6 space-y-4">
                         <div>
-                            <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                                Available Freelance Instructors
-                            </h2>
+                            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Available Freelance Instructors</h2>
                             <p className="text-xs text-slate-500 dark:text-slate-400">
                                 Certified instructors on KiteLink currently available to join a school roster
                             </p>
@@ -314,9 +278,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                             {cand.user?.name ? cand.user.name.charAt(0) : 'I'}
                                         </div>
                                         <div className="space-y-0.5">
-                                            <div className="font-bold text-sm text-slate-900 dark:text-white">
-                                                {cand.user?.name ?? 'Instructor'}
-                                            </div>
+                                            <div className="text-sm font-bold text-slate-900 dark:text-white">{cand.user?.name ?? 'Instructor'}</div>
                                             <div className="text-xs text-slate-500 dark:text-slate-400">
                                                 {cand.certifications || 'Certified Coach'}
                                             </div>
@@ -326,7 +288,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                     <button
                                         type="button"
                                         onClick={() => handleQuickAdd(cand.id)}
-                                        className="inline-flex items-center gap-1 rounded-xl bg-purple-50 px-3 py-1.5 text-xs font-bold text-purple-700 hover:bg-purple-100 transition dark:bg-purple-950/30 dark:text-purple-300 dark:hover:bg-purple-900/40"
+                                        className="inline-flex items-center gap-1 rounded-xl bg-purple-50 px-3 py-1.5 text-xs font-bold text-purple-700 transition hover:bg-purple-100 dark:bg-purple-950/30 dark:text-purple-300 dark:hover:bg-purple-900/40"
                                     >
                                         <Plus className="h-3.5 w-3.5" />
                                         Add to Roster
@@ -343,7 +305,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
                     <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#0c1220]">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-white/10">
-                            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                                 <UserCheck className="h-4 w-4 text-purple-600" />
                                 Invite Existing KiteLink Coach
                             </h3>
@@ -362,9 +324,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                             </p>
 
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                    Instructor Account Email *
-                                </label>
+                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Instructor Account Email *</label>
                                 <input
                                     type="email"
                                     required
@@ -373,9 +333,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                     placeholder="coach@example.com"
                                     className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                 />
-                                {inviteForm.errors.email && (
-                                    <p className="text-xs text-rose-500">{inviteForm.errors.email}</p>
-                                )}
+                                {inviteForm.errors.email && <p className="text-xs text-rose-500">{inviteForm.errors.email}</p>}
                             </div>
 
                             <div className="flex justify-end gap-2 pt-2">
@@ -404,7 +362,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
                     <div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#0c1220]">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-white/10">
-                            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                                 <PlusCircle className="h-4 w-4 text-purple-600" />
                                 Add Coach Directly to Roster
                             </h3>
@@ -420,9 +378,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                         <form onSubmit={handleCreateSubmit} className="mt-4 space-y-3.5">
                             <div className="grid gap-3 sm:grid-cols-2">
                                 <div className="space-y-1 sm:col-span-2">
-                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                        Coach Full Name *
-                                    </label>
+                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Coach Full Name *</label>
                                     <input
                                         type="text"
                                         required
@@ -435,9 +391,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                        Coach Email Address *
-                                    </label>
+                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Coach Email Address *</label>
                                     <input
                                         type="email"
                                         required
@@ -450,9 +404,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                        Phone Number
-                                    </label>
+                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Phone Number</label>
                                     <input
                                         type="tel"
                                         value={createForm.data.phone}
@@ -463,9 +415,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                 </div>
 
                                 <div className="space-y-1 sm:col-span-2">
-                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                        Certifications
-                                    </label>
+                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Certifications</label>
                                     <input
                                         type="text"
                                         value={createForm.data.certifications}
@@ -476,9 +426,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                        Hourly Rate ($/h)
-                                    </label>
+                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Hourly Rate ($/h)</label>
                                     <input
                                         type="number"
                                         value={createForm.data.hourly_rate}
@@ -488,9 +436,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                        Years Experience
-                                    </label>
+                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Years Experience</label>
                                     <input
                                         type="number"
                                         value={createForm.data.experience_years}
@@ -500,9 +446,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                 </div>
 
                                 <div className="space-y-1 sm:col-span-2">
-                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                        Short Teaching Bio
-                                    </label>
+                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Short Teaching Bio</label>
                                     <textarea
                                         rows={2}
                                         value={createForm.data.bio}
@@ -513,7 +457,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                                 </div>
                             </div>
 
-                            <div className="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-white/10">
+                            <div className="flex justify-end gap-2 border-t border-slate-100 pt-2 dark:border-white/10">
                                 <button
                                     type="button"
                                     onClick={() => setShowCreateModal(false)}
@@ -538,11 +482,10 @@ export default function Instructors({ school, roster, availableInstructors }: In
             {coachToRemove && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
                     <div className="w-full max-w-sm rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#0c1220]">
-                        <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                            Remove from Roster?
-                        </h3>
-                        <p className="mt-2 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                            Are you sure you want to remove <strong>{coachToRemove.user?.name}</strong> from the {school.name} team roster? Their account will revert to a freelance instructor profile.
+                        <h3 className="text-base font-bold text-slate-900 dark:text-white">Remove from Roster?</h3>
+                        <p className="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                            Are you sure you want to remove <strong>{coachToRemove.user?.name}</strong> from the {school.name} team roster? Their
+                            account will revert to a freelance instructor profile.
                         </p>
 
                         <div className="mt-6 flex justify-end gap-2">
@@ -556,7 +499,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                             <button
                                 type="button"
                                 onClick={handleRemoveCoach}
-                                className="rounded-xl bg-rose-600 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-rose-500 shadow-sm"
+                                className="rounded-xl bg-rose-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-rose-500"
                             >
                                 Yes, Remove Coach
                             </button>

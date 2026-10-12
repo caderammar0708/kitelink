@@ -1,7 +1,4 @@
-import SchoolProfileContent, {
-    type ReviewItem,
-    type SchoolData,
-} from '@/components/school-profile-content';
+import SchoolProfileContent, { type ReviewItem, type SchoolData } from '@/components/school-profile-content';
 import AppLayout from '@/layouts/app-layout';
 import PublicLayout from '@/layouts/public-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
@@ -21,16 +18,8 @@ export function Show({ school, reviews = [] }: SchoolProps) {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: isSchool
-                ? 'School Dashboard'
-                : isInstructor
-                ? 'Instructor Dashboard'
-                : 'Dashboard',
-            href: isSchool
-                ? '/school/dashboard'
-                : isInstructor
-                ? '/instructor/dashboard'
-                : '/dashboard',
+            title: isSchool ? 'School Dashboard' : isInstructor ? 'Instructor Dashboard' : 'Dashboard',
+            href: isSchool ? '/school/dashboard' : isInstructor ? '/instructor/dashboard' : '/dashboard',
         },
         {
             title: 'Explore Kite Centers',
@@ -43,11 +32,7 @@ export function Show({ school, reviews = [] }: SchoolProps) {
     ];
 
     const content = (
-        <div
-            className={`space-y-8 sm:space-y-10 ${
-                isAuthenticated ? 'p-4 sm:p-6 lg:p-8' : 'mx-auto max-w-7xl'
-            }`}
-        >
+        <div className={`space-y-8 sm:space-y-10 ${isAuthenticated ? 'p-4 sm:p-6 lg:p-8' : 'mx-auto max-w-7xl'}`}>
             <SchoolProfileContent school={school} reviews={reviews} />
         </div>
     );

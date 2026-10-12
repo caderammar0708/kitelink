@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { Building2, CalendarCheck, Compass, MessageSquare, Settings, Sparkles, Wind } from 'lucide-react';
+import { Building2, CalendarCheck, Compass, MessageSquare, Settings, Sparkles } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -58,8 +58,12 @@ export default function Dashboard() {
                         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 text-blue-600 transition-transform group-hover:scale-110 dark:border-[#3b82f6]/30 dark:bg-[#3b82f6]/15 dark:text-[#5bb4ff]">
                             <Compass className="h-6 w-6" />
                         </div>
-                        <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-[#8acbff]">Find Instructors</h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Search certified instructors across 40+ countries and book lessons directly.</p>
+                        <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-[#8acbff]">
+                            Find Instructors
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Search certified instructors across 40+ countries and book lessons directly.
+                        </p>
                     </Link>
 
                     <Link
@@ -69,8 +73,12 @@ export default function Dashboard() {
                         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 text-blue-600 transition-transform group-hover:scale-110 dark:border-[#3b82f6]/30 dark:bg-[#3b82f6]/15 dark:text-[#5bb4ff]">
                             <Building2 className="h-6 w-6" />
                         </div>
-                        <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-[#8acbff]">Find Schools</h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Explore certified kite centers, gear rental packages, and coaching camps.</p>
+                        <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-[#8acbff]">
+                            Find Schools
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Explore certified kite centers, gear rental packages, and coaching camps.
+                        </p>
                     </Link>
 
                     <Link
@@ -80,8 +88,12 @@ export default function Dashboard() {
                         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-sky-200 bg-sky-50 text-sky-600 transition-transform group-hover:scale-110 dark:border-[#38bdf8]/30 dark:bg-[#38bdf8]/15 dark:text-[#38bdf8]">
                             <CalendarCheck className="h-6 w-6" />
                         </div>
-                        <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-sky-600 dark:text-white dark:group-hover:text-[#8acbff]">My Bookings</h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">View status of your lesson requests, confirmed sessions, and leave instructor reviews.</p>
+                        <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-sky-600 dark:text-white dark:group-hover:text-[#8acbff]">
+                            My Bookings
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                            View status of your lesson requests, confirmed sessions, and leave instructor reviews.
+                        </p>
                     </Link>
 
                     <Link
@@ -91,8 +103,12 @@ export default function Dashboard() {
                         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-600 transition-transform group-hover:scale-110 dark:border-indigo-400/30 dark:bg-indigo-400/15 dark:text-indigo-400">
                             <MessageSquare className="h-6 w-6" />
                         </div>
-                        <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-300">Direct Messages</h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Chat directly with your confirmed coaches about session timing, gear, and spots.</p>
+                        <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-300">
+                            Direct Messages
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Chat directly with your confirmed coaches about session timing, gear, and spots.
+                        </p>
                     </Link>
 
                     <Link
@@ -102,8 +118,12 @@ export default function Dashboard() {
                         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-amber-200 bg-amber-50 text-amber-600 transition-transform group-hover:scale-110 dark:border-amber-400/30 dark:bg-amber-400/15 dark:text-amber-400">
                             <Settings className="h-6 w-6" />
                         </div>
-                        <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-amber-600 dark:text-white dark:group-hover:text-amber-300">Account Settings</h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Update your profile credentials, password, and communication preferences.</p>
+                        <h3 className="mb-1 text-lg font-bold text-slate-900 transition-colors group-hover:text-amber-600 dark:text-white dark:group-hover:text-amber-300">
+                            Account Settings
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Update your profile credentials, password, and communication preferences.
+                        </p>
                     </Link>
                 </div>
             </div>

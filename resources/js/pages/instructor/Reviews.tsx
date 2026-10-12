@@ -1,19 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import {
-    Award,
-    CheckCircle2,
-    CornerDownRight,
-    LoaderCircle,
-    MessageCircle,
-    MessageSquare,
-    Send,
-    Sparkles,
-    Star,
-    ThumbsUp,
-    User,
-} from 'lucide-react';
+import { CornerDownRight, LoaderCircle, MessageSquare, Send, Sparkles, Star } from 'lucide-react';
 import { useState } from 'react';
 
 interface Student {
@@ -75,7 +63,7 @@ export default function Reviews({
                     setReplyText('');
                 },
                 onFinish: () => setIsSubmitting(false),
-            }
+            },
         );
     };
 
@@ -83,15 +71,15 @@ export default function Reviews({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Student Reviews - KiteLink" />
 
-            <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white sm:p-6 lg:p-8">
+            <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* Header */}
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                             <Star className="h-7 w-7 fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400" />
                             Verified Student Reviews
                         </h1>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             Public reviews from verified students who booked kitesurfing coaching sessions with you
                         </p>
                     </div>
@@ -103,16 +91,18 @@ export default function Reviews({
                 </div>
 
                 {/* Rating Overview Card */}
-                <div className="grid grid-cols-1 gap-6 rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl sm:p-8 md:grid-cols-12">
+                <div className="grid grid-cols-1 gap-6 rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm sm:p-8 md:grid-cols-12 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl">
                     {/* Left: Overall Score (4 cols) */}
-                    <div className="flex flex-col items-center justify-center border-b border-slate-200 pb-6 text-center md:col-span-4 md:border-r md:border-b-0 md:pb-0 md:pr-6 dark:border-white/10">
-                        <span className="text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-6xl">{averageRating}</span>
+                    <div className="flex flex-col items-center justify-center border-b border-slate-200 pb-6 text-center md:col-span-4 md:border-r md:border-b-0 md:pr-6 md:pb-0 dark:border-white/10">
+                        <span className="text-5xl font-extrabold tracking-tight text-slate-900 sm:text-6xl dark:text-white">{averageRating}</span>
                         <div className="mt-2 flex text-base text-amber-500 dark:text-amber-400">
                             {Array.from({ length: 5 }).map((_, i) => (
                                 <Star
                                     key={i}
                                     className={`h-5 w-5 ${
-                                        i < Math.round(averageRating) ? 'fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400' : 'text-slate-300 dark:text-slate-600'
+                                        i < Math.round(averageRating)
+                                            ? 'fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400'
+                                            : 'text-slate-300 dark:text-slate-600'
                                     }`}
                                 />
                             ))}
@@ -149,7 +139,7 @@ export default function Reviews({
 
                 {/* Reviews List */}
                 <div className="space-y-4">
-                    <h2 className="text-base font-bold text-slate-900 dark:text-white sm:text-lg">Recent Student Feedback</h2>
+                    <h2 className="text-base font-bold text-slate-900 sm:text-lg dark:text-white">Recent Student Feedback</h2>
 
                     {reviews.length === 0 ? (
                         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white px-4 py-16 text-center dark:border-white/10 dark:bg-slate-950/20">
@@ -166,7 +156,7 @@ export default function Reviews({
                             return (
                                 <div
                                     key={rev.id}
-                                    className="space-y-4 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm transition hover:border-slate-300 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl dark:hover:border-white/20 sm:p-6"
+                                    className="space-y-4 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm transition hover:border-slate-300 sm:p-6 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl dark:hover:border-white/20"
                                 >
                                     <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
                                         {/* Student Info */}
@@ -187,7 +177,10 @@ export default function Reviews({
                                                 <div className="flex items-center gap-2">
                                                     <div className="flex text-amber-500 dark:text-amber-400">
                                                         {Array.from({ length: rev.rating }).map((_, i) => (
-                                                            <Star key={i} className="h-3.5 w-3.5 fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400" />
+                                                            <Star
+                                                                key={i}
+                                                                className="h-3.5 w-3.5 fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400"
+                                                            />
                                                         ))}
                                                     </div>
                                                     <span className="text-[11px] text-slate-500 dark:text-slate-400">
@@ -227,7 +220,7 @@ export default function Reviews({
                                                     <span className="font-bold text-blue-900 dark:text-[#8acbff]">Your Public Response:</span>
                                                     {rev.replied_at && (
                                                         <span className="text-[10px] text-slate-500 dark:text-slate-400">
-                                                             • {new Date(rev.replied_at).toLocaleDateString()}
+                                                            • {new Date(rev.replied_at).toLocaleDateString()}
                                                         </span>
                                                     )}
                                                 </div>

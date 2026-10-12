@@ -1,24 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import {
-    AlertTriangle,
-    Bell,
-    Check,
-    Eye,
-    EyeOff,
-    Key,
-    Lock,
-    Mail,
-    Phone,
-    Power,
-    Save,
-    Settings as SettingsIcon,
-    Shield,
-    Sparkles,
-    User,
-    Volume2,
-} from 'lucide-react';
+import { Eye, EyeOff, Key, Lock, Mail, Power, Save, Settings as SettingsIcon, User, Volume2 } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface SchoolData {
@@ -102,7 +85,7 @@ export default function Settings({ school, user }: SettingsProps) {
             confirm(
                 school.is_active
                     ? 'Are you sure you want to deactivate your public school listing? Clients will not be able to find your school in discovery until reactivated.'
-                    : 'Reactivate your school listing on public discovery?'
+                    : 'Reactivate your school listing on public discovery?',
             )
         ) {
             deactivateForm.post('/school/settings/deactivate', { preserveScroll: true });
@@ -120,10 +103,8 @@ export default function Settings({ school, user }: SettingsProps) {
                         <SettingsIcon className="h-3.5 w-3.5" />
                         Account & Center Settings
                     </div>
-                    <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
-                        School Settings
-                    </h1>
-                    <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                    <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">School Settings</h1>
+                    <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                         Manage your school account credentials, notification sound alerts, and public listing status.
                     </p>
                 </div>
@@ -131,19 +112,17 @@ export default function Settings({ school, user }: SettingsProps) {
                 <div className="grid gap-6 lg:grid-cols-2">
                     {/* Card 1: Manager Contact Details */}
                     <div className="rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
-                        <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white mb-1">
+                        <h2 className="mb-1 flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                             <User className="h-4 w-4 text-purple-500" />
                             Manager Contact Information
                         </h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                        <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">
                             Update the contact name and primary phone for school correspondence.
                         </p>
 
                         <form onSubmit={handleProfileSubmit} className="space-y-4">
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                    Contact Person Name *
-                                </label>
+                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Contact Person Name *</label>
                                 <input
                                     type="text"
                                     required
@@ -151,24 +130,18 @@ export default function Settings({ school, user }: SettingsProps) {
                                     onChange={(e) => profileForm.setData('contact_name', e.target.value)}
                                     className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                 />
-                                {profileForm.errors.contact_name && (
-                                    <p className="text-xs text-rose-500">{profileForm.errors.contact_name}</p>
-                                )}
+                                {profileForm.errors.contact_name && <p className="text-xs text-rose-500">{profileForm.errors.contact_name}</p>}
                             </div>
 
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                    Primary Phone Number
-                                </label>
+                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Primary Phone Number</label>
                                 <input
                                     type="tel"
                                     value={profileForm.data.phone}
                                     onChange={(e) => profileForm.setData('phone', e.target.value)}
                                     className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                 />
-                                {profileForm.errors.phone && (
-                                    <p className="text-xs text-rose-500">{profileForm.errors.phone}</p>
-                                )}
+                                {profileForm.errors.phone && <p className="text-xs text-rose-500">{profileForm.errors.phone}</p>}
                             </div>
 
                             <div className="flex justify-end">
@@ -186,19 +159,17 @@ export default function Settings({ school, user }: SettingsProps) {
 
                     {/* Card 2: Email Address */}
                     <div className="rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
-                        <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white mb-1">
+                        <h2 className="mb-1 flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                             <Mail className="h-4 w-4 text-blue-500" />
                             Account Email Address
                         </h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                        <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">
                             The email address used to log into KiteLink and receive booking notices.
                         </p>
 
                         <form onSubmit={handleEmailSubmit} className="space-y-4">
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                    Login Email *
-                                </label>
+                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Login Email *</label>
                                 <input
                                     type="email"
                                     required
@@ -206,9 +177,7 @@ export default function Settings({ school, user }: SettingsProps) {
                                     onChange={(e) => emailForm.setData('email', e.target.value)}
                                     className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                 />
-                                {emailForm.errors.email && (
-                                    <p className="text-xs text-rose-500">{emailForm.errors.email}</p>
-                                )}
+                                {emailForm.errors.email && <p className="text-xs text-rose-500">{emailForm.errors.email}</p>}
                             </div>
 
                             <div className="flex justify-end">
@@ -226,19 +195,17 @@ export default function Settings({ school, user }: SettingsProps) {
 
                     {/* Card 3: Change Password */}
                     <div className="rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
-                        <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white mb-1">
+                        <h2 className="mb-1 flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                             <Lock className="h-4 w-4 text-indigo-500" />
                             Security & Password
                         </h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                        <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">
                             Ensure your school manager account is using a secure password.
                         </p>
 
                         <form onSubmit={handlePasswordSubmit} className="space-y-3.5">
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                    Current Password *
-                                </label>
+                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Current Password *</label>
                                 <div className="relative">
                                     <input
                                         type={showCurrentPassword ? 'text' : 'password'}
@@ -250,7 +217,7 @@ export default function Settings({ school, user }: SettingsProps) {
                                     <button
                                         type="button"
                                         onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                                        className="absolute right-3 top-2.5 text-slate-400"
+                                        className="absolute top-2.5 right-3 text-slate-400"
                                     >
                                         {showCurrentPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </button>
@@ -262,9 +229,7 @@ export default function Settings({ school, user }: SettingsProps) {
 
                             <div className="grid gap-3 sm:grid-cols-2">
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                        New Password *
-                                    </label>
+                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">New Password *</label>
                                     <div className="relative">
                                         <input
                                             type={showNewPassword ? 'text' : 'password'}
@@ -276,20 +241,16 @@ export default function Settings({ school, user }: SettingsProps) {
                                         <button
                                             type="button"
                                             onClick={() => setShowNewPassword(!showNewPassword)}
-                                            className="absolute right-3 top-2.5 text-slate-400"
+                                            className="absolute top-2.5 right-3 text-slate-400"
                                         >
                                             {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                         </button>
                                     </div>
-                                    {passwordForm.errors.password && (
-                                        <p className="text-xs text-rose-500">{passwordForm.errors.password}</p>
-                                    )}
+                                    {passwordForm.errors.password && <p className="text-xs text-rose-500">{passwordForm.errors.password}</p>}
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                        Confirm New Password *
-                                    </label>
+                                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Confirm New Password *</label>
                                     <input
                                         type="password"
                                         required
@@ -317,19 +278,17 @@ export default function Settings({ school, user }: SettingsProps) {
                     <div className="space-y-6">
                         {/* Audio Chime Notification Toggle */}
                         <div className="rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
-                            <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white mb-1">
+                            <h2 className="mb-1 flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                                 <Volume2 className="h-4 w-4 text-amber-500" />
                                 Notification Chimes & Sounds
                             </h2>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                            <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">
                                 Play an audible chime sound when a new school lesson booking or student message arrives.
                             </p>
 
                             <div className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50 p-4 dark:border-white/5 dark:bg-white/[0.02]">
                                 <div className="space-y-0.5">
-                                    <span className="text-xs font-bold text-slate-900 dark:text-white">
-                                        Audio Notification Sound
-                                    </span>
+                                    <span className="text-xs font-bold text-slate-900 dark:text-white">Audio Notification Sound</span>
                                     <p className="text-[11px] text-slate-500">
                                         {notificationsForm.data.notification_sound_enabled
                                             ? 'Sound chime is enabled for instant alerts'
@@ -355,25 +314,25 @@ export default function Settings({ school, user }: SettingsProps) {
 
                         {/* Listing Visibility & Deactivation */}
                         <div className="rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
-                            <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white mb-1">
+                            <h2 className="mb-1 flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                                 <Power className="h-4 w-4 text-rose-500" />
                                 School Listing Visibility
                             </h2>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                            <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">
                                 Control whether your school is actively shown in public search and discovery or temporarily paused.
                             </p>
 
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-slate-100 bg-slate-50 p-4 dark:border-white/5 dark:bg-white/[0.02]">
+                            <div className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-100 bg-slate-50 p-4 sm:flex-row sm:items-center dark:border-white/5 dark:bg-white/[0.02]">
                                 <div className="space-y-0.5">
                                     <div className="flex items-center gap-2">
-                                        <span className="text-xs font-bold text-slate-900 dark:text-white">
-                                            Public Discovery Status
-                                        </span>
-                                        <span className={`rounded-full px-2 py-0.2 text-[10px] font-bold ${
-                                            school.is_active
-                                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300'
-                                                : 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300'
-                                        }`}>
+                                        <span className="text-xs font-bold text-slate-900 dark:text-white">Public Discovery Status</span>
+                                        <span
+                                            className={`py-0.2 rounded-full px-2 text-[10px] font-bold ${
+                                                school.is_active
+                                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300'
+                                                    : 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300'
+                                            }`}
+                                        >
                                             {school.is_active ? 'Active & Discoverable' : 'Listing Paused'}
                                         </span>
                                     </div>

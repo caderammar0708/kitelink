@@ -12,15 +12,12 @@ import {
     Droplets,
     Loader2,
     MapPin,
-    Navigation,
-    RefreshCw,
     Search,
     Sparkles,
     Sun,
-    Wind,
     X,
 } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface WeatherCurrent {
     temperature: number;
@@ -57,10 +54,7 @@ interface WeatherWidgetProps {
     className?: string;
 }
 
-export default function WeatherWidget({
-    defaultPlaceId = 'kalpitiya-1242089',
-    className = '',
-}: WeatherWidgetProps) {
+export default function WeatherWidget({ defaultPlaceId = 'kalpitiya-1242089', className = '' }: WeatherWidgetProps) {
     const [weather, setWeather] = useState<WeatherResponse | null>(null);
     const [selectedPlaceId, setSelectedPlaceId] = useState(defaultPlaceId);
     const [isLoading, setIsLoading] = useState(true);
@@ -106,7 +100,7 @@ export default function WeatherWidget({
             } else {
                 setError('Unable to load spot weather');
             }
-        } catch (e) {
+        } catch {
             setError('Weather service temporarily unavailable');
         } finally {
             setIsLoading(false);
@@ -158,7 +152,7 @@ export default function WeatherWidget({
 
     return (
         <div
-            className={`relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xl shadow-slate-200/50 dark:border-white/15 dark:bg-gradient-to-br dark:from-slate-900/90 dark:via-[#0a1226]/90 dark:to-slate-950/95 dark:shadow-2xl dark:backdrop-blur-2xl transition-all duration-300 ${className}`}
+            className={`relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xl shadow-slate-200/50 transition-all duration-300 dark:border-white/15 dark:bg-gradient-to-br dark:from-slate-900/90 dark:via-[#0a1226]/90 dark:to-slate-950/95 dark:shadow-2xl dark:backdrop-blur-2xl ${className}`}
         >
             {/* Header: Title & Spot Search */}
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -167,9 +161,7 @@ export default function WeatherWidget({
                         <Sparkles className="h-3 w-3 text-blue-600 dark:text-[#5bb4ff]" />
                         <span>Live Satellite Wind &amp; Weather</span>
                     </div>
-                    <h3 className="mt-1 text-lg font-black text-slate-900 dark:text-white sm:text-xl">
-                        Spot Wind Station
-                    </h3>
+                    <h3 className="mt-1 text-lg font-black text-slate-900 sm:text-xl dark:text-white">Spot Wind Station</h3>
                 </div>
 
                 {/* Spot Search Autocomplete Input */}
@@ -215,21 +207,19 @@ export default function WeatherWidget({
                                         className="flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs transition-colors hover:bg-slate-100 dark:hover:bg-white/[0.08]"
                                     >
                                         <div className="flex items-center gap-1.5 truncate">
-                                            <MapPin className="h-3 w-3 text-blue-600 dark:text-[#5bb4ff] shrink-0" />
-                                            <span className="font-semibold text-slate-800 dark:text-white truncate">{item.name}</span>
-                                            <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                                            <MapPin className="h-3 w-3 shrink-0 text-blue-600 dark:text-[#5bb4ff]" />
+                                            <span className="truncate font-semibold text-slate-800 dark:text-white">{item.name}</span>
+                                            <span className="truncate text-[10px] text-slate-500 dark:text-slate-400">
                                                 ({item.adm_area2 || item.country})
                                             </span>
                                         </div>
                                         {item.place_id === selectedPlaceId && (
-                                            <Check className="h-3 w-3 text-blue-600 dark:text-[#5bb4ff] shrink-0" />
+                                            <Check className="h-3 w-3 shrink-0 text-blue-600 dark:text-[#5bb4ff]" />
                                         )}
                                     </button>
                                 ))
                             ) : (
-                                <div className="p-2 text-center text-xs text-slate-500 dark:text-slate-400">
-                                    No spots found for "{searchQuery}"
-                                </div>
+                                <div className="p-2 text-center text-xs text-slate-500 dark:text-slate-400">No spots found for "{searchQuery}"</div>
                             )}
                         </div>
                     )}
@@ -243,10 +233,10 @@ export default function WeatherWidget({
                         name === 'Kalpitiya'
                             ? 'kalpitiya-1242089'
                             : name === 'Mannar'
-                            ? 'mannar-1236150'
-                            : name === 'Arugam Bay'
-                            ? 'arugam-bay-1250935'
-                            : 'bentota';
+                              ? 'mannar-1236150'
+                              : name === 'Arugam Bay'
+                                ? 'arugam-bay-1250935'
+                                : 'bentota';
                     const active = selectedPlaceId === id;
                     return (
                         <button
@@ -256,7 +246,7 @@ export default function WeatherWidget({
                                 setSelectedPlaceId(id);
                                 fetchSpotWeather(id, `${name}, Sri Lanka`);
                             }}
-                            className={`rounded-lg px-2.5 py-1 font-semibold transition-all cursor-pointer ${
+                            className={`cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-all ${
                                 active
                                     ? 'bg-blue-600 text-white shadow-sm dark:bg-[#1f6eff]'
                                     : 'border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:border-transparent dark:bg-white/[0.05] dark:text-slate-300 dark:hover:bg-white/[0.1] dark:hover:text-white'
@@ -277,7 +267,7 @@ export default function WeatherWidget({
             ) : error ? (
                 <div className="my-4 flex items-center justify-between rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 dark:border-rose-500/30 dark:bg-rose-950/30 dark:text-rose-300">
                     <div className="flex items-center gap-2">
-                        <AlertCircle className="h-4 w-4 text-rose-500 dark:text-rose-400 shrink-0" />
+                        <AlertCircle className="h-4 w-4 shrink-0 text-rose-500 dark:text-rose-400" />
                         <span>{error}</span>
                     </div>
                     <button
@@ -291,19 +281,17 @@ export default function WeatherWidget({
             ) : weather ? (
                 <div className="mt-4 space-y-4">
                     {/* Main Row: Location, Temp, Wind Dial */}
-                    <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/[0.03] sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-white/10 dark:bg-white/[0.03]">
                         <div>
                             <div className="flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-[#8acbff]">
                                 <MapPin className="h-3.5 w-3.5 text-blue-600 dark:text-[#5bb4ff]" />
                                 <span>{weather.location}</span>
                             </div>
                             <div className="mt-1 flex items-baseline gap-2">
-                                <span className="text-3xl font-black text-slate-900 dark:text-white sm:text-4xl">
+                                <span className="text-3xl font-black text-slate-900 sm:text-4xl dark:text-white">
                                     {weather.current.temperature}°C
                                 </span>
-                                <span className="text-xs text-slate-500 dark:text-slate-400">
-                                    Feels like {weather.current.feels_like}°C
-                                </span>
+                                <span className="text-xs text-slate-500 dark:text-slate-400">Feels like {weather.current.feels_like}°C</span>
                             </div>
                             <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300">
                                 {renderWeatherIcon(weather.current.icon, 'h-4 w-4 text-blue-600 dark:text-[#5bb4ff]')}
@@ -317,18 +305,16 @@ export default function WeatherWidget({
                         </div>
 
                         {/* Wind Hero Pill */}
-                        <div className="flex items-center justify-between gap-4 rounded-xl border border-blue-200 bg-blue-50/80 p-3 dark:border-[#5bb4ff]/30 dark:bg-[#1f6eff]/10 sm:justify-end">
+                        <div className="flex items-center justify-between gap-4 rounded-xl border border-blue-200 bg-blue-50/80 p-3 sm:justify-end dark:border-[#5bb4ff]/30 dark:bg-[#1f6eff]/10">
                             <div>
                                 <span className="block text-[10px] font-bold text-slate-500 uppercase dark:text-slate-400">Current Wind</span>
                                 <div className="flex items-baseline gap-1">
-                                    <span className="text-2xl font-black text-slate-900 dark:text-white sm:text-3xl">
+                                    <span className="text-2xl font-black text-slate-900 sm:text-3xl dark:text-white">
                                         {weather.current.wind_speed_knots}
                                     </span>
                                     <span className="text-xs font-bold text-blue-600 dark:text-[#5bb4ff]">KTS</span>
                                 </div>
-                                <span className="text-[11px] text-slate-500 font-medium dark:text-slate-400">
-                                    {weather.current.wind_speed} m/s
-                                </span>
+                                <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">{weather.current.wind_speed} m/s</span>
                             </div>
 
                             {/* Compass Needle */}
@@ -336,12 +322,10 @@ export default function WeatherWidget({
                                 <div className="relative flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white shadow-xs dark:border-white/20 dark:bg-slate-950/80">
                                     <ArrowUp
                                         style={{ transform: `rotate(${weather.current.wind_angle}deg)` }}
-                                        className="h-4 w-4 text-blue-600 dark:text-[#5bb4ff] transition-transform duration-500"
+                                        className="h-4 w-4 text-blue-600 transition-transform duration-500 dark:text-[#5bb4ff]"
                                     />
                                 </div>
-                                <span className="mt-0.5 text-[11px] font-bold text-slate-800 dark:text-white">
-                                    {weather.current.wind_dir}
-                                </span>
+                                <span className="mt-0.5 text-[11px] font-bold text-slate-800 dark:text-white">{weather.current.wind_dir}</span>
                             </div>
                         </div>
                     </div>
@@ -354,12 +338,12 @@ export default function WeatherWidget({
                                     weather.current.kitesurf_color === 'emerald'
                                         ? 'bg-emerald-500 dark:bg-emerald-400'
                                         : weather.current.kitesurf_color === 'amber'
-                                        ? 'bg-amber-500 dark:bg-amber-400'
-                                        : 'bg-sky-500 dark:bg-sky-400'
+                                          ? 'bg-amber-500 dark:bg-amber-400'
+                                          : 'bg-sky-500 dark:bg-sky-400'
                                 }`}
                             />
                             <span className="font-bold text-slate-800 dark:text-white">{weather.current.kitesurf_rating}:</span>
-                            <span className="text-blue-600 font-medium dark:text-[#8acbff]">{weather.current.kitesurf_condition}</span>
+                            <span className="font-medium text-blue-600 dark:text-[#8acbff]">{weather.current.kitesurf_condition}</span>
                         </div>
 
                         <a

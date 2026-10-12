@@ -9,7 +9,7 @@ export interface ProfileDetailItem {
 }
 
 export interface RenderFullProfileProps {
-    data: any;
+    data: unknown;
     isLoading: boolean;
     error: string | null;
     onClose: () => void;
@@ -52,7 +52,7 @@ export default function ExpandableProfileCard({
     renderFullProfile,
 }: ExpandableProfileCardProps) {
     const [viewState, setViewState] = useState<ViewState>('collapsed');
-    const [fullData, setFullData] = useState<any>(null);
+    const [fullData, setFullData] = useState<unknown>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -64,7 +64,7 @@ export default function ExpandableProfileCard({
     const displaySubtitle = subtitle || location || 'Spot Location';
 
     // Fetch full data in background once opened
-    const fetchFullData = () => {
+    const fetchFullData = React.useCallback(() => {
         if (fullData || isFetchingRef.current || !renderFullProfile) return;
         isFetchingRef.current = true;
         setIsLoading(true);
@@ -78,41 +78,37 @@ export default function ExpandableProfileCard({
                 if (!res.ok) throw new Error('Failed to load profile details');
                 return res.json();
             })
-            .then((data) => {
+            .then((data: unknown) => {
                 setFullData(data);
                 setIsLoading(false);
                 isFetchingRef.current = false;
             })
-            .catch((err) => {
+            .catch((err: Error) => {
                 setError(err.message);
                 setIsLoading(false);
                 isFetchingRef.current = false;
             });
-    };
+    }, [fullData, profileUrl, renderFullProfile]);
 
     // Prefetch data as soon as modal opens
     useEffect(() => {
         if (viewState === 'modal' && !fullData && !isFetchingRef.current) {
             fetchFullData();
         }
-    }, [viewState]);
+    }, [viewState, fullData, fetchFullData]);
 
     // Handle Expand to Full Profile with history.pushState
     const expandToFullProfile = () => {
         if (typeof window !== 'undefined') {
             previousUrlRef.current = window.location.href;
-            window.history.pushState(
-                { kitelinkExpandedCardId: id, viewState: 'full' },
-                '',
-                profileUrl
-            );
+            window.history.pushState({ kitelinkExpandedCardId: id, viewState: 'full' }, '', profileUrl);
         }
         setViewState('full');
         fetchFullData();
     };
 
     // Collapse from full profile back to modal or collapsed
-    const collapseFromFullProfile = () => {
+    const collapseFromFullProfile = React.useCallback(() => {
         if (typeof window !== 'undefined' && window.history.state?.kitelinkExpandedCardId === id) {
             window.history.back();
         } else {
@@ -121,11 +117,11 @@ export default function ExpandableProfileCard({
             }
             setViewState('modal');
         }
-    };
+    }, [id]);
 
     // Listen to popstate (browser back button)
     useEffect(() => {
-        const handlePopState = (e: PopStateEvent) => {
+        const handlePopState = () => {
             if (viewState === 'full') {
                 // If popstate fired while in full view, return to modal
                 setViewState('modal');
@@ -159,11 +155,9 @@ export default function ExpandableProfileCard({
             document.removeEventListener('keydown', handleKeyDown);
             document.body.style.overflow = '';
         };
-    }, [viewState]);
+    }, [viewState, collapseFromFullProfile]);
 
-    const springTransition = shouldReduceMotion
-        ? { duration: 0 }
-        : { type: 'spring' as const, damping: 28, stiffness: 260 };
+    const springTransition = shouldReduceMotion ? { duration: 0 } : { type: 'spring' as const, damping: 28, stiffness: 260 };
 
     return (
         <>
@@ -171,7 +165,7 @@ export default function ExpandableProfileCard({
             <motion.div
                 layoutId={layoutId}
                 onClick={() => setViewState('modal')}
-                className="group relative h-72 sm:h-80 w-full cursor-pointer overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#5bb4ff]/60 hover:shadow-xl dark:border-white/15 dark:bg-slate-900"
+                className="group relative h-72 w-full cursor-pointer overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#5bb4ff]/60 hover:shadow-xl sm:h-80 dark:border-white/15 dark:bg-slate-900"
                 whileHover={shouldReduceMotion ? undefined : 'hover'}
                 transition={springTransition}
             >
@@ -191,7 +185,7 @@ export default function ExpandableProfileCard({
                         layoutId={`image-${layoutId}`}
                         className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/60 via-slate-900 to-indigo-950 text-white"
                     >
-                        <span className="text-5xl font-black bg-gradient-to-r from-[#b8e6ff] to-[#4da6ff] bg-clip-text text-transparent">
+                        <span className="bg-gradient-to-r from-[#b8e6ff] to-[#4da6ff] bg-clip-text text-5xl font-black text-transparent">
                             {title ? title.charAt(0).toUpperCase() : 'K'}
                         </span>
                     </motion.div>
@@ -205,26 +199,24 @@ export default function ExpandableProfileCard({
                 {cornerBadge && <div className="absolute top-3.5 right-3.5 z-10">{cornerBadge}</div>}
 
                 {/* Card Bottom Meta */}
-                <div className="absolute bottom-0 left-0 p-5 sm:p-6 w-full translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <div className="absolute bottom-0 left-0 w-full translate-y-2 p-5 transition-transform duration-300 group-hover:translate-y-0 sm:p-6">
                     <motion.p
                         layoutId={`subtitle-${layoutId}`}
-                        className="text-[#5bb4ff] text-xs font-semibold tracking-wide uppercase mb-1 flex items-center gap-1.5 truncate"
+                        className="mb-1 flex items-center gap-1.5 truncate text-xs font-semibold tracking-wide text-[#5bb4ff] uppercase"
                     >
                         <MapPin className="h-3.5 w-3.5 shrink-0 text-[#5bb4ff]" />
                         <span className="truncate">{displaySubtitle}</span>
                     </motion.p>
                     <motion.h3
                         layoutId={`title-${layoutId}`}
-                        className="text-lg sm:text-xl font-bold tracking-tight text-white truncate mb-2 drop-shadow-xs"
+                        className="mb-2 truncate text-lg font-bold tracking-tight text-white drop-shadow-xs sm:text-xl"
                     >
                         {title}
                     </motion.h3>
 
-                    <div className="flex items-center justify-between text-xs text-slate-300 opacity-90 group-hover:opacity-100 pt-2 border-t border-white/10">
-                        <span className="text-[#8acbff] font-medium flex items-center gap-1">
-                            Click to expand
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-white font-semibold">
+                    <div className="flex items-center justify-between border-t border-white/10 pt-2 text-xs text-slate-300 opacity-90 group-hover:opacity-100">
+                        <span className="flex items-center gap-1 font-medium text-[#8acbff]">Click to expand</span>
+                        <span className="inline-flex items-center gap-1 font-semibold text-white">
                             Quick View <ChevronRight className="h-3.5 w-3.5 text-[#5bb4ff]" />
                         </span>
                     </div>
@@ -286,7 +278,7 @@ export default function ExpandableProfileCard({
                                             className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-900/60 via-slate-900 to-indigo-950"
                                             transition={springTransition}
                                         >
-                                            <span className="text-6xl font-black bg-gradient-to-r from-[#b8e6ff] to-[#4da6ff] bg-clip-text text-transparent">
+                                            <span className="bg-gradient-to-r from-[#b8e6ff] to-[#4da6ff] bg-clip-text text-6xl font-black text-transparent">
                                                 {title ? title.charAt(0).toUpperCase() : 'K'}
                                             </span>
                                         </motion.div>
@@ -295,10 +287,10 @@ export default function ExpandableProfileCard({
                                 </div>
 
                                 {/* Right Side: Content */}
-                                <div className="flex w-full flex-col h-full overflow-y-auto p-6 sm:p-8 md:w-7/12 text-slate-900 dark:text-slate-100">
+                                <div className="flex h-full w-full flex-col overflow-y-auto p-6 text-slate-900 sm:p-8 md:w-7/12 dark:text-slate-100">
                                     <motion.p
                                         layoutId={`subtitle-${layoutId}`}
-                                        className="mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#5bb4ff]"
+                                        className="mb-1.5 flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#5bb4ff] uppercase"
                                         transition={springTransition}
                                     >
                                         <MapPin className="h-3.5 w-3.5 shrink-0 text-[#5bb4ff]" />
@@ -307,7 +299,7 @@ export default function ExpandableProfileCard({
 
                                     <motion.h3
                                         layoutId={`title-${layoutId}`}
-                                        className="mb-4 pb-3 text-2xl font-black tracking-tight text-slate-900 border-b border-slate-200/80 sm:text-3xl dark:border-white/10 dark:text-white"
+                                        className="mb-4 border-b border-slate-200/80 pb-3 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl dark:border-white/10 dark:text-white"
                                         transition={springTransition}
                                     >
                                         {title}
@@ -318,31 +310,29 @@ export default function ExpandableProfileCard({
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, x: 10 }}
                                         transition={{ delay: 0.15 }}
-                                        className="flex flex-col grow justify-between text-sm leading-relaxed"
+                                        className="flex grow flex-col justify-between text-sm leading-relaxed"
                                     >
                                         <div className="space-y-4">
                                             {bio && (
                                                 <div>
-                                                    <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+                                                    <h4 className="mb-1 text-[11px] font-bold tracking-wider text-slate-400 uppercase dark:text-slate-500">
                                                         About
                                                     </h4>
-                                                    <p className="text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                                                        {bio}
-                                                    </p>
+                                                    <p className="text-xs leading-relaxed text-slate-600 sm:text-sm dark:text-slate-300">{bio}</p>
                                                 </div>
                                             )}
 
                                             {details.length > 0 && (
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                                <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                                                     {details.map((item, idx) => (
                                                         <div
                                                             key={idx}
                                                             className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-2.5 sm:p-3 dark:border-white/10 dark:bg-white/[0.04]"
                                                         >
-                                                            <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                                            <div className="text-[10px] font-bold tracking-wider text-slate-500 uppercase sm:text-[11px] dark:text-slate-400">
                                                                 {item.label}
                                                             </div>
-                                                            <div className="mt-0.5 text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
+                                                            <div className="mt-0.5 text-xs font-semibold text-slate-900 sm:text-sm dark:text-slate-100">
                                                                 {item.value}
                                                             </div>
                                                         </div>
@@ -352,7 +342,7 @@ export default function ExpandableProfileCard({
 
                                             {tags.length > 0 && (
                                                 <div>
-                                                    <h4 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">
+                                                    <h4 className="mb-1.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase sm:text-[11px] dark:text-slate-500">
                                                         Certifications &amp; Highlights
                                                     </h4>
                                                     <div className="flex flex-wrap gap-1.5">
@@ -372,12 +362,12 @@ export default function ExpandableProfileCard({
                                         </div>
 
                                         {/* Action Footer: Expand to full profile seamlessly */}
-                                        <div className="mt-6 pt-4 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between">
+                                        <div className="mt-6 flex items-center justify-between border-t border-slate-200/80 pt-4 dark:border-white/10">
                                             {renderFullProfile ? (
                                                 <button
                                                     type="button"
                                                     onClick={expandToFullProfile}
-                                                    className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#3b82f6] to-[#1f6eff] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition-all duration-200 hover:from-[#5bb4ff] hover:to-[#2e7bff] hover:shadow-blue-500/35 hover:scale-[1.02] active:scale-[0.98]"
+                                                    className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#3b82f6] to-[#1f6eff] px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-500/25 transition-all duration-200 hover:scale-[1.02] hover:from-[#5bb4ff] hover:to-[#2e7bff] hover:shadow-blue-500/35 active:scale-[0.98] sm:text-sm"
                                                 >
                                                     <span>{profileButtonText}</span>
                                                     <ChevronRight className="h-4 w-4" />
@@ -385,7 +375,7 @@ export default function ExpandableProfileCard({
                                             ) : (
                                                 <Link
                                                     href={profileUrl}
-                                                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#3b82f6] to-[#1f6eff] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition-all duration-200 hover:from-[#5bb4ff] hover:to-[#2e7bff] hover:shadow-blue-500/35 hover:scale-[1.02] active:scale-[0.98]"
+                                                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#3b82f6] to-[#1f6eff] px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-500/25 transition-all duration-200 hover:scale-[1.02] hover:from-[#5bb4ff] hover:to-[#2e7bff] hover:shadow-blue-500/35 active:scale-[0.98] sm:text-sm"
                                                 >
                                                     <span>{profileButtonText}</span>
                                                     <ChevronRight className="h-4 w-4" />
@@ -401,10 +391,10 @@ export default function ExpandableProfileCard({
                         {viewState === 'full' && (
                             <motion.div
                                 layoutId={layoutId}
-                                className="fixed inset-0 z-50 overflow-y-auto bg-slate-50 dark:bg-[#070b12] text-slate-900 dark:text-slate-100 flex flex-col w-full h-full"
+                                className="fixed inset-0 z-50 flex h-full w-full flex-col overflow-y-auto bg-slate-50 text-slate-900 dark:bg-[#070b12] dark:text-slate-100"
                                 transition={springTransition}
                             >
-                                <div className="mx-auto w-full max-w-7xl p-4 sm:p-6 lg:p-8 flex-1">
+                                <div className="mx-auto w-full max-w-7xl flex-1 p-4 sm:p-6 lg:p-8">
                                     {renderFullProfile &&
                                         renderFullProfile({
                                             data: fullData,

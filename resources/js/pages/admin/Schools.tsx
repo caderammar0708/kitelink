@@ -1,18 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import {
-    Building2,
-    Eye,
-    Globe,
-    MapPin,
-    Phone,
-    Power,
-    Search,
-    Trash2,
-    Users,
-    X,
-} from 'lucide-react';
+import { Eye, Power, Search, Trash2, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface SchoolItem {
@@ -70,7 +59,7 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
                 status: newStatus ?? statusFilter,
                 search: newSearch ?? search,
             },
-            { preserveState: true, preserveScroll: true }
+            { preserveState: true, preserveScroll: true },
         );
     };
 
@@ -83,9 +72,7 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
         const isSuspended = school.status === 'suspended';
         const actionText = isSuspended ? 'reactivate' : 'suspend';
         if (confirm(`Are you sure you want to ${actionText} ${school.name}?`)) {
-            const url = isSuspended
-                ? `/admin/schools/${school.id}/reactivate`
-                : `/admin/schools/${school.id}/suspend`;
+            const url = isSuspended ? `/admin/schools/${school.id}/reactivate` : `/admin/schools/${school.id}/suspend`;
             router.post(url, {}, { preserveScroll: true });
         }
     };
@@ -104,10 +91,8 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
-                            Kite Schools & Centers
-                        </h1>
-                        <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">Kite Schools & Centers</h1>
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             Manage partner kitesurf schools, centers, and affiliated instructors.
                         </p>
                     </div>
@@ -120,7 +105,7 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
                 </div>
 
                 {/* Filters */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
+                <div className="flex flex-col items-stretch justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm sm:flex-row sm:items-center dark:border-white/10 dark:bg-[#0c1220]">
                     <div className="flex items-center gap-1 rounded-xl bg-slate-100 p-1 dark:bg-white/5">
                         {(['all', 'approved', 'pending', 'suspended'] as const).map((s) => (
                             <button
@@ -142,13 +127,13 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
                     </div>
 
                     <form onSubmit={handleSearchSubmit} className="relative min-w-[240px]">
-                        <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                        <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
                         <input
                             type="text"
                             placeholder="Search by school name, location..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-1.5 pr-3 pl-9 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                         />
                     </form>
                 </div>
@@ -156,14 +141,14 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
                 {/* Table */}
                 <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="w-full border-collapse text-left">
                             <thead>
-                                <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-400">
-                                    <th className="py-3.5 px-4">School / Center</th>
-                                    <th className="py-3.5 px-4">Location</th>
-                                    <th className="py-3.5 px-4">Instructors</th>
-                                    <th className="py-3.5 px-4">Status</th>
-                                    <th className="py-3.5 px-4 text-right">Actions</th>
+                                <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold tracking-wider text-slate-500 uppercase dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-400">
+                                    <th className="px-4 py-3.5">School / Center</th>
+                                    <th className="px-4 py-3.5">Location</th>
+                                    <th className="px-4 py-3.5">Instructors</th>
+                                    <th className="px-4 py-3.5">Status</th>
+                                    <th className="px-4 py-3.5 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 text-xs dark:divide-white/5">
@@ -178,15 +163,13 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
                                         const isSuspended = sc.status === 'suspended';
                                         return (
                                             <tr key={sc.id} className="transition-colors hover:bg-slate-50/60 dark:hover:bg-white/[0.02]">
-                                                <td className="py-3.5 px-4">
+                                                <td className="px-4 py-3.5">
                                                     <div className="flex items-center gap-3">
                                                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-purple-100 text-sm font-bold text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
                                                             {sc.name.charAt(0)}
                                                         </div>
                                                         <div>
-                                                            <p className="font-bold text-slate-900 dark:text-white">
-                                                                {sc.name}
-                                                            </p>
+                                                            <p className="font-bold text-slate-900 dark:text-white">{sc.name}</p>
                                                             <p className="text-[11px] text-slate-500 dark:text-slate-400">
                                                                 {sc.user?.email || 'No email attached'}
                                                             </p>
@@ -194,15 +177,13 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
                                                     </div>
                                                 </td>
 
-                                                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300">
-                                                    {sc.location || 'Not set'}
-                                                </td>
+                                                <td className="px-4 py-3.5 text-slate-600 dark:text-slate-300">{sc.location || 'Not set'}</td>
 
-                                                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-medium">
+                                                <td className="px-4 py-3.5 font-medium text-slate-600 dark:text-slate-300">
                                                     {sc.instructors_count} instructors
                                                 </td>
 
-                                                <td className="py-3.5 px-4">
+                                                <td className="px-4 py-3.5">
                                                     <span
                                                         className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold capitalize ${
                                                             sc.status === 'approved'
@@ -218,7 +199,7 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
                                                     </span>
                                                 </td>
 
-                                                <td className="py-3.5 px-4 text-right">
+                                                <td className="px-4 py-3.5 text-right">
                                                     <div className="flex items-center justify-end gap-1.5">
                                                         <button
                                                             type="button"
@@ -279,7 +260,7 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
                                                 ? 'bg-purple-600 text-white'
                                                 : link.url
                                                   ? 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-300'
-                                                  : 'opacity-40 text-slate-400'
+                                                  : 'text-slate-400 opacity-40'
                                         }`}
                                     />
                                 ))}
@@ -291,12 +272,10 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
 
             {/* School Detail Modal */}
             {selectedSchool && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in">
+                <div className="animate-in fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
                     <div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#0c1220]">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-white/10">
-                            <h2 className="text-base font-bold text-slate-900 dark:text-white">
-                                Kite School Details
-                            </h2>
+                            <h2 className="text-base font-bold text-slate-900 dark:text-white">Kite School Details</h2>
                             <button
                                 type="button"
                                 onClick={() => setSelectedSchool(null)}
@@ -312,34 +291,26 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
                                     {selectedSchool.name.charAt(0)}
                                 </div>
                                 <div>
-                                    <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                                        {selectedSchool.name}
-                                    </h3>
+                                    <h3 className="text-base font-bold text-slate-900 dark:text-white">{selectedSchool.name}</h3>
                                     <p className="text-slate-500">{selectedSchool.user?.email || 'No email'}</p>
-                                    <span className="font-semibold text-purple-600 dark:text-purple-400">
-                                        Status: {selectedSchool.status}
-                                    </span>
+                                    <span className="font-semibold text-purple-600 dark:text-purple-400">Status: {selectedSchool.status}</span>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-3 rounded-2xl bg-slate-50 p-4 dark:bg-white/5">
                                 <div>
                                     <span className="text-slate-500">Location:</span>
-                                    <p className="font-semibold text-slate-900 dark:text-white">
-                                        {selectedSchool.location || 'N/A'}
-                                    </p>
+                                    <p className="font-semibold text-slate-900 dark:text-white">{selectedSchool.location || 'N/A'}</p>
                                 </div>
                                 <div>
                                     <span className="text-slate-500">Instructors:</span>
-                                    <p className="font-semibold text-slate-900 dark:text-white">
-                                        {selectedSchool.instructors_count} instructors
-                                    </p>
+                                    <p className="font-semibold text-slate-900 dark:text-white">{selectedSchool.instructors_count} instructors</p>
                                 </div>
                             </div>
 
                             <div>
                                 <span className="font-bold text-slate-700 dark:text-slate-300">Description:</span>
-                                <p className="mt-1 text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line">
+                                <p className="mt-1 leading-relaxed whitespace-pre-line text-slate-600 dark:text-slate-400">
                                     {selectedSchool.description || 'No description provided.'}
                                 </p>
                             </div>

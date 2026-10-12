@@ -1,20 +1,8 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import {
-    Bell,
-    Check,
-    CheckCheck,
-    CheckCircle2,
-    Clock,
-    FileCheck,
-    Info,
-    MessageSquare,
-    Shield,
-    Sparkles,
-    Trash2,
-} from 'lucide-react';
-import React, { useState } from 'react';
+import { Bell, Check, CheckCheck } from 'lucide-react';
+import { useState } from 'react';
 
 interface NotificationItem {
     id: string;
@@ -54,12 +42,16 @@ export default function AdminNotifications({ notifications, unreadCount }: Notif
     };
 
     const handleMarkSingleRead = (id: string, link?: string) => {
-        router.post(`/notifications/${id}/read`, {}, {
-            preserveScroll: true,
-            onSuccess: () => {
-                if (link) router.visit(link);
+        router.post(
+            `/notifications/${id}/read`,
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    if (link) router.visit(link);
+                },
             },
-        });
+        );
     };
 
     const items = notifications.data.filter((n) => {
@@ -75,10 +67,8 @@ export default function AdminNotifications({ notifications, unreadCount }: Notif
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
-                            Notifications
-                        </h1>
-                        <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">Notifications</h1>
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             System alerts, registration notifications, and verification events.
                         </p>
                     </div>
@@ -127,11 +117,11 @@ export default function AdminNotifications({ notifications, unreadCount }: Notif
                 <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
                     {items.length === 0 ? (
                         <div className="flex flex-col items-center justify-center p-12 text-center">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-400 mb-3 dark:bg-white/5">
+                            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-white/5">
                                 <Bell className="h-6 w-6" />
                             </div>
                             <p className="text-sm font-bold text-slate-700 dark:text-slate-300">No notifications found</p>
-                            <p className="text-xs text-slate-500 mt-1">You are all caught up with administrative updates.</p>
+                            <p className="mt-1 text-xs text-slate-500">You are all caught up with administrative updates.</p>
                         </div>
                     ) : (
                         <div className="divide-y divide-slate-100 dark:divide-white/5">
@@ -141,31 +131,31 @@ export default function AdminNotifications({ notifications, unreadCount }: Notif
                                     <div
                                         key={n.id}
                                         className={`flex items-start justify-between gap-4 p-4 transition ${
-                                            isUnread
-                                                ? 'bg-blue-50/50 dark:bg-blue-950/15'
-                                                : 'hover:bg-slate-50/60 dark:hover:bg-white/[0.02]'
+                                            isUnread ? 'bg-blue-50/50 dark:bg-blue-950/15' : 'hover:bg-slate-50/60 dark:hover:bg-white/[0.02]'
                                         }`}
                                     >
                                         <div className="flex items-start gap-3">
-                                            <div className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
-                                                isUnread
-                                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25'
-                                                    : 'bg-slate-100 text-slate-500 dark:bg-white/5 dark:text-slate-400'
-                                            }`}>
+                                            <div
+                                                className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
+                                                    isUnread
+                                                        ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25'
+                                                        : 'bg-slate-100 text-slate-500 dark:bg-white/5 dark:text-slate-400'
+                                                }`}
+                                            >
                                                 <Bell className="h-4 w-4" />
                                             </div>
 
                                             <div>
                                                 <div className="flex items-center gap-2">
-                                                    <h3 className={`text-xs sm:text-sm ${isUnread ? 'font-bold text-slate-900 dark:text-white' : 'font-medium text-slate-700 dark:text-slate-300'}`}>
+                                                    <h3
+                                                        className={`text-xs sm:text-sm ${isUnread ? 'font-bold text-slate-900 dark:text-white' : 'font-medium text-slate-700 dark:text-slate-300'}`}
+                                                    >
                                                         {n.data.title || 'System Notification'}
                                                     </h3>
-                                                    {isUnread && (
-                                                        <span className="h-2 w-2 rounded-full bg-blue-500" />
-                                                    )}
+                                                    {isUnread && <span className="h-2 w-2 rounded-full bg-blue-500" />}
                                                 </div>
 
-                                                <p className="mt-1 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                                                <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
                                                     {n.data.message || ''}
                                                 </p>
 
@@ -175,7 +165,7 @@ export default function AdminNotifications({ notifications, unreadCount }: Notif
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center gap-2 shrink-0">
+                                        <div className="flex shrink-0 items-center gap-2">
                                             {n.data.link && (
                                                 <Link
                                                     href={n.data.link}

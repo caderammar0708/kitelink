@@ -1,19 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import {
-    Award,
-    Compass,
-    Eye,
-    Globe,
-    GraduationCap,
-    MapPin,
-    Search,
-    Sparkles,
-    Star,
-    UserCheck,
-    Wind,
-} from 'lucide-react';
+import { Award, Compass, Eye, MapPin, Search, Star, UserCheck } from 'lucide-react';
 import { useState } from 'react';
 
 interface InstructorItem {
@@ -69,7 +57,7 @@ export default function Browse({ instructors = [], filters }: BrowseProps) {
                 search: search || undefined,
                 country: selectedSpot !== 'All Spots' ? selectedSpot : undefined,
             },
-            { preserveState: true }
+            { preserveState: true },
         );
     };
 
@@ -81,7 +69,7 @@ export default function Browse({ instructors = [], filters }: BrowseProps) {
                 search: search || undefined,
                 country: spot !== 'All Spots' ? spot : undefined,
             },
-            { preserveState: true }
+            { preserveState: true },
         );
     };
 
@@ -202,7 +190,9 @@ export default function Browse({ instructors = [], filters }: BrowseProps) {
                                         </div>
                                         <div>
                                             <span className="block text-[10px] text-slate-500 dark:text-slate-400">Experience</span>
-                                            <span className="font-bold text-slate-900 dark:text-white">{ins.experience_years ? `${ins.experience_years} yrs` : '5+ yrs'}</span>
+                                            <span className="font-bold text-slate-900 dark:text-white">
+                                                {ins.experience_years ? `${ins.experience_years} yrs` : '5+ yrs'}
+                                            </span>
                                         </div>
                                         <div>
                                             <span className="block text-[10px] text-slate-500 dark:text-slate-400">Rate</span>

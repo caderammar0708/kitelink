@@ -1,14 +1,8 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import {
-    Eye,
-    EyeOff,
-    Search,
-    Star,
-    Trash2,
-} from 'lucide-react';
-import React, { useState } from 'react';
+import { Eye, EyeOff, Search, Star, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 
 interface ReviewItem {
     id: number;
@@ -72,7 +66,7 @@ export default function Reviews({ reviews, filters, counts }: ReviewsProps) {
                 rating: custom?.rating ?? rating,
                 search: custom?.search ?? search,
             },
-            { preserveState: true, preserveScroll: true }
+            { preserveState: true, preserveScroll: true },
         );
     };
 
@@ -94,10 +88,8 @@ export default function Reviews({ reviews, filters, counts }: ReviewsProps) {
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
-                            Reviews Moderation
-                        </h1>
-                        <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">Reviews Moderation</h1>
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             Monitor student feedback, hide inappropriate content, and maintain community review standards.
                         </p>
                     </div>
@@ -110,7 +102,7 @@ export default function Reviews({ reviews, filters, counts }: ReviewsProps) {
                 </div>
 
                 {/* Filters */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
+                <div className="flex flex-col items-stretch justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm sm:flex-row sm:items-center dark:border-white/10 dark:bg-[#0c1220]">
                     <div className="flex flex-wrap items-center gap-2">
                         {/* Visibility filter */}
                         <div className="flex items-center gap-1 rounded-xl bg-slate-100 p-1 dark:bg-white/5">
@@ -158,13 +150,13 @@ export default function Reviews({ reviews, filters, counts }: ReviewsProps) {
                         }}
                         className="relative min-w-[240px]"
                     >
-                        <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                        <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
                         <input
                             type="text"
                             placeholder="Search comments or users..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-1.5 pr-3 pl-9 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                         />
                     </form>
                 </div>
@@ -191,12 +183,9 @@ export default function Reviews({ reviews, filters, counts }: ReviewsProps) {
                                             {rev.student?.name?.charAt(0) || 'S'}
                                         </div>
                                         <div>
-                                            <p className="text-xs font-bold text-slate-900 dark:text-white">
-                                                {rev.student?.name}
-                                            </p>
+                                            <p className="text-xs font-bold text-slate-900 dark:text-white">{rev.student?.name}</p>
                                             <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                                                To: {rev.instructor?.user?.name || 'Instructor'} •{' '}
-                                                {new Date(rev.created_at).toLocaleDateString()}
+                                                To: {rev.instructor?.user?.name || 'Instructor'} • {new Date(rev.created_at).toLocaleDateString()}
                                             </p>
                                         </div>
                                     </div>
@@ -223,24 +212,17 @@ export default function Reviews({ reviews, filters, counts }: ReviewsProps) {
                                     </div>
                                 </div>
 
-                                <p className="mt-3 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
-                                    "{rev.comment}"
-                                </p>
+                                <p className="mt-3 text-xs leading-relaxed text-slate-700 dark:text-slate-300">"{rev.comment}"</p>
 
                                 {rev.instructor_reply && (
                                     <div className="mt-3 rounded-2xl bg-slate-50 p-3 text-xs text-slate-600 dark:bg-white/5 dark:text-slate-400">
-                                        <span className="font-bold text-slate-800 dark:text-slate-200">
-                                            Instructor Reply:
-                                        </span>{' '}
-                                        {rev.instructor_reply}
+                                        <span className="font-bold text-slate-800 dark:text-slate-200">Instructor Reply:</span> {rev.instructor_reply}
                                     </div>
                                 )}
 
                                 {/* Action Buttons */}
                                 <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 dark:border-white/5">
-                                    <span className="text-[11px] text-slate-400">
-                                        Booking #{rev.booking?.id ?? 'N/A'}
-                                    </span>
+                                    <span className="text-[11px] text-slate-400">Booking #{rev.booking?.id ?? 'N/A'}</span>
 
                                     <div className="flex items-center gap-1">
                                         <button
@@ -297,7 +279,7 @@ export default function Reviews({ reviews, filters, counts }: ReviewsProps) {
                                             ? 'bg-blue-600 text-white'
                                             : link.url
                                               ? 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-300'
-                                              : 'opacity-40 text-slate-400'
+                                              : 'text-slate-400 opacity-40'
                                     }`}
                                 />
                             ))}

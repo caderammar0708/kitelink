@@ -18,7 +18,6 @@ import {
     Upload,
     User as UserIcon,
     Wind,
-    X,
 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -54,18 +53,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const AVAILABLE_LANGUAGES = [
-    'English',
-    'German',
-    'French',
-    'Spanish',
-    'Italian',
-    'Russian',
-    'Dutch',
-    'Portuguese',
-    'Arabic',
-    'Sinhala',
-];
+const AVAILABLE_LANGUAGES = ['English', 'German', 'French', 'Spanish', 'Italian', 'Russian', 'Dutch', 'Portuguese', 'Arabic', 'Sinhala'];
 
 export default function Profile({ instructor, status }: ProfileProps) {
     const { auth } = usePage<SharedData>().props;
@@ -76,34 +64,27 @@ export default function Profile({ instructor, status }: ProfileProps) {
         instructor?.profile_photo ||
         instructor?.user?.profile_picture ||
         auth?.user?.avatar ||
-        (auth?.user as any)?.profile_picture ||
-        null;
+        (typeof auth?.user?.profile_picture === 'string' ? auth.user.profile_picture : null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(initialPhoto);
     const [certFileName, setCertFileName] = useState<string | null>(null);
     const [customLangInput, setCustomLangInput] = useState('');
     const [isActive, setIsActive] = useState<boolean>(instructor?.is_active ?? true);
     const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
 
-    useEffect(() => {
-        const photo =
-            instructor?.profile_photo ||
-            instructor?.user?.profile_picture ||
-            auth?.user?.avatar ||
-            (auth?.user as any)?.profile_picture ||
-            null;
-        if (photo) {
-            setPreviewUrl(photo);
-        }
-    }, [instructor?.profile_photo, instructor?.user?.profile_picture, auth?.user]);
-
-    useEffect(() => {
-        if (instructor?.is_active !== undefined) {
-            setIsActive(instructor.is_active);
-            setData('is_active', instructor.is_active);
-        }
-    }, [instructor?.is_active]);
-
-    const { data, setData, post, processing, errors, recentlySuccessful } = useForm({
+    const { data, setData, post, processing, errors, recentlySuccessful } = useForm<{
+        name: string;
+        email: string;
+        bio: string;
+        certifications: string;
+        experience_years: string | number;
+        location: string;
+        languages: string[];
+        hourly_rate: string | number;
+        daily_rate: string | number;
+        is_active: boolean;
+        avatar: File | null;
+        cert_document: File | null;
+    }>({
         name: instructor?.user?.name || '',
         email: instructor?.user?.email || '',
         bio: instructor?.bio || '',
@@ -114,9 +95,27 @@ export default function Profile({ instructor, status }: ProfileProps) {
         hourly_rate: instructor?.hourly_rate ?? '',
         daily_rate: instructor?.daily_rate ?? '',
         is_active: instructor?.is_active ?? true,
-        avatar: null as File | null,
-        cert_document: null as File | null,
+        avatar: null,
+        cert_document: null,
     });
+
+    useEffect(() => {
+        const photo =
+            instructor?.profile_photo ||
+            instructor?.user?.profile_picture ||
+            auth?.user?.avatar ||
+            (typeof auth?.user?.profile_picture === 'string' ? auth.user.profile_picture : null);
+        if (photo) {
+            setPreviewUrl(photo);
+        }
+    }, [instructor?.profile_photo, instructor?.user?.profile_picture, auth?.user]);
+
+    useEffect(() => {
+        if (instructor?.is_active !== undefined) {
+            setIsActive(instructor.is_active);
+            setData('is_active', instructor.is_active);
+        }
+    }, [instructor?.is_active, setData]);
 
     const handleToggleStatus = () => {
         const nextStatus = !isActive;
@@ -137,7 +136,7 @@ export default function Profile({ instructor, status }: ProfileProps) {
                     setData('is_active', !nextStatus);
                     setIsUpdatingStatus(false);
                 },
-            }
+            },
         );
     };
 
@@ -160,7 +159,10 @@ export default function Profile({ instructor, status }: ProfileProps) {
 
     const toggleLanguage = (lang: string) => {
         if (data.languages.includes(lang)) {
-            setData('languages', data.languages.filter((l) => l !== lang));
+            setData(
+                'languages',
+                data.languages.filter((l) => l !== lang),
+            );
         } else {
             setData('languages', [...data.languages, lang]);
         }
@@ -191,20 +193,19 @@ export default function Profile({ instructor, status }: ProfileProps) {
         });
     };
 
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="My Instructor Profile - KiteLink" />
 
-            <div className="relative mx-auto min-h-full max-w-5xl space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white sm:p-6 lg:p-8">
+            <div className="relative mx-auto min-h-full max-w-5xl space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* Header Banner */}
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                             <UserIcon className="h-7 w-7 text-blue-600 dark:text-[#5bb4ff]" />
                             My Instructor Profile
                         </h1>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             Configure your teaching rates, credentials, spoken languages, and listing visibility
                         </p>
                     </div>
@@ -236,8 +237,8 @@ export default function Profile({ instructor, status }: ProfileProps) {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Top Section: Avatar & Status */}
-                    <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl sm:p-8">
-                        <h2 className="mb-1 text-base font-bold text-slate-900 dark:text-white sm:text-lg">Profile Photo & Identity</h2>
+                    <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm sm:p-8 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl">
+                        <h2 className="mb-1 text-base font-bold text-slate-900 sm:text-lg dark:text-white">Profile Photo & Identity</h2>
                         <p className="mb-6 text-xs text-slate-500 dark:text-slate-400">
                             Upload a professional headshot or active kitesurfing image to increase student bookings.
                         </p>
@@ -245,7 +246,7 @@ export default function Profile({ instructor, status }: ProfileProps) {
                         <div className="flex flex-col items-center gap-6 sm:flex-row">
                             {/* Circular Avatar */}
                             <div className="group relative cursor-pointer" onClick={() => fileInputRef.current?.click()}>
-                                <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-2 border-blue-400/50 bg-slate-100 shadow-[0_0_25px_rgba(59,130,246,0.15)] dark:border-[#5bb4ff]/50 dark:bg-slate-900 dark:shadow-[0_0_25px_rgba(91,180,255,0.3)] sm:h-32 sm:w-32">
+                                <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-2 border-blue-400/50 bg-slate-100 shadow-[0_0_25px_rgba(59,130,246,0.15)] sm:h-32 sm:w-32 dark:border-[#5bb4ff]/50 dark:bg-slate-900 dark:shadow-[0_0_25px_rgba(91,180,255,0.3)]">
                                     {previewUrl ? (
                                         <img
                                             src={previewUrl}
@@ -301,8 +302,8 @@ export default function Profile({ instructor, status }: ProfileProps) {
                     </div>
 
                     {/* Basic Info & Rates */}
-                    <div className="space-y-6 rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl sm:p-8">
-                        <h2 className="flex items-center gap-2 border-b border-slate-200/80 pb-3 text-base font-bold text-slate-900 dark:border-white/10 dark:text-white sm:text-lg">
+                    <div className="space-y-6 rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm sm:p-8 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl">
+                        <h2 className="flex items-center gap-2 border-b border-slate-200/80 pb-3 text-base font-bold text-slate-900 sm:text-lg dark:border-white/10 dark:text-white">
                             <Wind className="h-5 w-5 text-blue-600 dark:text-[#5bb4ff]" />
                             Basic & Coaching Information
                         </h2>
@@ -310,7 +311,10 @@ export default function Profile({ instructor, status }: ProfileProps) {
                         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                             {/* Name */}
                             <div className="space-y-1.5">
-                                <label htmlFor="name" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
+                                <label
+                                    htmlFor="name"
+                                    className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200"
+                                >
                                     Full Name <span className="text-rose-500 dark:text-rose-400">*</span>
                                 </label>
                                 <input
@@ -327,7 +331,10 @@ export default function Profile({ instructor, status }: ProfileProps) {
 
                             {/* Email */}
                             <div className="space-y-1.5">
-                                <label htmlFor="email" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
+                                <label
+                                    htmlFor="email"
+                                    className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200"
+                                >
                                     Email Address <span className="text-rose-500 dark:text-rose-400">*</span>
                                 </label>
                                 <input
@@ -344,7 +351,10 @@ export default function Profile({ instructor, status }: ProfileProps) {
 
                             {/* Teaching Spots / Primary Location */}
                             <div className="space-y-1.5">
-                                <label htmlFor="location" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
+                                <label
+                                    htmlFor="location"
+                                    className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200"
+                                >
                                     Teaching Spots &amp; Base Location
                                 </label>
                                 <div className="relative">
@@ -363,7 +373,10 @@ export default function Profile({ instructor, status }: ProfileProps) {
 
                             {/* Years of Experience */}
                             <div className="space-y-1.5">
-                                <label htmlFor="experience_years" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
+                                <label
+                                    htmlFor="experience_years"
+                                    className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200"
+                                >
                                     Years of Experience
                                 </label>
                                 <input
@@ -372,7 +385,7 @@ export default function Profile({ instructor, status }: ProfileProps) {
                                     min={0}
                                     max={50}
                                     value={data.experience_years}
-                                    onChange={(e) => setData('experience_years', e.target.value as any)}
+                                    onChange={(e) => setData('experience_years', e.target.value)}
                                     placeholder="e.g. 6"
                                     className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:backdrop-blur-sm dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                 />
@@ -381,7 +394,10 @@ export default function Profile({ instructor, status }: ProfileProps) {
 
                             {/* Hourly Rate */}
                             <div className="space-y-1.5">
-                                <label htmlFor="hourly_rate" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
+                                <label
+                                    htmlFor="hourly_rate"
+                                    className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200"
+                                >
                                     Hourly Rate ($ USD / hr)
                                 </label>
                                 <div className="relative">
@@ -392,7 +408,7 @@ export default function Profile({ instructor, status }: ProfileProps) {
                                         step="0.01"
                                         min={0}
                                         value={data.hourly_rate}
-                                        onChange={(e) => setData('hourly_rate', e.target.value as any)}
+                                        onChange={(e) => setData('hourly_rate', e.target.value)}
                                         placeholder="e.g. 65.00"
                                         className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 transition focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:backdrop-blur-sm dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                     />
@@ -402,7 +418,10 @@ export default function Profile({ instructor, status }: ProfileProps) {
 
                             {/* Daily Rate */}
                             <div className="space-y-1.5">
-                                <label htmlFor="daily_rate" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
+                                <label
+                                    htmlFor="daily_rate"
+                                    className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200"
+                                >
                                     Full-Day Camp Rate ($ USD / day)
                                 </label>
                                 <div className="relative">
@@ -413,7 +432,7 @@ export default function Profile({ instructor, status }: ProfileProps) {
                                         step="0.01"
                                         min={0}
                                         value={data.daily_rate}
-                                        onChange={(e) => setData('daily_rate', e.target.value as any)}
+                                        onChange={(e) => setData('daily_rate', e.target.value)}
                                         placeholder="e.g. 240.00"
                                         className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 transition focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:backdrop-blur-sm dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                     />
@@ -444,7 +463,11 @@ export default function Profile({ instructor, status }: ProfileProps) {
                                                     : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.08]'
                                             }`}
                                         >
-                                            {isSelected ? <Check className="h-3.5 w-3.5 text-blue-600 dark:text-[#5bb4ff]" /> : <Plus className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />}
+                                            {isSelected ? (
+                                                <Check className="h-3.5 w-3.5 text-blue-600 dark:text-[#5bb4ff]" />
+                                            ) : (
+                                                <Plus className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
+                                            )}
                                             {lang}
                                         </button>
                                     );
@@ -516,9 +539,7 @@ export default function Profile({ instructor, status }: ProfileProps) {
                                     >
                                         <div className="flex items-center gap-2">
                                             <FileText className="h-4 w-4 text-blue-600 dark:text-[#5bb4ff]" />
-                                            <span className="truncate max-w-[180px]">
-                                                {certFileName || 'Upload certificate scan / PDF'}
-                                            </span>
+                                            <span className="max-w-[180px] truncate">{certFileName || 'Upload certificate scan / PDF'}</span>
                                         </div>
                                         <Upload className="h-4 w-4 text-slate-400" />
                                     </div>
@@ -553,7 +574,7 @@ export default function Profile({ instructor, status }: ProfileProps) {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/25 transition-all duration-300 hover:scale-[1.02] hover:brightness-110 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60 dark:from-[#4ba9ff] dark:to-[#1f6eff] dark:shadow-blue-600/30 sm:w-auto"
+                                className="group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/25 transition-all duration-300 hover:scale-[1.02] hover:brightness-110 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60 sm:w-auto dark:from-[#4ba9ff] dark:to-[#1f6eff] dark:shadow-blue-600/30"
                             >
                                 {processing ? (
                                     <>

@@ -3,7 +3,6 @@ import { Link, useForm, usePage } from '@inertiajs/react';
 import {
     Award,
     Building2,
-    Calendar,
     Check,
     CheckCircle2,
     ChevronLeft,
@@ -26,7 +25,7 @@ import {
     X,
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import React, { FormEventHandler, useMemo, useState } from 'react';
+import { FormEventHandler, useMemo, useState } from 'react';
 
 export interface PackageItem {
     id: number;
@@ -90,33 +89,25 @@ export interface SchoolProfileContentProps {
     hideTopNav?: boolean;
 }
 
-export function SchoolProfileSkeleton({
-    name,
-    photo,
-    location,
-}: {
-    name?: string;
-    photo?: string | null;
-    location?: string | null;
-}) {
+export function SchoolProfileSkeleton({ name, photo }: { name?: string; photo?: string | null; location?: string | null }) {
     return (
         <div className="space-y-8 sm:space-y-10">
             {/* Hero Header Skeleton */}
-            <div className="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xl dark:border-white/15 dark:bg-slate-900/80 sm:p-10">
+            <div className="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xl sm:p-10 dark:border-white/15 dark:bg-slate-900/80">
                 <div className="flex flex-col items-center gap-6 sm:gap-8 md:flex-row md:items-start">
-                    <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-3xl border-2 border-blue-200 bg-slate-100 shadow-md dark:border-[#5bb4ff]/40 dark:bg-slate-900 sm:h-36 sm:w-36 lg:h-40 lg:w-40">
+                    <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-3xl border-2 border-blue-200 bg-slate-100 shadow-md sm:h-36 sm:w-36 lg:h-40 lg:w-40 dark:border-[#5bb4ff]/40 dark:bg-slate-900">
                         {photo ? (
                             <img src={photo} alt={name || 'Kite Center'} className="h-full w-full object-cover" />
                         ) : (
                             <div className="h-full w-full animate-pulse bg-slate-200 dark:bg-white/10" />
                         )}
                     </div>
-                    <div className="flex-1 space-y-3.5 w-full text-center md:text-left">
-                        <div className="h-8 w-56 mx-auto md:mx-0 rounded-xl bg-slate-200 dark:bg-white/10 animate-pulse" />
-                        <div className="h-4 w-72 mx-auto md:mx-0 rounded-lg bg-slate-200 dark:bg-white/10 animate-pulse" />
+                    <div className="w-full flex-1 space-y-3.5 text-center md:text-left">
+                        <div className="mx-auto h-8 w-56 animate-pulse rounded-xl bg-slate-200 md:mx-0 dark:bg-white/10" />
+                        <div className="mx-auto h-4 w-72 animate-pulse rounded-lg bg-slate-200 md:mx-0 dark:bg-white/10" />
                         <div className="space-y-2 pt-2">
-                            <div className="h-3 w-full rounded-md bg-slate-200 dark:bg-white/10 animate-pulse" />
-                            <div className="h-3 w-5/6 rounded-md bg-slate-200 dark:bg-white/10 animate-pulse" />
+                            <div className="h-3 w-full animate-pulse rounded-md bg-slate-200 dark:bg-white/10" />
+                            <div className="h-3 w-5/6 animate-pulse rounded-md bg-slate-200 dark:bg-white/10" />
                         </div>
                     </div>
                 </div>
@@ -125,26 +116,20 @@ export function SchoolProfileSkeleton({
             {/* Columns Skeleton */}
             <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
                 <div className="space-y-8 lg:col-span-8">
-                    <div className="h-72 rounded-3xl border border-slate-200/90 bg-white p-6 animate-pulse dark:border-white/10 dark:bg-white/[0.04]" />
-                    <div className="h-56 rounded-3xl border border-slate-200/90 bg-white p-6 animate-pulse dark:border-white/10 dark:bg-white/[0.04]" />
-                    <div className="h-48 rounded-3xl border border-slate-200/90 bg-white p-6 animate-pulse dark:border-white/10 dark:bg-white/[0.04]" />
+                    <div className="h-72 animate-pulse rounded-3xl border border-slate-200/90 bg-white p-6 dark:border-white/10 dark:bg-white/[0.04]" />
+                    <div className="h-56 animate-pulse rounded-3xl border border-slate-200/90 bg-white p-6 dark:border-white/10 dark:bg-white/[0.04]" />
+                    <div className="h-48 animate-pulse rounded-3xl border border-slate-200/90 bg-white p-6 dark:border-white/10 dark:bg-white/[0.04]" />
                 </div>
                 <div className="space-y-6 lg:col-span-4">
-                    <div className="h-80 rounded-3xl border border-slate-200/90 bg-white p-6 animate-pulse dark:border-white/10 dark:bg-white/[0.04]" />
-                    <div className="h-40 rounded-3xl border border-slate-200/90 bg-white p-6 animate-pulse dark:border-white/10 dark:bg-white/[0.04]" />
+                    <div className="h-80 animate-pulse rounded-3xl border border-slate-200/90 bg-white p-6 dark:border-white/10 dark:bg-white/[0.04]" />
+                    <div className="h-40 animate-pulse rounded-3xl border border-slate-200/90 bg-white p-6 dark:border-white/10 dark:bg-white/[0.04]" />
                 </div>
             </div>
         </div>
     );
 }
 
-export default function SchoolProfileContent({
-    school,
-    reviews = [],
-    layoutId,
-    onClose,
-    hideTopNav = false,
-}: SchoolProfileContentProps) {
+export default function SchoolProfileContent({ school, reviews = [], layoutId, onClose, hideTopNav = false }: SchoolProfileContentProps) {
     const { auth } = usePage<SharedData>().props;
     const isAuthenticated = !!auth?.user;
 
@@ -216,7 +201,8 @@ export default function SchoolProfileContent({
             onSuccess: (page) => {
                 setBookingSubmitted(true);
                 resetBooking('notes');
-                const flashId = (page.props as any)?.flash?.booking_id || (page.props as any)?.booking_id;
+                const props = page.props as unknown as { flash?: { booking_id?: number | string }; booking_id?: number | string };
+                const flashId = props?.flash?.booking_id || props?.booking_id;
                 if (flashId) {
                     setSubmittedBookingId(Number(flashId));
                 }
@@ -252,7 +238,7 @@ export default function SchoolProfileContent({
                 <div className="flex items-center justify-between">
                     <Link
                         href={route('schools.index')}
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 transition-colors hover:text-blue-600 dark:text-slate-400 dark:hover:text-[#5bb4ff] sm:text-sm"
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 transition-colors hover:text-blue-600 sm:text-sm dark:text-slate-400 dark:hover:text-[#5bb4ff]"
                     >
                         <ChevronLeft className="h-4 w-4" />
                         Back to All Kite Centers
@@ -273,7 +259,7 @@ export default function SchoolProfileContent({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-2xs transition-colors hover:bg-slate-100 hover:text-slate-900 dark:border-white/15 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 sm:text-sm"
+                        className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-2xs transition-colors hover:bg-slate-100 hover:text-slate-900 sm:text-sm dark:border-white/15 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
                     >
                         <ChevronLeft className="h-4 w-4 text-[#5bb4ff]" />
                         <span>Back to Kite Centers</span>
@@ -305,12 +291,7 @@ export default function SchoolProfileContent({
                     <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-3xl border-2 border-blue-200 bg-slate-100 shadow-md sm:h-36 sm:w-36 lg:h-40 lg:w-40 dark:border-[#5bb4ff]/40 dark:bg-slate-900 dark:shadow-[0_0_25px_rgba(91,180,255,0.25)]">
                         {displayPhoto ? (
                             layoutId ? (
-                                <motion.img
-                                    layoutId={`image-${layoutId}`}
-                                    src={displayPhoto}
-                                    alt={name}
-                                    className="h-full w-full object-cover"
-                                />
+                                <motion.img layoutId={`image-${layoutId}`} src={displayPhoto} alt={name} className="h-full w-full object-cover" />
                             ) : (
                                 <img src={displayPhoto} alt={name} className="h-full w-full object-cover" />
                             )
@@ -320,16 +301,12 @@ export default function SchoolProfileContent({
                                 className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-blue-900/60 via-slate-900 to-indigo-950 text-center"
                             >
                                 <Building2 className="h-12 w-12 text-blue-600 dark:text-[#5bb4ff]" />
-                                <span className="mt-1 text-xs font-bold text-slate-500 dark:text-slate-400">
-                                    Kite Center
-                                </span>
+                                <span className="mt-1 text-xs font-bold text-slate-500 dark:text-slate-400">Kite Center</span>
                             </motion.div>
                         ) : (
                             <div className="flex flex-col items-center justify-center text-center">
                                 <Building2 className="h-12 w-12 text-blue-600 dark:text-[#5bb4ff]" />
-                                <span className="mt-1 text-xs font-bold text-slate-500 dark:text-slate-400">
-                                    Kite Center
-                                </span>
+                                <span className="mt-1 text-xs font-bold text-slate-500 dark:text-slate-400">Kite Center</span>
                             </div>
                         )}
                     </div>
@@ -345,9 +322,7 @@ export default function SchoolProfileContent({
                                     {name}
                                 </motion.h1>
                             ) : (
-                                <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
-                                    {name}
-                                </h1>
+                                <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-4xl dark:text-white">{name}</h1>
                             )}
                             {certs && (
                                 <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/15 dark:text-[#8acbff]">
@@ -358,8 +333,8 @@ export default function SchoolProfileContent({
                         </div>
 
                         <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-600 sm:text-sm md:justify-start dark:text-slate-300">
-                            {location && (
-                                layoutId ? (
+                            {location &&
+                                (layoutId ? (
                                     <motion.span
                                         layoutId={`subtitle-${layoutId}`}
                                         className="flex items-center gap-1 font-medium text-blue-600 dark:text-[#8acbff]"
@@ -372,8 +347,7 @@ export default function SchoolProfileContent({
                                         <MapPin className="h-4 w-4 text-blue-600 dark:text-[#5bb4ff]" />
                                         {location}
                                     </span>
-                                )
-                            )}
+                                ))}
                             {location && <span className="text-slate-400">•</span>}
                             <span className="flex items-center gap-1">
                                 <Package className="h-4 w-4 text-blue-600 dark:text-[#5bb4ff]" />
@@ -397,11 +371,11 @@ export default function SchoolProfileContent({
                         </div>
 
                         {school.description ? (
-                            <p className="max-w-3xl pt-1 text-sm leading-relaxed text-slate-700 whitespace-pre-line sm:text-base dark:text-slate-300/90">
+                            <p className="max-w-3xl pt-1 text-sm leading-relaxed whitespace-pre-line text-slate-700 sm:text-base dark:text-slate-300/90">
                                 {school.description}
                             </p>
                         ) : (
-                            <p className="max-w-3xl pt-1 text-xs italic text-slate-500 dark:text-slate-400">
+                            <p className="max-w-3xl pt-1 text-xs text-slate-500 italic dark:text-slate-400">
                                 Certified kitesurf center offering lessons, coaching, gear rental, and safety services.
                             </p>
                         )}
@@ -425,8 +399,7 @@ export default function SchoolProfileContent({
                                     School Packages &amp; Courses
                                 </h2>
                                 <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
-                                    Structured progression lessons, equipment rentals, and camp packages offered
-                                    directly by {name}
+                                    Structured progression lessons, equipment rentals, and camp packages offered directly by {name}
                                 </p>
                             </div>
 
@@ -438,12 +411,9 @@ export default function SchoolProfileContent({
                         {packages.length === 0 ? (
                             <div className="rounded-2xl border border-dashed border-slate-200 p-8 text-center dark:border-white/10">
                                 <Package className="mx-auto h-10 w-10 text-slate-400" />
-                                <h3 className="mt-2 text-base font-bold text-slate-800 dark:text-slate-200">
-                                    Custom Packages Available On Inquiry
-                                </h3>
+                                <h3 className="mt-2 text-base font-bold text-slate-800 dark:text-slate-200">Custom Packages Available On Inquiry</h3>
                                 <p className="mx-auto mt-1 max-w-md text-xs text-slate-500 dark:text-slate-400">
-                                    This center offers tailored courses upon request. Contact them directly or explore
-                                    instructor roster below.
+                                    This center offers tailored courses upon request. Contact them directly or explore instructor roster below.
                                 </p>
                             </div>
                         ) : (
@@ -461,7 +431,7 @@ export default function SchoolProfileContent({
                                                 {/* Card Header / Badge & Duration */}
                                                 <div className="flex items-center justify-between gap-2">
                                                     <span
-                                                        className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider ${badge.class}`}
+                                                        className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-bold tracking-wider uppercase ${badge.class}`}
                                                     >
                                                         <Tag className="h-3 w-3" />
                                                         {badge.label}
@@ -475,7 +445,7 @@ export default function SchoolProfileContent({
 
                                                 {/* Package Name & Price */}
                                                 <div className="mt-3.5">
-                                                    <h3 className="text-lg font-black text-slate-900 group-hover:text-blue-600 transition-colors dark:text-white dark:group-hover:text-[#8acbff]">
+                                                    <h3 className="text-lg font-black text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-[#8acbff]">
                                                         {pkg.name}
                                                     </h3>
 
@@ -483,15 +453,13 @@ export default function SchoolProfileContent({
                                                         <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400">
                                                             ${Number(pkg.price).toFixed(0)}
                                                         </span>
-                                                        <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
-                                                            / student
-                                                        </span>
+                                                        <span className="text-xs font-medium text-slate-500 dark:text-slate-400">/ student</span>
                                                     </div>
                                                 </div>
 
                                                 {/* Description */}
                                                 {pkg.description && (
-                                                    <p className="mt-2.5 text-xs leading-relaxed text-slate-600 line-clamp-3 dark:text-slate-300">
+                                                    <p className="mt-2.5 line-clamp-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
                                                         {pkg.description}
                                                     </p>
                                                 )}
@@ -499,7 +467,7 @@ export default function SchoolProfileContent({
                                                 {/* Included Features Bullet Points */}
                                                 {features.length > 0 && (
                                                     <div className="mt-4 space-y-1.5 border-t border-slate-100 pt-3 dark:border-white/10">
-                                                        <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                                                        <span className="block text-[10px] font-bold tracking-wider text-slate-400 uppercase">
                                                             Included Features
                                                         </span>
                                                         <ul className="space-y-1.5">
@@ -555,9 +523,7 @@ export default function SchoolProfileContent({
                         {instructors.length === 0 ? (
                             <div className="rounded-2xl border border-dashed border-slate-200 p-8 text-center dark:border-white/10">
                                 <Users className="mx-auto h-8 w-8 text-slate-400" />
-                                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                                    No active coaches listed on roster currently.
-                                </p>
+                                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">No active coaches listed on roster currently.</p>
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -574,11 +540,7 @@ export default function SchoolProfileContent({
                                             <div className="flex items-center gap-3">
                                                 <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-blue-200 bg-white shadow-xs dark:border-[#5bb4ff]/30 dark:bg-slate-900">
                                                     {insPhoto ? (
-                                                        <img
-                                                            src={insPhoto}
-                                                            alt={insName}
-                                                            className="h-full w-full object-cover"
-                                                        />
+                                                        <img src={insPhoto} alt={insName} className="h-full w-full object-cover" />
                                                     ) : (
                                                         <span className="text-xl font-bold text-blue-600 dark:text-[#8acbff]">
                                                             {insName.charAt(0)}
@@ -586,9 +548,7 @@ export default function SchoolProfileContent({
                                                     )}
                                                 </div>
                                                 <div className="min-w-0 flex-1">
-                                                    <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
-                                                        {insName}
-                                                    </h3>
+                                                    <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">{insName}</h3>
                                                     {ins.certifications && (
                                                         <p className="truncate text-[11px] font-semibold text-blue-600 dark:text-[#8acbff]">
                                                             {ins.certifications.split(',')[0]}
@@ -604,14 +564,10 @@ export default function SchoolProfileContent({
 
                                             <div className="mt-4 flex items-center justify-between border-t border-slate-200/60 pt-3 dark:border-white/10">
                                                 <div>
-                                                    <span className="text-[10px] text-slate-500 uppercase dark:text-slate-400">
-                                                        Rate
-                                                    </span>
+                                                    <span className="text-[10px] text-slate-500 uppercase dark:text-slate-400">Rate</span>
                                                     <span className="block text-sm font-bold text-emerald-600 dark:text-emerald-400">
                                                         ${insRate}
-                                                        <span className="text-xs font-normal text-slate-500 dark:text-slate-400">
-                                                            /hr
-                                                        </span>
+                                                        <span className="text-xs font-normal text-slate-500 dark:text-slate-400">/hr</span>
                                                     </span>
                                                 </div>
 
@@ -693,7 +649,7 @@ export default function SchoolProfileContent({
                                 {facilities.map((facility, idx) => (
                                     <div
                                         key={idx}
-                                        className="flex items-center gap-3 rounded-xl border border-slate-200/70 bg-slate-50/80 px-3.5 py-2.5 text-xs font-semibold text-slate-800 transition-colors hover:bg-slate-100/80 dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-200 sm:text-sm"
+                                        className="flex items-center gap-3 rounded-xl border border-slate-200/70 bg-slate-50/80 px-3.5 py-2.5 text-xs font-semibold text-slate-800 transition-colors hover:bg-slate-100/80 sm:text-sm dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-200"
                                     >
                                         <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-[#5bb4ff]/15 dark:text-[#8acbff]">
                                             <Check className="h-3.5 w-3.5 stroke-[2.5]" />
@@ -732,7 +688,7 @@ export default function SchoolProfileContent({
                         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
                             <div>
                                 <h2 className="flex items-center gap-2 text-lg font-bold text-slate-900 sm:text-xl dark:text-white">
-                                    <Star className="h-5 w-5 text-amber-500 fill-amber-400" />
+                                    <Star className="h-5 w-5 fill-amber-400 text-amber-500" />
                                     Student Reviews
                                 </h2>
                                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
@@ -751,9 +707,7 @@ export default function SchoolProfileContent({
                         {reviews.length === 0 ? (
                             <div className="rounded-2xl border border-dashed border-slate-200 p-8 text-center dark:border-white/10">
                                 <Star className="mx-auto h-8 w-8 text-slate-400" />
-                                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                                    No verified reviews for this center yet.
-                                </p>
+                                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">No verified reviews for this center yet.</p>
                             </div>
                         ) : (
                             <div className="space-y-4">
@@ -784,24 +738,18 @@ export default function SchoolProfileContent({
                                                     <Star
                                                         key={i}
                                                         className={`h-3.5 w-3.5 ${
-                                                            i < review.rating
-                                                                ? 'fill-amber-400 text-amber-400'
-                                                                : 'text-slate-300 dark:text-slate-700'
+                                                            i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-300 dark:text-slate-700'
                                                         }`}
                                                     />
                                                 ))}
                                             </div>
                                         </div>
 
-                                        <p className="mt-3 text-xs leading-relaxed text-slate-700 sm:text-sm dark:text-slate-300">
-                                            {review.comment}
-                                        </p>
+                                        <p className="mt-3 text-xs leading-relaxed text-slate-700 sm:text-sm dark:text-slate-300">{review.comment}</p>
 
                                         {review.instructor_reply && (
                                             <div className="mt-3 rounded-xl border-l-2 border-blue-500 bg-blue-50/70 p-3 text-xs text-slate-700 dark:border-[#5bb4ff] dark:bg-white/[0.03] dark:text-slate-300">
-                                                <span className="block font-bold text-blue-700 dark:text-[#8acbff]">
-                                                    Center / Coach Reply:
-                                                </span>
+                                                <span className="block font-bold text-blue-700 dark:text-[#8acbff]">Center / Coach Reply:</span>
                                                 <p className="mt-0.5">{review.instructor_reply}</p>
                                             </div>
                                         )}
@@ -821,13 +769,10 @@ export default function SchoolProfileContent({
                             <span>Center Directory &amp; Inquiries</span>
                         </div>
 
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-                            Visit or Book at {name}
-                        </h3>
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-white">Visit or Book at {name}</h3>
 
                         <p className="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-                            Book certified packages directly with zero commission, or contact the center directly for
-                            custom requests and lodging.
+                            Book certified packages directly with zero commission, or contact the center directly for custom requests and lodging.
                         </p>
 
                         <div className="mt-5 space-y-3">
@@ -835,12 +780,8 @@ export default function SchoolProfileContent({
                                 <div className="flex items-center gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-3 text-xs dark:border-white/5 dark:bg-white/[0.02]">
                                     <User className="h-4 w-4 text-blue-600 dark:text-[#5bb4ff]" />
                                     <div>
-                                        <span className="block text-[10px] text-slate-400 uppercase">
-                                            Contact Person
-                                        </span>
-                                        <span className="font-semibold text-slate-800 dark:text-slate-200">
-                                            {school.contact_name}
-                                        </span>
+                                        <span className="block text-[10px] text-slate-400 uppercase">Contact Person</span>
+                                        <span className="font-semibold text-slate-800 dark:text-slate-200">{school.contact_name}</span>
                                     </div>
                                 </div>
                             )}
@@ -850,10 +791,7 @@ export default function SchoolProfileContent({
                                     <Phone className="h-4 w-4 text-blue-600 dark:text-[#5bb4ff]" />
                                     <div>
                                         <span className="block text-[10px] text-slate-400 uppercase">Direct Phone</span>
-                                        <a
-                                            href={`tel:${school.phone}`}
-                                            className="font-semibold text-blue-600 hover:underline dark:text-[#8acbff]"
-                                        >
+                                        <a href={`tel:${school.phone}`} className="font-semibold text-blue-600 hover:underline dark:text-[#8acbff]">
                                             {school.phone}
                                         </a>
                                     </div>
@@ -864,22 +802,14 @@ export default function SchoolProfileContent({
                                 <div className="flex items-center gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-3 text-xs dark:border-white/5 dark:bg-white/[0.02]">
                                     <Globe className="h-4 w-4 text-blue-600 dark:text-[#5bb4ff]" />
                                     <div className="min-w-0 flex-1">
-                                        <span className="block text-[10px] text-slate-400 uppercase">
-                                            Official Website
-                                        </span>
+                                        <span className="block text-[10px] text-slate-400 uppercase">Official Website</span>
                                         <a
-                                            href={
-                                                school.website.startsWith('http')
-                                                    ? school.website
-                                                    : `https://${school.website}`
-                                            }
+                                            href={school.website.startsWith('http') ? school.website : `https://${school.website}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="flex items-center gap-1 font-semibold text-blue-600 hover:underline dark:text-[#8acbff]"
                                         >
-                                            <span className="truncate">
-                                                {school.website.replace(/^https?:\/\//, '')}
-                                            </span>
+                                            <span className="truncate">{school.website.replace(/^https?:\/\//, '')}</span>
                                             <ExternalLink className="h-3 w-3 shrink-0" />
                                         </a>
                                     </div>
@@ -910,10 +840,7 @@ export default function SchoolProfileContent({
 
                             {!isAuthenticated && (
                                 <p className="mt-3 text-center text-xs text-slate-500 dark:text-slate-400">
-                                    <Link
-                                        href={route('login')}
-                                        className="font-semibold text-blue-600 hover:underline dark:text-[#8acbff]"
-                                    >
+                                    <Link href={route('login')} className="font-semibold text-blue-600 hover:underline dark:text-[#8acbff]">
                                         Sign in
                                     </Link>{' '}
                                     to book courses or rental packages with this center.
@@ -949,7 +876,7 @@ export default function SchoolProfileContent({
             {/* PACKAGE BOOKING MODAL */}
             {bookingPackage && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-                    <div className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/15 dark:bg-[#070b12] sm:p-8">
+                    <div className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl sm:p-8 dark:border-white/15 dark:bg-[#070b12]">
                         <button
                             type="button"
                             onClick={() => setBookingPackage(null)}
@@ -963,16 +890,15 @@ export default function SchoolProfileContent({
                                 <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400">
                                     <CheckCircle2 className="h-8 w-8" />
                                 </div>
-                                <h3 className="text-xl font-black text-slate-900 dark:text-white">
-                                    Booking Request Submitted!
-                                </h3>
+                                <h3 className="text-xl font-black text-slate-900 dark:text-white">Booking Request Submitted!</h3>
+                                {submittedBookingId && (
+                                    <p className="mt-1 text-xs font-semibold text-blue-600 dark:text-[#8acbff]">
+                                        Booking Reference #{submittedBookingId}
+                                    </p>
+                                )}
                                 <p className="mx-auto mt-2 max-w-sm text-xs text-slate-600 sm:text-sm dark:text-slate-300">
-                                    Your request for{' '}
-                                    <strong className="text-blue-600 dark:text-[#8acbff]">
-                                        {bookingPackage.name}
-                                    </strong>{' '}
-                                    has been sent to {name}. The school will confirm your schedule and send session
-                                    details.
+                                    Your request for <strong className="text-blue-600 dark:text-[#8acbff]">{bookingPackage.name}</strong> has been
+                                    sent to {name}. The school will confirm your schedule and send session details.
                                 </p>
                                 <div className="mt-6 flex flex-col gap-2.5 sm:flex-row sm:justify-center">
                                     <Link
@@ -994,12 +920,10 @@ export default function SchoolProfileContent({
                         ) : (
                             <div>
                                 <div className="border-b border-slate-100 pb-4 dark:border-white/10">
-                                    <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-[10px] font-bold text-blue-700 uppercase tracking-wider dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/15 dark:text-[#8acbff]">
+                                    <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/15 dark:text-[#8acbff]">
                                         {bookingPackage.duration_label}
                                     </span>
-                                    <h3 className="mt-1 text-xl font-black text-slate-900 dark:text-white">
-                                        Book {bookingPackage.name}
-                                    </h3>
+                                    <h3 className="mt-1 text-xl font-black text-slate-900 dark:text-white">Book {bookingPackage.name}</h3>
                                     <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                                         Offered by {name} • ${Number(bookingPackage.price).toFixed(0)} per student
                                     </p>
@@ -1007,9 +931,7 @@ export default function SchoolProfileContent({
 
                                 <form onSubmit={handlePackageBookingSubmit} className="mt-5 space-y-4">
                                     <div>
-                                        <label className="block text-xs font-bold text-slate-700 uppercase dark:text-slate-300">
-                                            Start Date *
-                                        </label>
+                                        <label className="block text-xs font-bold text-slate-700 uppercase dark:text-slate-300">Start Date *</label>
                                         <input
                                             type="date"
                                             required
@@ -1018,9 +940,7 @@ export default function SchoolProfileContent({
                                             onChange={(e) => setBookingData('date', e.target.value)}
                                             className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-600 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-white/15 dark:bg-slate-900 dark:text-white"
                                         />
-                                        {bookingErrors.date && (
-                                            <p className="mt-1 text-xs text-rose-500">{bookingErrors.date}</p>
-                                        )}
+                                        {bookingErrors.date && <p className="mt-1 text-xs text-rose-500">{bookingErrors.date}</p>}
                                     </div>
 
                                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -1033,18 +953,10 @@ export default function SchoolProfileContent({
                                                 onChange={(e) => setBookingData('time', e.target.value)}
                                                 className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-600 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-white/15 dark:bg-slate-900 dark:text-white"
                                             >
-                                                <option value="08:30 AM (Morning Breeze)">
-                                                    08:30 AM (Morning Breeze)
-                                                </option>
-                                                <option value="10:00 AM (Morning Session)">
-                                                    10:00 AM (Morning Session)
-                                                </option>
-                                                <option value="02:00 PM (Afternoon Thermal)">
-                                                    02:00 PM (Afternoon Thermal)
-                                                </option>
-                                                <option value="04:00 PM (Late Session)">
-                                                    04:00 PM (Late Session)
-                                                </option>
+                                                <option value="08:30 AM (Morning Breeze)">08:30 AM (Morning Breeze)</option>
+                                                <option value="10:00 AM (Morning Session)">10:00 AM (Morning Session)</option>
+                                                <option value="02:00 PM (Afternoon Thermal)">02:00 PM (Afternoon Thermal)</option>
+                                                <option value="04:00 PM (Late Session)">04:00 PM (Late Session)</option>
                                                 <option value="Flexible Schedule">Flexible Schedule (Anytime)</option>
                                             </select>
                                         </div>
@@ -1059,9 +971,7 @@ export default function SchoolProfileContent({
                                                 max={10}
                                                 required
                                                 value={bookingData.students_count}
-                                                onChange={(e) =>
-                                                    setBookingData('students_count', Number(e.target.value))
-                                                }
+                                                onChange={(e) => setBookingData('students_count', Number(e.target.value))}
                                                 className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-600 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-white/15 dark:bg-slate-900 dark:text-white"
                                             />
                                         </div>
@@ -1082,14 +992,9 @@ export default function SchoolProfileContent({
 
                                     {/* Estimated Total */}
                                     <div className="flex items-center justify-between rounded-2xl border border-blue-100 bg-blue-50/70 p-4 dark:border-white/10 dark:bg-white/[0.03]">
-                                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                            Total Reservation Estimate
-                                        </span>
+                                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Total Reservation Estimate</span>
                                         <span className="text-xl font-black text-emerald-600 dark:text-emerald-400">
-                                            $
-                                            {(
-                                                Number(bookingPackage.price) * (bookingData.students_count || 1)
-                                            ).toFixed(0)}
+                                            ${(Number(bookingPackage.price) * (bookingData.students_count || 1)).toFixed(0)}
                                         </span>
                                     </div>
 

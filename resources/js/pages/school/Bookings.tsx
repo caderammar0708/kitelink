@@ -1,22 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import {
-    Calendar,
-    CalendarCheck,
-    Check,
-    CheckCircle2,
-    Clock,
-    DollarSign,
-    Filter,
-    Mail,
-    Phone,
-    Search,
-    User,
-    Users,
-    X,
-    XCircle,
-} from 'lucide-react';
+import { CalendarCheck, Check, CheckCircle2, Mail, Phone, Search, User, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface Client {
@@ -103,7 +88,7 @@ export default function Bookings({ school, bookings, instructors, counts, filter
             {
                 preserveState: true,
                 preserveScroll: true,
-            }
+            },
         );
     };
 
@@ -123,11 +108,7 @@ export default function Bookings({ school, bookings, instructors, counts, filter
     };
 
     const handleUpdateStatus = (bookingId: number, status: 'confirmed' | 'completed') => {
-        router.post(
-            `/school/bookings/${bookingId}/status`,
-            { status },
-            { preserveScroll: true }
-        );
+        router.post(`/school/bookings/${bookingId}/status`, { status }, { preserveScroll: true });
     };
 
     const handleCancelSubmit = (e: React.FormEvent) => {
@@ -148,7 +129,7 @@ export default function Bookings({ school, bookings, instructors, counts, filter
                     setBookingToCancel(null);
                     setCancelReason('');
                 },
-            }
+            },
         );
     };
 
@@ -163,10 +144,8 @@ export default function Bookings({ school, bookings, instructors, counts, filter
                         <CalendarCheck className="h-3.5 w-3.5" />
                         School-Wide Bookings
                     </div>
-                    <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
-                        All School Bookings
-                    </h1>
-                    <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                    <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">All School Bookings</h1>
+                    <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                         View and manage lessons booked across all coaches on the {school.name} roster.
                     </p>
                 </div>
@@ -192,7 +171,7 @@ export default function Bookings({ school, bookings, instructors, counts, filter
                                 >
                                     <span>{tabKey}</span>
                                     <span
-                                        className={`rounded-full px-1.5 py-0.2 text-[10px] ${
+                                        className={`py-0.2 rounded-full px-1.5 text-[10px] ${
                                             isActive
                                                 ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300'
                                                 : 'bg-slate-200 text-slate-700 dark:bg-white/10 dark:text-slate-400'
@@ -206,7 +185,7 @@ export default function Bookings({ school, bookings, instructors, counts, filter
                     </div>
 
                     {/* Instructor dropdown filter & search */}
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                         {/* Instructor dropdown */}
                         <div className="relative min-w-[180px]">
                             <select
@@ -225,13 +204,13 @@ export default function Bookings({ school, bookings, instructors, counts, filter
 
                         {/* Search Input */}
                         <form onSubmit={handleSearchSubmit} className="relative min-w-[200px]">
-                            <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400" />
+                            <Search className="absolute top-2.5 left-3 h-3.5 w-3.5 text-slate-400" />
                             <input
                                 type="text"
                                 placeholder="Search student or lesson..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-8 pr-3 py-1.5 text-xs text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-1.5 pr-3 pl-8 text-xs text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                             />
                         </form>
                     </div>
@@ -240,13 +219,11 @@ export default function Bookings({ school, bookings, instructors, counts, filter
                 {/* Bookings Cards Listing */}
                 {bookings.data.length === 0 ? (
                     <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-200 p-12 text-center dark:border-white/10">
-                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-purple-50 text-purple-600 mb-4 dark:bg-white/5 dark:text-purple-400">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-purple-50 text-purple-600 dark:bg-white/5 dark:text-purple-400">
                             <CalendarCheck className="h-8 w-8" />
                         </div>
-                        <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                            No Bookings Found
-                        </h3>
-                        <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-sm">
+                        <h3 className="text-base font-bold text-slate-900 dark:text-white">No Bookings Found</h3>
+                        <p className="mt-1 max-w-sm text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             There are no bookings matching the selected filters in your school calendar.
                         </p>
                     </div>
@@ -274,9 +251,7 @@ export default function Bookings({ school, bookings, instructors, counts, filter
 
                                             <div className="space-y-1">
                                                 <div className="flex flex-wrap items-center gap-2">
-                                                    <h3 className="font-bold text-base text-slate-900 dark:text-white">
-                                                        {studentName}
-                                                    </h3>
+                                                    <h3 className="text-base font-bold text-slate-900 dark:text-white">{studentName}</h3>
 
                                                     {/* Status Badge */}
                                                     <span
@@ -320,21 +295,21 @@ export default function Bookings({ school, bookings, instructors, counts, filter
                                         {/* Lesson Specs & Price */}
                                         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm">
                                             <div>
-                                                <span className="block text-slate-400 text-[11px]">Date & Time</span>
+                                                <span className="block text-[11px] text-slate-400">Date & Time</span>
                                                 <span className="font-bold text-slate-800 dark:text-slate-200">
                                                     {booking.date} {booking.time ? `@ ${booking.time}` : ''}
                                                 </span>
                                             </div>
 
                                             <div>
-                                                <span className="block text-slate-400 text-[11px]">Lesson Type</span>
+                                                <span className="block text-[11px] text-slate-400">Lesson Type</span>
                                                 <span className="font-semibold text-slate-800 dark:text-slate-200">
                                                     {booking.lesson_type || 'Private Coaching'}
                                                 </span>
                                             </div>
 
                                             <div>
-                                                <span className="block text-slate-400 text-[11px]">Price</span>
+                                                <span className="block text-[11px] text-slate-400">Price</span>
                                                 <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
                                                     ${booking.total_price ?? 0}
                                                 </span>
@@ -395,9 +370,7 @@ export default function Bookings({ school, bookings, instructors, counts, filter
             {bookingToCancel && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
                     <div className="w-full max-w-sm rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#0c1220]">
-                        <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                            Cancel Booking?
-                        </h3>
+                        <h3 className="text-base font-bold text-slate-900 dark:text-white">Cancel Booking?</h3>
                         <p className="mt-1 text-xs text-slate-500">
                             Provide a reason for the client regarding this cancellation (e.g. no wind, stormy conditions, instructor illness).
                         </p>
@@ -423,7 +396,7 @@ export default function Bookings({ school, bookings, instructors, counts, filter
                                 <button
                                     type="submit"
                                     disabled={isCancelling}
-                                    className="rounded-xl bg-rose-600 px-4 py-1.5 text-xs font-bold text-white hover:bg-rose-500 shadow-sm disabled:opacity-50"
+                                    className="rounded-xl bg-rose-600 px-4 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-rose-500 disabled:opacity-50"
                                 >
                                     {isCancelling ? 'Cancelling...' : 'Confirm Cancellation'}
                                 </button>

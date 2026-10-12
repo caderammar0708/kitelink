@@ -1,5 +1,5 @@
-import AppLayout from '@/layouts/app-layout';
 import { type Appearance, useAppearance } from '@/hooks/use-appearance';
+import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
 import {
@@ -8,7 +8,6 @@ import {
     Check,
     CheckCircle2,
     KeyRound,
-    Mail,
     Monitor,
     Moon,
     Palette,
@@ -142,14 +141,14 @@ export default function Settings({ user, status }: SettingsProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Account Settings - KiteLink" />
 
-            <div className="relative mx-auto min-h-full max-w-4xl space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white sm:p-6 lg:p-8">
+            <div className="relative mx-auto min-h-full max-w-4xl space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* Header */}
                 <div>
-                    <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                    <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                         <SettingsIcon className="h-7 w-7 text-blue-600 dark:text-[#5bb4ff]" />
                         Account &amp; Security Settings
                     </h1>
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+                    <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                         Manage your profile information, password, notification channels, theme appearance, and account
                     </p>
                 </div>
@@ -163,7 +162,7 @@ export default function Settings({ user, status }: SettingsProps) {
                 )}
 
                 {/* 1. Profile Information & Email */}
-                <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl sm:p-8">
+                <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm sm:p-8 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl">
                     <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                         <UserIcon className="h-5 w-5 text-blue-600 dark:text-[#38bdf8]" />
                         Profile Information &amp; Email
@@ -175,9 +174,7 @@ export default function Settings({ user, status }: SettingsProps) {
                     <form onSubmit={handleProfileSubmit} className="mt-5 space-y-4 text-xs">
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-700 uppercase dark:text-slate-300">
-                                    Full Name
-                                </label>
+                                <label className="block text-[11px] font-semibold text-slate-700 uppercase dark:text-slate-300">Full Name</label>
                                 <input
                                     type="text"
                                     required
@@ -191,9 +188,7 @@ export default function Settings({ user, status }: SettingsProps) {
                             </div>
 
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-700 uppercase dark:text-slate-300">
-                                    Email Address
-                                </label>
+                                <label className="block text-[11px] font-semibold text-slate-700 uppercase dark:text-slate-300">Email Address</label>
                                 <input
                                     type="email"
                                     required
@@ -221,7 +216,7 @@ export default function Settings({ user, status }: SettingsProps) {
                 </div>
 
                 {/* 2. Change Password */}
-                <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl sm:p-8">
+                <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm sm:p-8 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl">
                     <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                         <KeyRound className="h-5 w-5 text-blue-600 dark:text-[#5bb4ff]" />
                         Change Password
@@ -249,9 +244,7 @@ export default function Settings({ user, status }: SettingsProps) {
                             </div>
 
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-700 uppercase dark:text-slate-300">
-                                    New Password
-                                </label>
+                                <label className="block text-[11px] font-semibold text-slate-700 uppercase dark:text-slate-300">New Password</label>
                                 <input
                                     type="password"
                                     required
@@ -292,7 +285,7 @@ export default function Settings({ user, status }: SettingsProps) {
                 </div>
 
                 {/* 3. Notification Preferences */}
-                <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl sm:p-8">
+                <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm sm:p-8 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl">
                     <div className="flex items-center justify-between border-b border-slate-200/80 pb-4 dark:border-white/10">
                         <div>
                             <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
@@ -315,7 +308,9 @@ export default function Settings({ user, status }: SettingsProps) {
                         <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-slate-50/70 p-3 text-xs transition hover:bg-slate-100/80 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]">
                             <div>
                                 <span className="font-semibold text-slate-900 dark:text-white">Audible Notification Sound</span>
-                                <p className="text-[11px] text-slate-500 dark:text-slate-400">Play an audible chime when booking confirmations or messages arrive</p>
+                                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                                    Play an audible chime when booking confirmations or messages arrive
+                                </p>
                             </div>
                             <input
                                 type="checkbox"
@@ -328,7 +323,9 @@ export default function Settings({ user, status }: SettingsProps) {
                         <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200/70 bg-slate-50/40 p-3 text-xs transition hover:bg-slate-100/70 dark:border-white/5 dark:bg-slate-950/30 dark:hover:bg-white/[0.03]">
                             <div>
                                 <span className="font-semibold text-slate-900 dark:text-white">Lesson Confirmations &amp; Session Updates</span>
-                                <p className="text-[11px] text-slate-500 dark:text-slate-400">Get notified when instructors accept or reschedule your coaching sessions</p>
+                                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                                    Get notified when instructors accept or reschedule your coaching sessions
+                                </p>
                             </div>
                             <input
                                 type="checkbox"
@@ -341,7 +338,9 @@ export default function Settings({ user, status }: SettingsProps) {
                         <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200/70 bg-slate-50/40 p-3 text-xs transition hover:bg-slate-100/70 dark:border-white/5 dark:bg-slate-950/30 dark:hover:bg-white/[0.03]">
                             <div>
                                 <span className="font-semibold text-slate-900 dark:text-white">Direct Messages from Coaches</span>
-                                <p className="text-[11px] text-slate-500 dark:text-slate-400">Alerts when an instructor sends you session instructions or chat replies</p>
+                                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                                    Alerts when an instructor sends you session instructions or chat replies
+                                </p>
                             </div>
                             <input
                                 type="checkbox"
@@ -364,16 +363,14 @@ export default function Settings({ user, status }: SettingsProps) {
                 </div>
 
                 {/* 4. Appearance & Theme */}
-                <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl sm:p-8">
+                <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm sm:p-8 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl">
                     <div className="flex items-center justify-between border-b border-slate-200/80 pb-4 dark:border-white/10">
                         <div>
                             <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                                 <Palette className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                                 Appearance &amp; Theme
                             </h2>
-                            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                                Choose your interface theme preference for KiteLink
-                            </p>
+                            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Choose your interface theme preference for KiteLink</p>
                         </div>
 
                         <span className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-700 capitalize dark:border-indigo-500/30 dark:bg-indigo-500/15 dark:text-indigo-300">
@@ -389,9 +386,9 @@ export default function Settings({ user, status }: SettingsProps) {
                                     key={id}
                                     type="button"
                                     onClick={() => updateAppearance(id)}
-                                    className={`group relative flex flex-col items-start rounded-2xl border p-4.5 text-left transition-all duration-200 cursor-pointer ${
+                                    className={`group relative flex cursor-pointer flex-col items-start rounded-2xl border p-4.5 text-left transition-all duration-200 ${
                                         isSelected
-                                            ? 'border-blue-600 bg-blue-50/80 text-blue-950 shadow-md shadow-blue-600/10 ring-2 ring-blue-600/20 dark:border-[#3b82f6] dark:bg-[#1f6eff]/15 dark:text-white dark:shadow-lg dark:shadow-blue-600/20 dark:ring-[#3b82f6]'
+                                            ? 'border-blue-600 bg-blue-50/80 text-blue-950 shadow-md ring-2 shadow-blue-600/10 ring-blue-600/20 dark:border-[#3b82f6] dark:bg-[#1f6eff]/15 dark:text-white dark:shadow-lg dark:shadow-blue-600/20 dark:ring-[#3b82f6]'
                                             : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50/80 hover:text-slate-900 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300 dark:hover:border-white/20 dark:hover:bg-white/[0.04] dark:hover:text-white'
                                     }`}
                                 >
@@ -412,7 +409,7 @@ export default function Settings({ user, status }: SettingsProps) {
                                         )}
                                     </div>
                                     <span className="mt-3.5 text-sm font-bold text-slate-900 dark:text-white">{label}</span>
-                                    <span className="mt-1 text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">{description}</span>
+                                    <span className="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">{description}</span>
                                 </button>
                             );
                         })}
@@ -420,7 +417,7 @@ export default function Settings({ user, status }: SettingsProps) {
                 </div>
 
                 {/* 5. Danger Zone */}
-                <div className="rounded-2xl border border-rose-200 bg-rose-50/50 p-6 shadow-sm dark:border-rose-500/20 dark:bg-rose-950/10 dark:shadow-xl dark:backdrop-blur-xl sm:p-8">
+                <div className="rounded-2xl border border-rose-200 bg-rose-50/50 p-6 shadow-sm sm:p-8 dark:border-rose-500/20 dark:bg-rose-950/10 dark:shadow-xl dark:backdrop-blur-xl">
                     <h2 className="flex items-center gap-2 text-base font-bold text-rose-700 dark:text-rose-400">
                         <AlertTriangle className="h-5 w-5" />
                         Danger Zone
@@ -432,9 +429,7 @@ export default function Settings({ user, status }: SettingsProps) {
                     <div className="mt-5 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
                             <h4 className="text-xs font-bold text-slate-900 dark:text-white">Delete Account</h4>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                                This action is permanent and cannot be undone.
-                            </p>
+                            <p className="text-[11px] text-slate-500 dark:text-slate-400">This action is permanent and cannot be undone.</p>
                         </div>
 
                         <button
@@ -452,7 +447,7 @@ export default function Settings({ user, status }: SettingsProps) {
             {/* Account Deletion Modal */}
             {showDeleteModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm dark:bg-black/75 dark:backdrop-blur-md">
-                    <div className="relative w-full max-w-md rounded-2xl border border-rose-200 bg-white p-6 shadow-2xl text-slate-800 dark:border-rose-500/30 dark:bg-[#070b12] dark:text-slate-100">
+                    <div className="relative w-full max-w-md rounded-2xl border border-rose-200 bg-white p-6 text-slate-800 shadow-2xl dark:border-rose-500/30 dark:bg-[#070b12] dark:text-slate-100">
                         <h3 className="text-base font-bold text-slate-900 dark:text-white">Confirm Account Deletion</h3>
                         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                             Please enter your current password to permanently delete your account. This action cannot be reversed.

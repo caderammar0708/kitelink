@@ -1,7 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { Head, Link } from '@inertiajs/react';
 import { AlertCircle, ArrowRight, CheckCircle2, Clock, FileCheck, FileText, ShieldAlert, Sparkles, User } from 'lucide-react';
-import React from 'react';
 
 interface InstructorData {
     id: number;
@@ -74,14 +73,13 @@ export default function AwaitingApproval({ instructor }: { instructor: Instructo
                                 <div className="flex items-start gap-3">
                                     <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-rose-600 dark:text-rose-400" />
                                     <div>
-                                        <h2 className="text-sm font-semibold text-rose-900 dark:text-rose-200">
-                                            Feedback from Admin:
-                                        </h2>
-                                        <p className="mt-1 text-sm leading-relaxed text-rose-800 dark:text-rose-300 whitespace-pre-line">
+                                        <h2 className="text-sm font-semibold text-rose-900 dark:text-rose-200">Feedback from Admin:</h2>
+                                        <p className="mt-1 text-sm leading-relaxed whitespace-pre-line text-rose-800 dark:text-rose-300">
                                             {instructor.rejection_reason}
                                         </p>
                                         <p className="mt-3 text-xs text-rose-700/80 dark:text-rose-400/80">
-                                            💡 Please edit your profile to address these points. Once updated and saved, your application will automatically return to pending review.
+                                            💡 Please edit your profile to address these points. Once updated and saved, your application will
+                                            automatically return to pending review.
                                         </p>
                                     </div>
                                 </div>
@@ -92,7 +90,7 @@ export default function AwaitingApproval({ instructor }: { instructor: Instructo
                         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                             <Link
                                 href="/instructor/profile"
-                                className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:bg-blue-700 hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-600 dark:hover:bg-blue-500"
+                                className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:bg-blue-700 hover:shadow-blue-500/40 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-500"
                             >
                                 <User className="h-4 w-4" />
                                 {isRejected ? 'Edit & Resubmit Profile' : 'Edit Profile & Certifications'}
@@ -110,7 +108,7 @@ export default function AwaitingApproval({ instructor }: { instructor: Instructo
                             <CheckCircle2 className="h-5 w-5 text-emerald-500" />
                             What to Expect Next
                         </h2>
-                        <ul className="mt-4 space-y-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                        <ul className="mt-4 space-y-3 text-xs text-slate-600 sm:text-sm dark:text-slate-300">
                             <li className="flex items-start gap-2.5">
                                 <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-100 text-[10px] font-bold text-blue-600 dark:bg-blue-900/40 dark:text-blue-300">
                                     1
@@ -124,7 +122,8 @@ export default function AwaitingApproval({ instructor }: { instructor: Instructo
                                     2
                                 </span>
                                 <span>
-                                    <strong>Instant Notification:</strong> You'll receive a bell notification and chime as soon as your account is approved.
+                                    <strong>Instant Notification:</strong> You'll receive a bell notification and chime as soon as your account is
+                                    approved.
                                 </span>
                             </li>
                             <li className="flex items-start gap-2.5">
@@ -132,7 +131,8 @@ export default function AwaitingApproval({ instructor }: { instructor: Instructo
                                     3
                                 </span>
                                 <span>
-                                    <strong>Public Discovery:</strong> Once approved, your profile will be listed in the public instructor directory to accept bookings.
+                                    <strong>Public Discovery:</strong> Once approved, your profile will be listed in the public instructor directory
+                                    to accept bookings.
                                 </span>
                             </li>
                         </ul>
@@ -148,9 +148,7 @@ export default function AwaitingApproval({ instructor }: { instructor: Instructo
                         <div className="mt-4 divide-y divide-slate-100 text-xs sm:text-sm dark:divide-white/5">
                             <div className="flex justify-between py-2">
                                 <span className="text-slate-500 dark:text-slate-400">Certifications:</span>
-                                <span className="font-medium text-slate-900 dark:text-white">
-                                    {instructor.certifications || 'Not provided yet'}
-                                </span>
+                                <span className="font-medium text-slate-900 dark:text-white">{instructor.certifications || 'Not provided yet'}</span>
                             </div>
                             <div className="flex justify-between py-2">
                                 <span className="text-slate-500 dark:text-slate-400">Proof Document:</span>
@@ -172,9 +170,7 @@ export default function AwaitingApproval({ instructor }: { instructor: Instructo
                             </div>
                             <div className="flex justify-between py-2">
                                 <span className="text-slate-500 dark:text-slate-400">Location:</span>
-                                <span className="font-medium text-slate-900 dark:text-white">
-                                    {instructor.location || 'Not set'}
-                                </span>
+                                <span className="font-medium text-slate-900 dark:text-white">{instructor.location || 'Not set'}</span>
                             </div>
                         </div>
 

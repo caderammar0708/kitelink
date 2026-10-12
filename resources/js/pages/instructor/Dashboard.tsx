@@ -11,7 +11,6 @@ import {
     Compass,
     DollarSign,
     GraduationCap,
-    Mail,
     MapPin,
     MessageSquare,
     PlusCircle,
@@ -101,25 +100,33 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
 
     const handleAcceptBooking = (id: number) => {
         setActionLoading(id);
-        router.post(route('instructor.bookings.accept', id), {}, {
-            preserveScroll: true,
-            onFinish: () => setActionLoading(null),
-        });
+        router.post(
+            route('instructor.bookings.accept', id),
+            {},
+            {
+                preserveScroll: true,
+                onFinish: () => setActionLoading(null),
+            },
+        );
     };
 
     const handleDeclineBooking = (id: number) => {
         setActionLoading(id);
-        router.post(route('instructor.bookings.decline', id), {}, {
-            preserveScroll: true,
-            onFinish: () => setActionLoading(null),
-        });
+        router.post(
+            route('instructor.bookings.decline', id),
+            {},
+            {
+                preserveScroll: true,
+                onFinish: () => setActionLoading(null),
+            },
+        );
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Instructor Dashboard - KiteLink" />
 
-            <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white sm:p-6 lg:p-8">
+            <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* Hero / Greeting Glass Banner */}
                 <div className="relative overflow-hidden rounded-2xl border border-blue-200/60 bg-gradient-to-r from-blue-50/80 via-white to-blue-50/50 p-6 shadow-sm dark:border-white/10 dark:bg-gradient-to-r dark:from-blue-950/40 dark:via-slate-900/60 dark:to-slate-950/70 dark:shadow-2xl dark:backdrop-blur-xl">
                     <div className="pointer-events-none absolute top-0 right-0 -mt-8 -mr-8 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl dark:bg-[#3b82f6]/10" />
@@ -127,7 +134,7 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                     <div className="relative z-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
                         <div className="flex items-center gap-4">
                             <div className="group relative">
-                                <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border-2 border-blue-400/40 bg-white shadow-[0_0_20px_rgba(59,130,246,0.15)] dark:border-[#5bb4ff]/40 dark:bg-slate-900 dark:shadow-[0_0_20px_rgba(91,180,255,0.25)] sm:h-20 sm:w-20">
+                                <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border-2 border-blue-400/40 bg-white shadow-[0_0_20px_rgba(59,130,246,0.15)] sm:h-20 sm:w-20 dark:border-[#5bb4ff]/40 dark:bg-slate-900 dark:shadow-[0_0_20px_rgba(91,180,255,0.25)]">
                                     {instructor?.profile_photo || instructor?.user?.profile_picture ? (
                                         <img
                                             src={instructor.profile_photo || instructor.user?.profile_picture}
@@ -150,7 +157,7 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
 
                             <div>
                                 <div className="flex flex-wrap items-center gap-2">
-                                    <h1 className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-2xl">
+                                    <h1 className="text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl dark:text-white">
                                         Welcome back, {instructorName}!
                                     </h1>
                                     <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700 dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/15 dark:text-[#8acbff]">
@@ -158,7 +165,7 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                                         {certifications}
                                     </span>
                                 </div>
-                                <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+                                <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                                     <span className="flex items-center gap-1 text-slate-700 dark:text-slate-300">
                                         <MapPin className="h-3.5 w-3.5 text-blue-600 dark:text-[#5bb4ff]" />
                                         {instructorLocation}
@@ -178,14 +185,14 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                         <div className="flex flex-wrap items-center gap-3">
                             <Link
                                 href="/instructor/availability"
-                                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:bg-slate-50 hover:text-slate-900 dark:border-white/10 dark:bg-white/[0.07] dark:text-slate-200 dark:hover:bg-white/[0.12] dark:hover:text-white sm:text-sm"
+                                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:bg-slate-50 hover:text-slate-900 sm:text-sm dark:border-white/10 dark:bg-white/[0.07] dark:text-slate-200 dark:hover:bg-white/[0.12] dark:hover:text-white"
                             >
                                 <Calendar className="h-4 w-4 text-blue-600 dark:text-[#5bb4ff]" />
                                 Set Calendar
                             </Link>
                             <Link
                                 href="/instructor/profile"
-                                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-blue-600/20 transition-all duration-200 hover:brightness-110 active:scale-[0.98] dark:from-[#4ba9ff] dark:to-[#1f6eff] dark:shadow-blue-600/30 sm:text-sm"
+                                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-blue-600/20 transition-all duration-200 hover:brightness-110 active:scale-[0.98] sm:text-sm dark:from-[#4ba9ff] dark:to-[#1f6eff] dark:shadow-blue-600/30"
                             >
                                 <User className="h-4 w-4" />
                                 Edit Profile
@@ -210,7 +217,11 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                         </div>
                         {profileProgress < 100 && (
                             <p className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400">
-                                Tip: Add languages, daily rates, and certification docs in <Link href="/instructor/profile" className="text-blue-600 underline dark:text-[#5bb4ff]">My Profile</Link> to reach 100% and get more student inquiries.
+                                Tip: Add languages, daily rates, and certification docs in{' '}
+                                <Link href="/instructor/profile" className="text-blue-600 underline dark:text-[#5bb4ff]">
+                                    My Profile
+                                </Link>{' '}
+                                to reach 100% and get more student inquiries.
                             </p>
                         )}
                     </div>
@@ -227,7 +238,9 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                                 <h4 className="text-sm font-bold text-slate-900 dark:text-white">
                                     You have {stats?.hire_requests_count} new School Hire Request{stats?.hire_requests_count > 1 ? 's' : ''}!
                                 </h4>
-                                <p className="text-xs text-slate-600 dark:text-slate-300">A partner kite center sent you a teaching contract offer.</p>
+                                <p className="text-xs text-slate-600 dark:text-slate-300">
+                                    A partner kite center sent you a teaching contract offer.
+                                </p>
                             </div>
                         </div>
                         <Link
@@ -250,7 +263,7 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                             </div>
                         </div>
                         <div className="mt-4">
-                            <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">${monthlyRev}</span>
+                            <span className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">${monthlyRev}</span>
                             <p className="mt-1 flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
                                 <TrendingUp className="h-3 w-3" />
                                 This month earnings
@@ -261,13 +274,15 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                     {/* 2. Upcoming Lessons */}
                     <div className="group relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm transition-all duration-300 hover:border-blue-300 hover:bg-slate-50/50 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl dark:hover:border-[#5bb4ff]/40 dark:hover:bg-white/[0.08]">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">Upcoming Lessons</span>
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                                Upcoming Lessons
+                            </span>
                             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 text-blue-600 transition-transform group-hover:scale-110 dark:border-[#3b82f6]/30 dark:bg-[#3b82f6]/15 dark:text-[#5bb4ff]">
                                 <CalendarCheck className="h-5 w-5" />
                             </div>
                         </div>
                         <div className="mt-4">
-                            <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">{upcomingCount}</span>
+                            <span className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">{upcomingCount}</span>
                             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Confirmed sessions</p>
                         </div>
                     </div>
@@ -275,14 +290,18 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                     {/* 3. Pending Requests */}
                     <div className="group relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm transition-all duration-300 hover:border-amber-300 hover:bg-slate-50/50 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl dark:hover:border-amber-400/40 dark:hover:bg-white/[0.08]">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">Pending Requests</span>
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                                Pending Requests
+                            </span>
                             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-300 bg-amber-50 text-amber-600 transition-transform group-hover:scale-110 dark:border-amber-400/30 dark:bg-amber-400/15 dark:text-amber-400">
                                 <Clock className="h-5 w-5" />
                             </div>
                         </div>
                         <div className="mt-4">
-                            <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">{pendingCount}</span>
-                            <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">{pendingCount > 0 ? 'Action required' : 'All responded'}</p>
+                            <span className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">{pendingCount}</span>
+                            <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
+                                {pendingCount > 0 ? 'Action required' : 'All responded'}
+                            </p>
                         </div>
                     </div>
 
@@ -295,7 +314,7 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                             </div>
                         </div>
                         <div className="mt-4">
-                            <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">{avgRating}</span>
+                            <span className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">{avgRating}</span>
                             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">From student reviews</p>
                         </div>
                     </div>
@@ -309,7 +328,7 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                             </div>
                         </div>
                         <div className="mt-4">
-                            <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                            <span className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                                 {stats?.students_taught ?? stats?.completed ?? 0}
                             </span>
                             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Unique riders trained</p>
@@ -365,14 +384,14 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                 </div>
 
                 {/* Recent Bookings Section */}
-                <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl sm:p-6">
+                <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm sm:p-6 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl">
                     <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
-                            <h2 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white sm:text-xl">
+                            <h2 className="flex items-center gap-2 text-lg font-bold text-slate-900 sm:text-xl dark:text-white">
                                 <Calendar className="h-5 w-5 text-blue-600 dark:text-[#5bb4ff]" />
                                 Recent Booking Inquiries
                             </h2>
-                            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+                            <p className="mt-0.5 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                                 Review new incoming requests or track upcoming confirmed lessons
                             </p>
                         </div>
@@ -450,7 +469,9 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                                                         <Calendar className="h-3.5 w-3.5 text-blue-600 dark:text-[#5bb4ff]" />
                                                         {booking.date}
                                                     </div>
-                                                    {booking.time && <span className="text-[11px] text-slate-500 dark:text-slate-400">{booking.time}</span>}
+                                                    {booking.time && (
+                                                        <span className="text-[11px] text-slate-500 dark:text-slate-400">{booking.time}</span>
+                                                    )}
                                                 </td>
                                                 <td className="px-3 py-3.5 text-xs text-slate-700 dark:text-slate-300">
                                                     {booking.lesson_type || 'Kitesurf Coaching'}
@@ -459,7 +480,9 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                                                     ${booking.total_price ?? booking.price ?? instructor?.hourly_rate ?? 65}
                                                 </td>
                                                 <td className="px-3 py-3.5">
-                                                    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${statusBadge.className}`}>
+                                                    <span
+                                                        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${statusBadge.className}`}
+                                                    >
                                                         {statusBadge.label}
                                                     </span>
                                                 </td>
@@ -522,7 +545,8 @@ function getStatusBadge(status: string) {
         case 'completed':
             return {
                 label: 'Completed',
-                className: 'bg-emerald-50 border-emerald-300 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30',
+                className:
+                    'bg-emerald-50 border-emerald-300 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30',
             };
         case 'cancelled':
             return {

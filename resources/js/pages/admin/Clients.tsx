@@ -1,18 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import {
-    CalendarCheck,
-    CheckCircle2,
-    Eye,
-    Power,
-    Search,
-    ShieldAlert,
-    Trash2,
-    UserCheck,
-    Users,
-    X,
-} from 'lucide-react';
+import { Eye, Power, Search, Trash2, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface ClientItem {
@@ -61,7 +50,7 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
                 status: newStatus ?? statusFilter,
                 search: newSearch ?? search,
             },
-            { preserveState: true, preserveScroll: true }
+            { preserveState: true, preserveScroll: true },
         );
     };
 
@@ -73,9 +62,7 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
     const handleSuspend = (client: ClientItem) => {
         const actionText = client.is_suspended ? 'reactivate' : 'suspend';
         if (confirm(`Are you sure you want to ${actionText} ${client.name}?`)) {
-            const url = client.is_suspended
-                ? `/admin/clients/${client.id}/reactivate`
-                : `/admin/clients/${client.id}/suspend`;
+            const url = client.is_suspended ? `/admin/clients/${client.id}/reactivate` : `/admin/clients/${client.id}/suspend`;
             router.post(url, {}, { preserveScroll: true });
         }
     };
@@ -94,10 +81,8 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
-                            Client Users Management
-                        </h1>
-                        <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">Client Users Management</h1>
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             Search registered students and clients, monitor booking engagement, and manage access.
                         </p>
                     </div>
@@ -110,7 +95,7 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
                 </div>
 
                 {/* Filters */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
+                <div className="flex flex-col items-stretch justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm sm:flex-row sm:items-center dark:border-white/10 dark:bg-[#0c1220]">
                     <div className="flex items-center gap-1 rounded-xl bg-slate-100 p-1 dark:bg-white/5">
                         {(['all', 'active', 'suspended'] as const).map((s) => (
                             <button
@@ -132,13 +117,13 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
                     </div>
 
                     <form onSubmit={handleSearchSubmit} className="relative min-w-[240px]">
-                        <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                        <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
                         <input
                             type="text"
                             placeholder="Search by client name, email..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-1.5 pr-3 pl-9 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                         />
                     </form>
                 </div>
@@ -146,14 +131,14 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
                 {/* Table */}
                 <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="w-full border-collapse text-left">
                             <thead>
-                                <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-400">
-                                    <th className="py-3.5 px-4">Client</th>
-                                    <th className="py-3.5 px-4">Joined Date</th>
-                                    <th className="py-3.5 px-4">Bookings</th>
-                                    <th className="py-3.5 px-4">Status</th>
-                                    <th className="py-3.5 px-4 text-right">Actions</th>
+                                <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold tracking-wider text-slate-500 uppercase dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-400">
+                                    <th className="px-4 py-3.5">Client</th>
+                                    <th className="px-4 py-3.5">Joined Date</th>
+                                    <th className="px-4 py-3.5">Bookings</th>
+                                    <th className="px-4 py-3.5">Status</th>
+                                    <th className="px-4 py-3.5 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 text-xs dark:divide-white/5">
@@ -167,7 +152,7 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
                                     clients.data.map((c) => {
                                         return (
                                             <tr key={c.id} className="transition-colors hover:bg-slate-50/60 dark:hover:bg-white/[0.02]">
-                                                <td className="py-3.5 px-4">
+                                                <td className="px-4 py-3.5">
                                                     <div className="flex items-center gap-3">
                                                         {c.profile_picture ? (
                                                             <img
@@ -181,25 +166,21 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
                                                             </div>
                                                         )}
                                                         <div>
-                                                            <p className="font-bold text-slate-900 dark:text-white">
-                                                                {c.name}
-                                                            </p>
-                                                            <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                                                                {c.email}
-                                                            </p>
+                                                            <p className="font-bold text-slate-900 dark:text-white">{c.name}</p>
+                                                            <p className="text-[11px] text-slate-500 dark:text-slate-400">{c.email}</p>
                                                         </div>
                                                     </div>
                                                 </td>
 
-                                                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300">
+                                                <td className="px-4 py-3.5 text-slate-600 dark:text-slate-300">
                                                     {new Date(c.created_at).toLocaleDateString()}
                                                 </td>
 
-                                                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-medium">
+                                                <td className="px-4 py-3.5 font-medium text-slate-600 dark:text-slate-300">
                                                     {c.bookings_count} bookings
                                                 </td>
 
-                                                <td className="py-3.5 px-4">
+                                                <td className="px-4 py-3.5">
                                                     <span
                                                         className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold capitalize ${
                                                             !c.is_suspended
@@ -211,7 +192,7 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
                                                     </span>
                                                 </td>
 
-                                                <td className="py-3.5 px-4 text-right">
+                                                <td className="px-4 py-3.5 text-right">
                                                     <div className="flex items-center justify-end gap-1.5">
                                                         <button
                                                             type="button"
@@ -272,7 +253,7 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
                                                 ? 'bg-emerald-600 text-white'
                                                 : link.url
                                                   ? 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-300'
-                                                  : 'opacity-40 text-slate-400'
+                                                  : 'text-slate-400 opacity-40'
                                         }`}
                                     />
                                 ))}
@@ -284,12 +265,10 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
 
             {/* Client Detail Modal */}
             {selectedClient && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in">
+                <div className="animate-in fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
                     <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#0c1220]">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-white/10">
-                            <h2 className="text-base font-bold text-slate-900 dark:text-white">
-                                Client Details
-                            </h2>
+                            <h2 className="text-base font-bold text-slate-900 dark:text-white">Client Details</h2>
                             <button
                                 type="button"
                                 onClick={() => setSelectedClient(null)}
@@ -305,17 +284,17 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
                                     {selectedClient.name.charAt(0)}
                                 </div>
                                 <div>
-                                    <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                                        {selectedClient.name}
-                                    </h3>
+                                    <h3 className="text-base font-bold text-slate-900 dark:text-white">{selectedClient.name}</h3>
                                     <p className="text-slate-500">{selectedClient.email}</p>
-                                    <span className={`inline-block mt-1 font-semibold ${selectedClient.is_suspended ? 'text-rose-600' : 'text-emerald-600'}`}>
+                                    <span
+                                        className={`mt-1 inline-block font-semibold ${selectedClient.is_suspended ? 'text-rose-600' : 'text-emerald-600'}`}
+                                    >
                                         Status: {selectedClient.is_suspended ? 'Suspended' : 'Active'}
                                     </span>
                                 </div>
                             </div>
 
-                            <div className="rounded-2xl bg-slate-50 p-4 dark:bg-white/5 space-y-2">
+                            <div className="space-y-2 rounded-2xl bg-slate-50 p-4 dark:bg-white/5">
                                 <div className="flex justify-between">
                                     <span className="text-slate-500">Total Bookings:</span>
                                     <span className="font-semibold text-slate-900 dark:text-white">

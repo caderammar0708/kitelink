@@ -31,7 +31,9 @@ export function NavMain({ items = [], label = 'Menu' }: { items: NavItem[]; labe
                                     {item.icon && (
                                         <item.icon
                                             className={`h-4 w-4 shrink-0 transition-colors ${
-                                                isActive ? 'text-blue-600 dark:text-[#5bb4ff]' : 'text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200'
+                                                isActive
+                                                    ? 'text-blue-600 dark:text-[#5bb4ff]'
+                                                    : 'text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200'
                                             }`}
                                         />
                                     )}

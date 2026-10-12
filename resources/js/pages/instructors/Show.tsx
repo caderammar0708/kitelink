@@ -1,7 +1,4 @@
-import InstructorProfileContent, {
-    type BookingItem,
-    type InstructorData,
-} from '@/components/instructor-profile-content';
+import InstructorProfileContent, { type BookingItem, type InstructorData } from '@/components/instructor-profile-content';
 import AppLayout from '@/layouts/app-layout';
 import PublicLayout from '@/layouts/public-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';

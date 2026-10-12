@@ -1,21 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import {
-    Activity,
-    Check,
-    CheckCircle2,
-    DollarSign,
-    Lock,
-    Mail,
-    Phone,
-    Save,
-    Settings as SettingsIcon,
-    Shield,
-    ShieldAlert,
-    Sliders,
-    Sparkles,
-} from 'lucide-react';
+import { Check, DollarSign, Save, Shield, Sliders, Sparkles } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface AuditLogItem {
@@ -90,7 +76,7 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
                         <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                             Platform Settings & Audit Log
                         </h1>
-                        <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             Configure global platform policies, approval requirements, financial fees, and inspect security audit logs.
                         </p>
                     </div>
@@ -127,45 +113,37 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Section 1: Platform Branding & Contact */}
                         <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
-                            <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                                 <Sparkles className="h-4 w-4 text-blue-500" />
                                 Platform Brand & Contact
                             </h2>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                                Public support contacts and platform identification.
-                            </p>
+                            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Public support contacts and platform identification.</p>
 
                             <div className="mt-4 grid gap-4 sm:grid-cols-3">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                                        Platform Name
-                                    </label>
+                                    <label className="mb-1 block text-xs font-bold text-slate-700 dark:text-slate-300">Platform Name</label>
                                     <input
                                         type="text"
                                         value={data.platform_name}
                                         onChange={(e) => setData('platform_name', e.target.value)}
                                         className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                     />
-                                    {errors.platform_name && <p className="text-xs text-rose-500 mt-1">{errors.platform_name}</p>}
+                                    {errors.platform_name && <p className="mt-1 text-xs text-rose-500">{errors.platform_name}</p>}
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                                        Support Email
-                                    </label>
+                                    <label className="mb-1 block text-xs font-bold text-slate-700 dark:text-slate-300">Support Email</label>
                                     <input
                                         type="email"
                                         value={data.support_email}
                                         onChange={(e) => setData('support_email', e.target.value)}
                                         className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                     />
-                                    {errors.support_email && <p className="text-xs text-rose-500 mt-1">{errors.support_email}</p>}
+                                    {errors.support_email && <p className="mt-1 text-xs text-rose-500">{errors.support_email}</p>}
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                                        Support Phone
-                                    </label>
+                                    <label className="mb-1 block text-xs font-bold text-slate-700 dark:text-slate-300">Support Phone</label>
                                     <input
                                         type="text"
                                         value={data.contact_phone}
@@ -178,23 +156,20 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
 
                         {/* Section 2: Approval Rules */}
                         <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
-                            <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                                 <Shield className="h-4 w-4 text-emerald-500" />
                                 Listing & Approval Rules
                             </h2>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                                Control how new providers enter the public directory.
-                            </p>
+                            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Control how new providers enter the public directory.</p>
 
                             <div className="mt-4 divide-y divide-slate-100 dark:divide-white/5">
                                 {/* Require Instructor Approval Toggle */}
                                 <div className="flex items-center justify-between py-3">
                                     <div>
-                                        <p className="text-xs font-bold text-slate-900 dark:text-white">
-                                            Require Instructor Approval
-                                        </p>
+                                        <p className="text-xs font-bold text-slate-900 dark:text-white">Require Instructor Approval</p>
                                         <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                                            When enabled, newly registered instructors must be reviewed and approved by admin before appearing in public listings.
+                                            When enabled, newly registered instructors must be reviewed and approved by admin before appearing in
+                                            public listings.
                                         </p>
                                     </div>
                                     <input
@@ -208,9 +183,7 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
                                 {/* Require School Approval Toggle */}
                                 <div className="flex items-center justify-between py-3">
                                     <div>
-                                        <p className="text-xs font-bold text-slate-900 dark:text-white">
-                                            Require School / Center Approval
-                                        </p>
+                                        <p className="text-xs font-bold text-slate-900 dark:text-white">Require School / Center Approval</p>
                                         <p className="text-[11px] text-slate-500 dark:text-slate-400">
                                             Newly registered schools remain pending until verified.
                                         </p>
@@ -226,9 +199,7 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
                                 {/* Allow Public Registration */}
                                 <div className="flex items-center justify-between py-3">
                                     <div>
-                                        <p className="text-xs font-bold text-slate-900 dark:text-white">
-                                            Allow Public Registrations
-                                        </p>
+                                        <p className="text-xs font-bold text-slate-900 dark:text-white">Allow Public Registrations</p>
                                         <p className="text-[11px] text-slate-500 dark:text-slate-400">
                                             Allow visitors to register new student, instructor, and school accounts.
                                         </p>
@@ -245,18 +216,14 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
 
                         {/* Section 3: Financial & Commission Settings */}
                         <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
-                            <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                                 <DollarSign className="h-4 w-4 text-teal-500" />
                                 Platform Commission
                             </h2>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                                Platform fee percentage collected on lesson bookings.
-                            </p>
+                            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Platform fee percentage collected on lesson bookings.</p>
 
                             <div className="mt-4 max-w-xs">
-                                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                                    Booking Commission Fee (%)
-                                </label>
+                                <label className="mb-1 block text-xs font-bold text-slate-700 dark:text-slate-300">Booking Commission Fee (%)</label>
                                 <div className="relative">
                                     <input
                                         type="number"
@@ -265,9 +232,9 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
                                         step="0.5"
                                         value={data.booking_commission_percentage}
                                         onChange={(e) => setData('booking_commission_percentage', parseFloat(e.target.value) || 0)}
-                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 pl-3 pr-8 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 pr-8 pl-3 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                     />
-                                    <span className="absolute right-3 top-2.5 text-xs text-slate-400 font-bold">%</span>
+                                    <span className="absolute top-2.5 right-3 text-xs font-bold text-slate-400">%</span>
                                 </div>
                             </div>
                         </div>
@@ -283,7 +250,7 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition hover:bg-blue-700 disabled:opacity-50"
+                                className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-500/25 transition hover:bg-blue-700 disabled:opacity-50 sm:text-sm"
                             >
                                 <Save className="h-4 w-4" />
                                 {processing ? 'Saving...' : 'Save Settings'}
@@ -293,25 +260,23 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
                 ) : (
                     /* Audit Log Trail Table */
                     <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
-                        <div className="p-4 border-b border-slate-100 dark:border-white/5">
-                            <h2 className="text-sm font-bold text-slate-900 dark:text-white">
-                                Security & Administrative Audit Trail
-                            </h2>
+                        <div className="border-b border-slate-100 p-4 dark:border-white/5">
+                            <h2 className="text-sm font-bold text-slate-900 dark:text-white">Security & Administrative Audit Trail</h2>
                             <p className="text-xs text-slate-500">
                                 Detailed log of all approvals, rejections, suspensions, and configuration changes.
                             </p>
                         </div>
 
                         <div className="overflow-x-auto">
-                            <table className="w-full text-left border-collapse">
+                            <table className="w-full border-collapse text-left">
                                 <thead>
-                                    <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-400">
-                                        <th className="py-3 px-4">Timestamp</th>
-                                        <th className="py-3 px-4">Admin</th>
-                                        <th className="py-3 px-4">Action</th>
-                                        <th className="py-3 px-4">Target</th>
-                                        <th className="py-3 px-4">Summary / Notes</th>
-                                        <th className="py-3 px-4 text-right">IP Address</th>
+                                    <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold tracking-wider text-slate-500 uppercase dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-400">
+                                        <th className="px-4 py-3">Timestamp</th>
+                                        <th className="px-4 py-3">Admin</th>
+                                        <th className="px-4 py-3">Action</th>
+                                        <th className="px-4 py-3">Target</th>
+                                        <th className="px-4 py-3">Summary / Notes</th>
+                                        <th className="px-4 py-3 text-right">IP Address</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100 text-xs dark:divide-white/5">
@@ -329,15 +294,15 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
 
                                             return (
                                                 <tr key={log.id} className="hover:bg-slate-50/50 dark:hover:bg-white/[0.02]">
-                                                    <td className="py-3 px-4 text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                                                    <td className="px-4 py-3 whitespace-nowrap text-slate-500 dark:text-slate-400">
                                                         {new Date(log.created_at).toLocaleString()}
                                                     </td>
 
-                                                    <td className="py-3 px-4 font-semibold text-slate-900 dark:text-white">
+                                                    <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">
                                                         {log.admin?.name || 'System Admin'}
                                                     </td>
 
-                                                    <td className="py-3 px-4">
+                                                    <td className="px-4 py-3">
                                                         <span
                                                             className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-bold capitalize ${
                                                                 isApprove
@@ -351,15 +316,15 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
                                                         </span>
                                                     </td>
 
-                                                    <td className="py-3 px-4 font-medium text-slate-800 dark:text-slate-200">
+                                                    <td className="px-4 py-3 font-medium text-slate-800 dark:text-slate-200">
                                                         {log.target_type}: {log.target_name || `#${log.target_id}`}
                                                     </td>
 
-                                                    <td className="py-3 px-4 text-slate-600 dark:text-slate-400 max-w-xs truncate">
+                                                    <td className="max-w-xs truncate px-4 py-3 text-slate-600 dark:text-slate-400">
                                                         {log.details?.summary || log.details?.reason || JSON.stringify(log.details)}
                                                     </td>
 
-                                                    <td className="py-3 px-4 text-right font-mono text-[11px] text-slate-400">
+                                                    <td className="px-4 py-3 text-right font-mono text-[11px] text-slate-400">
                                                         {log.ip_address || '127.0.0.1'}
                                                     </td>
                                                 </tr>
@@ -389,7 +354,7 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
                                                     ? 'bg-blue-600 text-white'
                                                     : link.url
                                                       ? 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-300'
-                                                      : 'opacity-40 text-slate-400'
+                                                      : 'text-slate-400 opacity-40'
                                             }`}
                                         />
                                     ))}

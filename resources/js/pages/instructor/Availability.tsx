@@ -1,22 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import {
-    Calendar as CalendarIcon,
-    Check,
-    CheckCircle2,
-    ChevronLeft,
-    ChevronRight,
-    Clock,
-    Info,
-    Lock,
-    Plus,
-    Save,
-    Trash2,
-    User,
-    Wind,
-    X,
-} from 'lucide-react';
+import { Calendar as CalendarIcon, Check, CheckCircle2, ChevronLeft, ChevronRight, Clock, Lock, Wind, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 interface AvailabilitySlot {
@@ -54,10 +39,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const MONTH_NAMES = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-];
+const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const PRESET_TIME_SLOTS = [
     { label: 'Morning Session (08:00 - 12:00)', start: '08:00', end: '12:00' },
@@ -66,17 +48,9 @@ const PRESET_TIME_SLOTS = [
     { label: 'Full Day Wind Window (08:00 - 18:00)', start: '08:00', end: '18:00' },
 ];
 
-export default function Availability({
-    availabilities = [],
-    confirmedBookings = [],
-    month,
-    year,
-}: AvailabilityProps) {
+export default function Availability({ availabilities = [], confirmedBookings = [], month, year }: AvailabilityProps) {
     const [selectedDates, setSelectedDates] = useState<string[]>([]);
     const [selectedTimeSlot, setSelectedTimeSlot] = useState(PRESET_TIME_SLOTS[1]);
-    const [customStartTime, setCustomStartTime] = useState('');
-    const [customEndTime, setCustomEndTime] = useState('');
-    const [statusFilter, setStatusFilter] = useState<'available' | 'unavailable'>('available');
 
     // Calendar calculation
     const daysInMonth = new Date(year, month, 0).getDate();
@@ -131,7 +105,7 @@ export default function Availability({
     };
 
     // Save availability form
-    const { post, processing } = useForm();
+    const { processing } = useForm();
 
     const handleSaveAvailability = (isAvailable: boolean) => {
         if (selectedDates.length === 0) return;
@@ -140,8 +114,8 @@ export default function Availability({
             route('instructor.availability.store'),
             {
                 dates: selectedDates,
-                start_time: customStartTime || selectedTimeSlot.start,
-                end_time: customEndTime || selectedTimeSlot.end,
+                start_time: selectedTimeSlot.start,
+                end_time: selectedTimeSlot.end,
                 is_available: isAvailable,
             },
             {
@@ -149,7 +123,7 @@ export default function Availability({
                 onSuccess: () => {
                     setSelectedDates([]);
                 },
-            }
+            },
         );
     };
 
@@ -427,9 +401,7 @@ export default function Availability({
                                 <Lock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                                 Confirmed Bookings ({confirmedBookings.length})
                             </h3>
-                            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                                Reserved slots for this month
-                            </p>
+                            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Reserved slots for this month</p>
 
                             <div className="mt-4 space-y-2.5">
                                 {confirmedBookings.length === 0 ? (
@@ -450,7 +422,9 @@ export default function Availability({
                                                     <span className="block font-semibold text-slate-900 dark:text-white">
                                                         {b.student?.name || 'Student'}
                                                     </span>
-                                                    <span className="text-[11px] text-slate-500 dark:text-slate-400">{b.date} {b.time ? `• ${b.time}` : ''}</span>
+                                                    <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                                                        {b.date} {b.time ? `• ${b.time}` : ''}
+                                                    </span>
                                                 </div>
                                             </div>
                                             <span className="rounded bg-blue-100 px-2 py-0.5 text-[10px] font-semibold text-blue-700 dark:bg-blue-500/10 dark:text-blue-300">

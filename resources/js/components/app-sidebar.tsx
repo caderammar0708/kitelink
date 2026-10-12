@@ -237,7 +237,11 @@ export function AppSidebar() {
     const navLabel = isAdmin ? 'Admin Menu' : isInstructor ? 'Instructor Menu' : isSchool ? 'School Menu' : 'Main Menu';
 
     return (
-        <Sidebar collapsible="icon" variant="inset" className="border-r border-slate-200/80 bg-white text-slate-800 transition-colors duration-200 dark:border-white/10 dark:bg-[#070b12] dark:text-slate-200">
+        <Sidebar
+            collapsible="icon"
+            variant="inset"
+            className="border-r border-slate-200/80 bg-white text-slate-800 transition-colors duration-200 dark:border-white/10 dark:bg-[#070b12] dark:text-slate-200"
+        >
             <SidebarHeader className="border-b border-slate-200/80 px-3 py-3 dark:border-white/10">
                 <SidebarMenu>
                     <SidebarMenuItem>

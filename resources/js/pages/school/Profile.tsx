@@ -14,8 +14,6 @@ import {
     Phone,
     Plus,
     Save,
-    ShieldCheck,
-    Sparkles,
     Trash2,
     User,
     Wind,
@@ -84,7 +82,10 @@ export default function Profile({ school }: ProfileProps) {
 
     const toggleFacility = (facility: string) => {
         if (data.facilities.includes(facility)) {
-            setData('facilities', data.facilities.filter((f) => f !== facility));
+            setData(
+                'facilities',
+                data.facilities.filter((f) => f !== facility),
+            );
         } else {
             setData('facilities', [...data.facilities, facility]);
         }
@@ -109,7 +110,10 @@ export default function Profile({ school }: ProfileProps) {
     };
 
     const removeGearItem = (index: number) => {
-        setData('gear_list', data.gear_list.filter((_, i) => i !== index));
+        setData(
+            'gear_list',
+            data.gear_list.filter((_, i) => i !== index),
+        );
     };
 
     const addPhotoUrl = (e: React.FormEvent) => {
@@ -122,7 +126,10 @@ export default function Profile({ school }: ProfileProps) {
     };
 
     const removePhoto = (index: number) => {
-        setData('photos', data.photos.filter((_, i) => i !== index));
+        setData(
+            'photos',
+            data.photos.filter((_, i) => i !== index),
+        );
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -147,7 +154,7 @@ export default function Profile({ school }: ProfileProps) {
                         <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                             School & Center Profile
                         </h1>
-                        <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             Fill in your center description, available facilities, equipment fleet, and certifications to showcase to clients.
                         </p>
                     </div>
@@ -156,7 +163,7 @@ export default function Profile({ school }: ProfileProps) {
                         type="button"
                         onClick={handleSubmit}
                         disabled={processing}
-                        className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md shadow-purple-500/25 transition hover:bg-purple-500 disabled:opacity-50 self-start sm:self-auto"
+                        className="inline-flex items-center gap-2 self-start rounded-xl bg-purple-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-purple-500/25 transition hover:bg-purple-500 disabled:opacity-50 sm:self-auto sm:text-sm"
                     >
                         {processing ? (
                             <LoaderCircle className="h-4 w-4 animate-spin" />
@@ -176,15 +183,13 @@ export default function Profile({ school }: ProfileProps) {
                             <Building2 className="h-5 w-5 text-purple-500" />
                             Business Information
                         </h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
+                        <p className="mb-6 text-xs text-slate-500 dark:text-slate-400">
                             Core identification details and contact person for your kitesurf school.
                         </p>
 
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="space-y-1.5 sm:col-span-2">
-                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                    School / Business Name *
-                                </label>
+                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">School / Business Name *</label>
                                 <input
                                     type="text"
                                     required
@@ -196,86 +201,76 @@ export default function Profile({ school }: ProfileProps) {
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                    Location (Spot, City, Country) *
-                                </label>
+                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Location (Spot, City, Country) *</label>
                                 <div className="relative">
-                                    <MapPin className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                                    <MapPin className="pointer-events-none absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
                                     <input
                                         type="text"
                                         required
                                         value={data.location}
                                         onChange={(e) => setData('location', e.target.value)}
                                         placeholder="e.g. Tarifa, Cadiz, Spain"
-                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3.5 py-2 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-3.5 pl-9 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                     />
                                 </div>
                                 {errors.location && <p className="text-xs text-rose-500">{errors.location}</p>}
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                    Contact Person Name
-                                </label>
+                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Contact Person Name</label>
                                 <div className="relative">
-                                    <User className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                                    <User className="pointer-events-none absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
                                     <input
                                         type="text"
                                         value={data.contact_name}
                                         onChange={(e) => setData('contact_name', e.target.value)}
                                         placeholder="Director or Lead Instructor"
-                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3.5 py-2 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-3.5 pl-9 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                     />
                                 </div>
                                 {errors.contact_name && <p className="text-xs text-rose-500">{errors.contact_name}</p>}
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                    School Phone Number
-                                </label>
+                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">School Phone Number</label>
                                 <div className="relative">
-                                    <Phone className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                                    <Phone className="pointer-events-none absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
                                     <input
                                         type="tel"
                                         value={data.phone}
                                         onChange={(e) => setData('phone', e.target.value)}
                                         placeholder="+34 600 000 000"
-                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3.5 py-2 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-3.5 pl-9 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                     />
                                 </div>
                                 {errors.phone && <p className="text-xs text-rose-500">{errors.phone}</p>}
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                    Official Website
-                                </label>
+                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Official Website</label>
                                 <div className="relative">
-                                    <Globe className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                                    <Globe className="pointer-events-none absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
                                     <input
                                         type="url"
                                         value={data.website}
                                         onChange={(e) => setData('website', e.target.value)}
                                         placeholder="https://www.yourkiteschool.com"
-                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3.5 py-2 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-3.5 pl-9 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                     />
                                 </div>
                                 {errors.website && <p className="text-xs text-rose-500">{errors.website}</p>}
                             </div>
 
                             <div className="space-y-1.5 sm:col-span-2">
-                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                                    Logo / Badge Image URL
-                                </label>
+                                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Logo / Badge Image URL</label>
                                 <div className="relative">
-                                    <ImageIcon className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                                    <ImageIcon className="pointer-events-none absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
                                     <input
                                         type="text"
                                         value={data.logo}
                                         onChange={(e) => setData('logo', e.target.value)}
                                         placeholder="https://example.com/logo.png"
-                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3.5 py-2 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pr-3.5 pl-9 text-sm text-slate-900 focus:border-purple-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                                     />
                                 </div>
                                 {errors.logo && <p className="text-xs text-rose-500">{errors.logo}</p>}
@@ -289,7 +284,7 @@ export default function Profile({ school }: ProfileProps) {
                             <Wind className="h-5 w-5 text-blue-500" />
                             About the School & Spot
                         </h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                        <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">
                             Describe your school's history, vibe, teaching philosophy, conditions, wind season, and what makes your center special.
                         </p>
 
@@ -309,12 +304,10 @@ export default function Profile({ school }: ProfileProps) {
                             <Layers className="h-5 w-5 text-indigo-500" />
                             Center Facilities & Amenities
                         </h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                            Select all amenities available on-site at your kite center:
-                        </p>
+                        <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">Select all amenities available on-site at your kite center:</p>
 
                         {/* Preset Badges */}
-                        <div className="flex flex-wrap gap-2 mb-4">
+                        <div className="mb-4 flex flex-wrap gap-2">
                             {PRESET_FACILITIES.map((f) => {
                                 const selected = data.facilities.includes(f);
                                 return (
@@ -336,7 +329,7 @@ export default function Profile({ school }: ProfileProps) {
                         </div>
 
                         {/* Custom Facility input */}
-                        <div className="flex gap-2 max-w-md">
+                        <div className="flex max-w-md gap-2">
                             <input
                                 type="text"
                                 value={customFacility}
@@ -360,8 +353,9 @@ export default function Profile({ school }: ProfileProps) {
                             <Award className="h-5 w-5 text-amber-500" />
                             Certifications & Official Center Status
                         </h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                            List your formal affiliations, e.g. IKO Official Center, VDWS Watersport School, BKSA Recognized Center, RYA Training Center.
+                        <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">
+                            List your formal affiliations, e.g. IKO Official Center, VDWS Watersport School, BKSA Recognized Center, RYA Training
+                            Center.
                         </p>
 
                         <input
@@ -380,13 +374,13 @@ export default function Profile({ school }: ProfileProps) {
                             <Package className="h-5 w-5 text-emerald-500" />
                             Gear & Equipment Fleet
                         </h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                        <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">
                             Show clients the brands and gear models you provide for lessons and equipment rentals.
                         </p>
 
                         {/* Current Gear List Chips */}
                         {data.gear_list.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mb-4">
+                            <div className="mb-4 flex flex-wrap gap-2">
                                 {data.gear_list.map((item, idx) => (
                                     <span
                                         key={idx}
@@ -406,7 +400,7 @@ export default function Profile({ school }: ProfileProps) {
                             </div>
                         )}
 
-                        <div className="flex gap-2 max-w-md">
+                        <div className="flex max-w-md gap-2">
                             <input
                                 type="text"
                                 value={newGearItem}
@@ -430,20 +424,20 @@ export default function Profile({ school }: ProfileProps) {
                             <ImageIcon className="h-5 w-5 text-blue-500" />
                             Spot & Center Photos
                         </h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                        <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">
                             Add photo links to display your beach spot, kitesurf lessons, station building, and equipment lockers.
                         </p>
 
                         {/* Current Photos Grid */}
                         {data.photos.length > 0 && (
-                            <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mb-4">
+                            <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                                 {data.photos.map((url, idx) => (
                                     <div key={idx} className="group relative aspect-video overflow-hidden rounded-2xl bg-slate-100 dark:bg-white/5">
                                         <img src={url} alt="Center photo" className="h-full w-full object-cover" />
                                         <button
                                             type="button"
                                             onClick={() => removePhoto(idx)}
-                                            className="absolute top-2 right-2 rounded-lg bg-black/60 p-1 text-white opacity-0 group-hover:opacity-100 transition hover:bg-rose-600"
+                                            className="absolute top-2 right-2 rounded-lg bg-black/60 p-1 text-white opacity-0 transition group-hover:opacity-100 hover:bg-rose-600"
                                         >
                                             <Trash2 className="h-3.5 w-3.5" />
                                         </button>
@@ -452,7 +446,7 @@ export default function Profile({ school }: ProfileProps) {
                             </div>
                         )}
 
-                        <div className="flex gap-2 max-w-md">
+                        <div className="flex max-w-md gap-2">
                             <input
                                 type="text"
                                 value={newPhotoUrl}
@@ -477,11 +471,7 @@ export default function Profile({ school }: ProfileProps) {
                             disabled={processing}
                             className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-purple-500/25 transition hover:bg-purple-500 disabled:opacity-50"
                         >
-                            {processing ? (
-                                <LoaderCircle className="h-4 w-4 animate-spin" />
-                            ) : (
-                                <Save className="h-4 w-4" />
-                            )}
+                            {processing ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                             Save Center Profile Changes
                         </button>
                     </div>

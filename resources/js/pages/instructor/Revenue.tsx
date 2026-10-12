@@ -1,25 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import {
-    ArrowDownRight,
-    ArrowUpRight,
-    Building2,
-    CheckCircle2,
-    CreditCard,
-    DollarSign,
-    Download,
-    Eye,
-    FileText,
-    HelpCircle,
-    Info,
-    Printer,
-    Save,
-    TrendingUp,
-    Wallet,
-    Wind,
-    X,
-} from 'lucide-react';
+import { Building2, CheckCircle2, CreditCard, DollarSign, Eye, FileText, Info, Printer, Save, TrendingUp, Wallet, Wind, X } from 'lucide-react';
 import { useState } from 'react';
 
 interface Transaction {
@@ -49,12 +31,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Revenue({
-    totalEarned = 0,
-    thisMonth = 0,
-    pendingPayout = 0,
-    transactions = [],
-}: RevenueProps) {
+export default function Revenue({ totalEarned = 0, thisMonth = 0, pendingPayout = 0, transactions = [] }: RevenueProps) {
     const [activePayoutMethod, setActivePayoutMethod] = useState<'bank' | 'paypal'>('bank');
     const [bankDetails, setBankDetails] = useState({
         accountHolder: 'Alex Henderson',
@@ -80,15 +57,15 @@ export default function Revenue({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Revenue & Earnings - KiteLink" />
 
-            <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white sm:p-6 lg:p-8">
+            <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* Header */}
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                             <DollarSign className="h-7 w-7 text-emerald-600 dark:text-emerald-400" />
                             Revenue &amp; Payouts
                         </h1>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             Track total earnings, automatic payout schedules, and download invoices for completed lessons
                         </p>
                     </div>
@@ -104,13 +81,17 @@ export default function Revenue({
                     {/* Total Earned */}
                     <div className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">Total Lifetime Earned</span>
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                                Total Lifetime Earned
+                            </span>
                             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-600 dark:border-emerald-400/30 dark:bg-emerald-400/15 dark:text-emerald-400">
                                 <DollarSign className="h-5 w-5" />
                             </div>
                         </div>
                         <div className="mt-4">
-                            <span className="text-3xl font-extrabold text-slate-900 dark:text-white sm:text-4xl">${totalEarned.toLocaleString()}</span>
+                            <span className="text-3xl font-extrabold text-slate-900 sm:text-4xl dark:text-white">
+                                ${totalEarned.toLocaleString()}
+                            </span>
                             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Across all completed student lessons</p>
                         </div>
                     </div>
@@ -118,13 +99,17 @@ export default function Revenue({
                     {/* Pending Payout */}
                     <div className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">Pending Escrow Payout</span>
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                                Pending Escrow Payout
+                            </span>
                             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 text-blue-600 dark:border-[#3b82f6]/30 dark:bg-[#3b82f6]/15 dark:text-[#5bb4ff]">
                                 <Wallet className="h-5 w-5" />
                             </div>
                         </div>
                         <div className="mt-4">
-                            <span className="text-3xl font-extrabold text-blue-600 dark:text-[#8acbff] sm:text-4xl">${pendingPayout.toLocaleString()}</span>
+                            <span className="text-3xl font-extrabold text-blue-600 sm:text-4xl dark:text-[#8acbff]">
+                                ${pendingPayout.toLocaleString()}
+                            </span>
                             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Releases upon lesson completion</p>
                         </div>
                     </div>
@@ -132,13 +117,15 @@ export default function Revenue({
                     {/* This Month */}
                     <div className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">This Month Earnings</span>
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                                This Month Earnings
+                            </span>
                             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-300 bg-amber-50 text-amber-600 dark:border-amber-400/30 dark:bg-amber-400/15 dark:text-amber-400">
                                 <TrendingUp className="h-5 w-5" />
                             </div>
                         </div>
                         <div className="mt-4">
-                            <span className="text-3xl font-extrabold text-slate-900 dark:text-white sm:text-4xl">${thisMonth.toLocaleString()}</span>
+                            <span className="text-3xl font-extrabold text-slate-900 sm:text-4xl dark:text-white">${thisMonth.toLocaleString()}</span>
                             <p className="mt-1 text-xs text-emerald-600 dark:text-emerald-400">Current calendar cycle</p>
                         </div>
                     </div>
@@ -147,7 +134,7 @@ export default function Revenue({
                 {/* 2-Column Section: Transactions Table & Payout Settings */}
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
                     {/* Transactions History Table (8 cols) */}
-                    <div className="space-y-4 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl sm:p-6 lg:col-span-8">
+                    <div className="space-y-4 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm sm:p-6 lg:col-span-8 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl">
                         <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-white/10">
                             <div>
                                 <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
@@ -208,7 +195,7 @@ export default function Revenue({
 
                     {/* Payout Method Settings (4 cols) */}
                     <div className="space-y-6 lg:col-span-4">
-                        <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl sm:p-6">
+                        <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm sm:p-6 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-2xl dark:backdrop-blur-xl">
                             <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                                 <CreditCard className="h-5 w-5 text-blue-600 dark:text-[#5bb4ff]" />
                                 Payout Method Settings
@@ -218,7 +205,7 @@ export default function Revenue({
                             </p>
 
                             {payoutSaved && (
-                                <div className="mt-3 flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-300 p-3 text-xs text-emerald-800 dark:bg-emerald-950/60 dark:border-emerald-500/30 dark:text-emerald-300">
+                                <div className="mt-3 flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 p-3 text-xs text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-950/60 dark:text-emerald-300">
                                     <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                                     Payout preferences saved!
                                 </div>
@@ -334,7 +321,8 @@ export default function Revenue({
                                 <div>
                                     <strong className="text-slate-900 dark:text-slate-200">0% Platform Commission</strong>
                                     <p className="mt-0.5 text-[11px]">
-                                        KiteLink pays instructors 100% of your listed hourly rate. Student payments are processed securely via Stripe Escrow.
+                                        KiteLink pays instructors 100% of your listed hourly rate. Student payments are processed securely via Stripe
+                                        Escrow.
                                     </p>
                                 </div>
                             </div>
@@ -346,7 +334,7 @@ export default function Revenue({
             {/* Invoice Modal */}
             {selectedInvoice && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm dark:bg-black/75 dark:backdrop-blur-md">
-                    <div className="relative w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl text-slate-800 dark:border-white/20 dark:bg-[#070b12] dark:text-slate-100 sm:p-8">
+                    <div className="relative w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 text-slate-800 shadow-2xl sm:p-8 dark:border-white/20 dark:bg-[#070b12] dark:text-slate-100">
                         <button
                             type="button"
                             onClick={() => setSelectedInvoice(null)}
@@ -376,7 +364,9 @@ export default function Revenue({
                             </div>
                             <div className="flex justify-between text-slate-600 dark:text-slate-300">
                                 <span>Session Description:</span>
-                                <span className="font-semibold text-slate-900 dark:text-white">{selectedInvoice.lesson_type || 'Private Coaching'}</span>
+                                <span className="font-semibold text-slate-900 dark:text-white">
+                                    {selectedInvoice.lesson_type || 'Private Coaching'}
+                                </span>
                             </div>
                             <div className="flex justify-between border-t border-slate-200 pt-3 text-sm dark:border-white/10">
                                 <span className="font-bold text-slate-900 dark:text-white">Total Amount Paid:</span>

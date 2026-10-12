@@ -1,22 +1,10 @@
 import ExpandableProfileCard from '@/components/expandable-profile-card';
-import SchoolProfileContent, {
-    SchoolProfileSkeleton,
-} from '@/components/school-profile-content';
+import SchoolProfileContent, { SchoolProfileSkeleton } from '@/components/school-profile-content';
 import AppLayout from '@/layouts/app-layout';
 import PublicLayout from '@/layouts/public-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import {
-    Award,
-    Building2,
-    Compass,
-    MapPin,
-    Search,
-    ShieldCheck,
-    Users,
-    Waves,
-    Wind,
-} from 'lucide-react';
+import { Award, Building2, MapPin, Search, ShieldCheck, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 interface InstructorItem {
@@ -71,16 +59,8 @@ export function Index({ schools = [], filters }: IndexProps) {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: isSchool
-                ? 'School Dashboard'
-                : isInstructor
-                ? 'Instructor Dashboard'
-                : 'Dashboard',
-            href: isSchool
-                ? '/school/dashboard'
-                : isInstructor
-                ? '/instructor/dashboard'
-                : '/dashboard',
+            title: isSchool ? 'School Dashboard' : isInstructor ? 'Instructor Dashboard' : 'Dashboard',
+            href: isSchool ? '/school/dashboard' : isInstructor ? '/instructor/dashboard' : '/dashboard',
         },
         {
             title: 'Explore Kite Centers',
@@ -110,16 +90,9 @@ export function Index({ schools = [], filters }: IndexProps) {
             const certs = (sch.certifications || '').toLowerCase();
             const q = search.toLowerCase();
 
-            const matchesSearch =
-                !q ||
-                name.includes(q) ||
-                desc.includes(q) ||
-                location.includes(q) ||
-                certs.includes(q);
+            const matchesSearch = !q || name.includes(q) || desc.includes(q) || location.includes(q) || certs.includes(q);
 
-            const matchesLocation =
-                selectedLocation === 'all' ||
-                location.includes(selectedLocation.toLowerCase());
+            const matchesLocation = selectedLocation === 'all' || location.includes(selectedLocation.toLowerCase());
 
             return matchesSearch && matchesLocation;
         });
@@ -133,7 +106,7 @@ export function Index({ schools = [], filters }: IndexProps) {
         >
             {/* Hero Header Section */}
             <div className="relative overflow-hidden rounded-3xl border border-blue-100 bg-gradient-to-r from-blue-50/90 via-sky-50/50 to-indigo-50/40 p-6 shadow-sm backdrop-blur-2xl sm:p-10 lg:p-12 dark:border-white/15 dark:bg-gradient-to-r dark:from-blue-950/60 dark:via-slate-900/80 dark:to-slate-950/90 dark:shadow-2xl">
-                <div className="pointer-events-none absolute top-0 right-0 -mr-12 -mt-12 h-80 w-80 rounded-full bg-[#3b82f6]/10 blur-3xl dark:bg-[#3b82f6]/15" />
+                <div className="pointer-events-none absolute top-0 right-0 -mt-12 -mr-12 h-80 w-80 rounded-full bg-[#3b82f6]/10 blur-3xl dark:bg-[#3b82f6]/15" />
 
                 <div className="relative z-10 max-w-3xl space-y-4">
                     <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1.5 text-xs font-bold tracking-wider text-blue-700 uppercase backdrop-blur-md dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/15 dark:text-[#8acbff]">
@@ -141,7 +114,7 @@ export function Index({ schools = [], filters }: IndexProps) {
                         Approved Kitesurf Centers &amp; Academies
                     </div>
 
-                    <h1 className="text-3xl font-black leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white">
+                    <h1 className="text-3xl leading-tight font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white">
                         Explore Premier <br className="hidden sm:inline" />
                         <span className="bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent dark:from-[#b8e6ff] dark:via-[#8acbff] dark:to-[#4da6ff]">
                             Kite Centers &amp; Schools
@@ -149,7 +122,8 @@ export function Index({ schools = [], filters }: IndexProps) {
                     </h1>
 
                     <p className="max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base lg:text-lg dark:text-slate-300/90">
-                        Discover top-rated, certified kite schools worldwide. Browse facilities, inspect certified coaching rosters, and book lesson packages directly with zero commission.
+                        Discover top-rated, certified kite schools worldwide. Browse facilities, inspect certified coaching rosters, and book lesson
+                        packages directly with zero commission.
                     </p>
                 </div>
 
@@ -248,7 +222,12 @@ export function Index({ schools = [], filters }: IndexProps) {
                         const coverPhoto = school.photos?.[0] || school.logo || null;
                         const instructorsCount = school.instructors?.length || 0;
                         const facilities = Array.isArray(school.facilities) ? school.facilities : [];
-                        const certTags = school.certifications ? school.certifications.split(',').map((c) => c.trim()).filter(Boolean) : [];
+                        const certTags = school.certifications
+                            ? school.certifications
+                                  .split(',')
+                                  .map((c) => c.trim())
+                                  .filter(Boolean)
+                            : [];
                         const tags = [...facilities, ...certTags];
 
                         const details = [
@@ -256,29 +235,41 @@ export function Index({ schools = [], filters }: IndexProps) {
                                 label: 'Coaches Roster',
                                 value: `${instructorsCount} Certified ${instructorsCount === 1 ? 'Instructor' : 'Instructors'}`,
                             },
-                            ...(school.packages && school.packages.length > 0 ? [{
-                                label: 'Lesson Packages',
-                                value: (
-                                    <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">
-                                        From ${Math.min(...school.packages.map((p) => Number(p.price) || 0))}
-                                    </span>
-                                ),
-                            }] : []),
-                            ...(school.phone ? [{
-                                label: 'Phone / WhatsApp',
-                                value: school.phone,
-                            }] : []),
-                            ...(school.website ? [{
-                                label: 'Website',
-                                value: school.website.replace(/^https?:\/\//, ''),
-                            }] : []),
+                            ...(school.packages && school.packages.length > 0
+                                ? [
+                                      {
+                                          label: 'Lesson Packages',
+                                          value: (
+                                              <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
+                                                  From ${Math.min(...school.packages.map((p) => Number(p.price) || 0))}
+                                              </span>
+                                          ),
+                                      },
+                                  ]
+                                : []),
+                            ...(school.phone
+                                ? [
+                                      {
+                                          label: 'Phone / WhatsApp',
+                                          value: school.phone,
+                                      },
+                                  ]
+                                : []),
+                            ...(school.website
+                                ? [
+                                      {
+                                          label: 'Website',
+                                          value: school.website.replace(/^https?:\/\//, ''),
+                                      },
+                                  ]
+                                : []),
                         ];
 
                         const content = (
                             <div className="space-y-4 pt-1">
                                 {school.packages && school.packages.length > 0 && (
                                     <div>
-                                        <h4 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                                        <h4 className="mb-2 text-[10px] font-bold tracking-wider text-slate-400 uppercase sm:text-[11px] dark:text-slate-500">
                                             Lesson Packages ({school.packages.length})
                                         </h4>
                                         <div className="grid grid-cols-1 gap-1.5">
@@ -288,16 +279,12 @@ export function Index({ schools = [], filters }: IndexProps) {
                                                     className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50/70 px-3 py-2 text-xs dark:border-white/10 dark:bg-white/[0.03]"
                                                 >
                                                     <div className="min-w-0 pr-2">
-                                                        <div className="font-semibold text-slate-800 dark:text-slate-200 truncate">
-                                                            {pkg.name}
-                                                        </div>
+                                                        <div className="truncate font-semibold text-slate-800 dark:text-slate-200">{pkg.name}</div>
                                                         {pkg.duration_label && (
-                                                            <div className="text-[10px] text-slate-500 dark:text-slate-400">
-                                                                {pkg.duration_label}
-                                                            </div>
+                                                            <div className="text-[10px] text-slate-500 dark:text-slate-400">{pkg.duration_label}</div>
                                                         )}
                                                     </div>
-                                                    <span className="font-extrabold text-emerald-600 dark:text-emerald-400 shrink-0">
+                                                    <span className="shrink-0 font-extrabold text-emerald-600 dark:text-emerald-400">
                                                         ${pkg.price}
                                                     </span>
                                                 </div>
@@ -308,7 +295,7 @@ export function Index({ schools = [], filters }: IndexProps) {
 
                                 {school.instructors && school.instructors.length > 0 && (
                                     <div>
-                                        <h4 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                                        <h4 className="mb-2 text-[10px] font-bold tracking-wider text-slate-400 uppercase sm:text-[11px] dark:text-slate-500">
                                             Instructor Roster ({school.instructors.length})
                                         </h4>
                                         <div className="flex flex-wrap gap-2">
@@ -327,7 +314,7 @@ export function Index({ schools = [], filters }: IndexProps) {
                                                                 insName.charAt(0)
                                                             )}
                                                         </div>
-                                                        <span className="text-slate-700 dark:text-slate-300 font-medium truncate max-w-[120px]">
+                                                        <span className="max-w-[120px] truncate font-medium text-slate-700 dark:text-slate-300">
                                                             {insName}
                                                         </span>
                                                     </div>

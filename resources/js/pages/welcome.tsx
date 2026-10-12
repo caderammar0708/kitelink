@@ -1,11 +1,12 @@
 import ThemeToggle from '@/components/theme-toggle';
 import WeatherWidget from '@/components/weather-widget';
+import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import React, { useRef } from 'react';
 
 export default function KiteLinkLanding() {
     const seasonRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const { auth } = usePage<any>().props;
+    const { auth } = usePage<SharedData>().props;
     const isAuthenticated = !!auth?.user;
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
@@ -36,12 +37,9 @@ export default function KiteLinkLanding() {
             <div className="app">
                 {/* NAVBAR */}
                 <nav className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200/60 py-5 dark:border-white/10">
-                    <Link
-                        href={route('home')}
-                        className="group flex items-center gap-2.5 no-underline transition-transform hover:scale-105"
-                    >
+                    <Link href={route('home')} className="group flex items-center gap-2.5 no-underline transition-transform hover:scale-105">
                         <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-blue-200 bg-white/90 text-blue-600 shadow-sm backdrop-blur-md dark:border-[#5bb4ff]/40 dark:bg-gradient-to-br dark:from-[#1f6eff]/30 dark:to-[#5bb4ff]/15 dark:text-[#5bb4ff] dark:shadow-[0_0_12px_rgba(91,180,255,0.3)]">
-                            <i className="fas fa-wind text-lg text-blue-600 dark:text-[#5bb4ff] transition-transform group-hover:rotate-6" />
+                            <i className="fas fa-wind text-lg text-blue-600 transition-transform group-hover:rotate-6 dark:text-[#5bb4ff]" />
                         </div>
                         <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent dark:from-[#b8e6ff] dark:via-[#8acbff] dark:to-[#4da6ff]">
                             KiteLink
@@ -64,7 +62,7 @@ export default function KiteLinkLanding() {
                             <>
                                 <Link
                                     href={route('login')}
-                                    className="rounded-full border border-slate-300 bg-white/95 px-4 py-1.5 text-xs font-semibold text-slate-800 shadow-xs backdrop-blur-md transition-all duration-200 hover:border-slate-400 hover:bg-white hover:text-slate-950 hover:shadow-sm dark:border-white/15 dark:bg-white/[0.07] dark:text-slate-200 dark:hover:bg-white/[0.14] dark:hover:text-white sm:text-sm"
+                                    className="rounded-full border border-slate-300 bg-white/95 px-4 py-1.5 text-xs font-semibold text-slate-800 shadow-xs backdrop-blur-md transition-all duration-200 hover:border-slate-400 hover:bg-white hover:text-slate-950 hover:shadow-sm sm:text-sm dark:border-white/15 dark:bg-white/[0.07] dark:text-slate-200 dark:hover:bg-white/[0.14] dark:hover:text-white"
                                 >
                                     Sign In
                                 </Link>
@@ -81,8 +79,8 @@ export default function KiteLinkLanding() {
                 </nav>
 
                 {/* HERO */}
-                <section className="flex max-w-3xl flex-col justify-center py-8 sm:py-12 animate-slideUp">
-                    <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-blue-200/90 bg-white/95 px-3 py-1 text-xs font-bold text-blue-700 shadow-sm backdrop-blur-md dark:border-[#5bb4ff]/30 dark:bg-[#1f6eff]/15 dark:text-[#b0daff] dark:shadow-none animate-floatBadge">
+                <section className="animate-slideUp flex max-w-3xl flex-col justify-center py-8 sm:py-12">
+                    <div className="animate-floatBadge inline-flex w-fit items-center gap-1.5 rounded-full border border-blue-200/90 bg-white/95 px-3 py-1 text-xs font-bold text-blue-700 shadow-sm backdrop-blur-md dark:border-[#5bb4ff]/30 dark:bg-[#1f6eff]/15 dark:text-[#b0daff] dark:shadow-none">
                         <i className="fas fa-globe text-blue-600 dark:text-[#5bb4ff]" />
                         <span>Sri Lanka · year-round</span>
                     </div>
@@ -145,7 +143,7 @@ export default function KiteLinkLanding() {
                     </h2>
                     <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
                         {/* Affiliated Center Card */}
-                        <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-md shadow-slate-900/5 backdrop-blur-xl transition-all duration-300 hover:border-blue-300 hover:shadow-lg dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-xl dark:hover:border-[#5bb4ff]/30 sm:p-7">
+                        <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-md shadow-slate-900/5 backdrop-blur-xl transition-all duration-300 hover:border-blue-300 hover:shadow-lg sm:p-7 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-xl dark:hover:border-[#5bb4ff]/30">
                             <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-white/40">
                                 <i className="fas fa-flag text-blue-600 dark:text-[#5bb4ff]" />
                                 <span>AFFILIATED CENTER</span>
@@ -170,7 +168,7 @@ export default function KiteLinkLanding() {
                         </div>
 
                         {/* Included Services Card */}
-                        <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-md shadow-slate-900/5 backdrop-blur-xl transition-all duration-300 hover:border-blue-300 hover:shadow-lg dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-xl dark:hover:border-[#5bb4ff]/30 sm:p-7">
+                        <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-md shadow-slate-900/5 backdrop-blur-xl transition-all duration-300 hover:border-blue-300 hover:shadow-lg sm:p-7 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-xl dark:hover:border-[#5bb4ff]/30">
                             <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-white/40">
                                 <i className="fas fa-list text-blue-600 dark:text-[#5bb4ff]" />
                                 <span>Included Services</span>
@@ -183,7 +181,7 @@ export default function KiteLinkLanding() {
                                 ].map((item, idx) => (
                                     <li
                                         key={idx}
-                                        className="flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/80 px-4 py-3 text-xs font-semibold text-slate-800 transition-all duration-200 hover:border-slate-300 hover:bg-slate-100/80 dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-200 sm:text-sm"
+                                        className="flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/80 px-4 py-3 text-xs font-semibold text-slate-800 transition-all duration-200 hover:border-slate-300 hover:bg-slate-100/80 sm:text-sm dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-200"
                                     >
                                         <i className={`${item.icon} text-blue-600 dark:text-[#5bb4ff]`} />
                                         <span>{item.text}</span>
@@ -229,11 +227,9 @@ export default function KiteLinkLanding() {
                                             <i className="fas fa-star" key={i} />
                                         ))}
                                     </div>
-                                    <p className="text-xs leading-relaxed text-slate-600 line-clamp-3 dark:text-slate-300">
-                                        {r.text}
-                                    </p>
+                                    <p className="line-clamp-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">{r.text}</p>
                                 </div>
-                                <div className="mt-3 text-xs font-bold text-blue-600 hover:text-blue-700 dark:text-[#5bb4ff] dark:hover:text-[#8acbff] cursor-pointer">
+                                <div className="mt-3 cursor-pointer text-xs font-bold text-blue-600 hover:text-blue-700 dark:text-[#5bb4ff] dark:hover:text-[#8acbff]">
                                     Read more →
                                 </div>
                             </div>
@@ -242,46 +238,48 @@ export default function KiteLinkLanding() {
                 </div>
 
                 {/* WINDY SEASONS INTRO */}
-                <div className="mt-10 rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-md shadow-slate-950/5 backdrop-blur-xl transition-all duration-300 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-xl sm:p-8">
+                <div className="mt-10 rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-md shadow-slate-950/5 backdrop-blur-xl transition-all duration-300 sm:p-8 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-xl">
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                        <h2 className="flex items-center gap-2.5 text-2xl font-black tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                        <h2 className="flex items-center gap-2.5 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                             <i className="fas fa-wind text-blue-600 dark:text-[#5bb4ff]" />
                             <span>Two distinct windy seasons</span>
                         </h2>
                         <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700 shadow-xs dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400">
-                            <i className="fas fa-circle text-[8px] text-emerald-500 animate-pulse" />
+                            <i className="fas fa-circle animate-pulse text-[8px] text-emerald-500" />
                             <span>Live Spot Wind</span>
                         </span>
                     </div>
 
-                    <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
+                    <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-300">
                         Kalpitiya offers two reliable kite seasons, making it a world-class destination throughout most of the year.
                     </p>
 
                     <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                        <div className="rounded-2xl border border-blue-200/80 border-l-4 border-l-blue-500 bg-blue-50/40 p-4.5 shadow-xs transition-all dark:border-white/5 dark:border-l-4 dark:border-l-[#5bb4ff] dark:bg-white/[0.03]">
+                        <div className="rounded-2xl border border-l-4 border-blue-200/80 border-l-blue-500 bg-blue-50/40 p-4.5 shadow-xs transition-all dark:border-l-4 dark:border-white/5 dark:border-l-[#5bb4ff] dark:bg-white/[0.03]">
                             <h4 className="text-xs font-bold tracking-wider text-blue-700 uppercase dark:text-[#8acbff]">
                                 Summer Season (mid-May – mid-October)
                             </h4>
                             <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-                                Expect strong, consistent cross-shore wind averaging 18–25 knots, with peaks up to 30 knots. Peak action dawn till dusk.
+                                Expect strong, consistent cross-shore wind averaging 18–25 knots, with peaks up to 30 knots. Peak action dawn till
+                                dusk.
                             </p>
                         </div>
-                        <div className="rounded-2xl border border-sky-200/80 border-l-4 border-l-sky-500 bg-sky-50/40 p-4.5 shadow-xs transition-all dark:border-white/5 dark:border-l-4 dark:border-l-[#38bdf8] dark:bg-white/[0.03]">
+                        <div className="rounded-2xl border border-l-4 border-sky-200/80 border-l-sky-500 bg-sky-50/40 p-4.5 shadow-xs transition-all dark:border-l-4 dark:border-white/5 dark:border-l-[#38bdf8] dark:bg-white/[0.03]">
                             <h4 className="text-xs font-bold tracking-wider text-sky-700 uppercase dark:text-[#7bc9ff]">
                                 Winter Season (mid-December – mid-March)
                             </h4>
                             <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-                                Offers steady afternoon winds from 15–25 knots. Mornings are ideal for yoga, diving, or dolphin &amp; whale excursions.
+                                Offers steady afternoon winds from 15–25 knots. Mornings are ideal for yoga, diving, or dolphin &amp; whale
+                                excursions.
                             </p>
                         </div>
                     </div>
 
-                    <p className="mt-4 text-xs leading-relaxed text-slate-500 dark:text-slate-400 sm:text-sm">
+                    <p className="mt-4 text-xs leading-relaxed text-slate-500 sm:text-sm dark:text-slate-400">
                         Both seasons are warm and dry with water temperatures around{' '}
                         <span className="font-bold text-blue-600 dark:text-[#8acbff]">27°C</span>, meaning you can kite without a wetsuit all year.
-                        While the wind direction shifts between seasons, the adventure remains the same: reliable wind, warm water, and a variety of spots
-                        to explore for every beginner or advanced kitesurfer.
+                        While the wind direction shifts between seasons, the adventure remains the same: reliable wind, warm water, and a variety of
+                        spots to explore for every beginner or advanced kitesurfer.
                     </p>
 
                     {/* Spot Wind Station Weather Widget */}
@@ -294,7 +292,7 @@ export default function KiteLinkLanding() {
                 <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
                     {seasonData.map((season, index) => (
                         <div
-                            className="season-card relative flex flex-col justify-between rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-md shadow-slate-950/5 backdrop-blur-xl transition-all duration-300 hover:border-blue-400 hover:shadow-lg dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-xl dark:hover:border-[#5bb4ff]/30 sm:p-7"
+                            className="season-card relative flex flex-col justify-between rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-md shadow-slate-950/5 backdrop-blur-xl transition-all duration-300 hover:border-blue-400 hover:shadow-lg sm:p-7 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-xl dark:hover:border-[#5bb4ff]/30"
                             key={season.title}
                             ref={(el) => {
                                 seasonRefs.current[index] = el;
@@ -323,7 +321,7 @@ export default function KiteLinkLanding() {
                                             }`}
                                             key={i}
                                         >
-                                            <i className={`${item.icon} text-blue-600 dark:text-[#5bb4ff] shrink-0`} />
+                                            <i className={`${item.icon} shrink-0 text-blue-600 dark:text-[#5bb4ff]`} />
                                             <span>{item.content}</span>
                                         </div>
                                     ))}
@@ -334,12 +332,12 @@ export default function KiteLinkLanding() {
                 </div>
 
                 {/* ABOUT */}
-                <div className="mt-10 rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-md shadow-slate-950/5 backdrop-blur-xl transition-all duration-300 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-xl sm:p-8">
-                    <h2 className="flex items-center gap-2.5 text-2xl font-black tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                <div className="mt-10 rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-md shadow-slate-950/5 backdrop-blur-xl transition-all duration-300 sm:p-8 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-xl">
+                    <h2 className="flex items-center gap-2.5 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                         <i className="fas fa-info-circle text-blue-600 dark:text-[#5bb4ff]" />
                         <span>About Us</span>
                     </h2>
-                    <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
+                    <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-300">
                         KiteLink is the leading platform for kitesurfing enthusiasts. We connect you with certified instructors and world-class kite
                         centers across the globe. Whether you're a beginner or a pro, we make booking simple and transparent — no middleman, just pure
                         kitesurfing.
@@ -363,7 +361,7 @@ export default function KiteLinkLanding() {
                 </div>
 
                 {/* FOOTER */}
-                <div className="my-10 flex flex-col items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white/95 px-6 py-4 text-xs font-medium text-slate-600 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-[#070b12]/60 dark:text-white/40 sm:flex-row">
+                <div className="my-10 flex flex-col items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white/95 px-6 py-4 text-xs font-medium text-slate-600 shadow-sm backdrop-blur-md sm:flex-row dark:border-white/10 dark:bg-[#070b12]/60 dark:text-white/40">
                     <div className="flex items-center gap-2">
                         <i className="fas fa-wind text-blue-600 dark:text-[#4ba9ff]" />
                         <span className="font-bold text-slate-800 dark:text-slate-200">KiteLink</span>

@@ -1,17 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import {
-    Briefcase,
-    Building2,
-    Check,
-    CheckCheck,
-    MessageSquare,
-    Search,
-    Send,
-    User,
-    Wind,
-} from 'lucide-react';
+import { Building2, Check, CheckCheck, MessageSquare, Search, Send } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface OtherUser {
@@ -64,12 +54,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Messages({
-    conversations = [],
-    activeConversationId,
-    messages = [],
-    otherUser,
-}: MessagesProps) {
+export default function Messages({ conversations = [], activeConversationId, messages = [], otherUser }: MessagesProps) {
     const [selectedFilter, setSelectedFilter] = useState<'all' | 'client' | 'school'>('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [inputMessage, setInputMessage] = useState('');
@@ -85,10 +70,7 @@ export default function Messages({
         if (selectedFilter !== 'all' && c.type !== selectedFilter) return false;
         if (searchQuery) {
             const q = searchQuery.toLowerCase();
-            return (
-                c.other_user?.name?.toLowerCase().includes(q) ||
-                c.last_message?.body?.toLowerCase().includes(q)
-            );
+            return c.other_user?.name?.toLowerCase().includes(q) || c.last_message?.body?.toLowerCase().includes(q);
         }
         return true;
     });
@@ -111,7 +93,7 @@ export default function Messages({
                     setInputMessage('');
                 },
                 onFinish: () => setSending(false),
-            }
+            },
         );
     };
 
@@ -119,11 +101,11 @@ export default function Messages({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Instructor Inbox & Messages - KiteLink" />
 
-            <div className="relative min-h-full p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white sm:p-6 lg:p-8">
+            <div className="relative min-h-full p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* 2-Column Chat Box Window */}
-                <div className="grid h-[calc(100vh-14rem)] min-h-[550px] grid-cols-1 overflow-hidden rounded-3xl border border-slate-200/90 bg-white shadow-xl shadow-slate-200/50 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl md:grid-cols-12">
+                <div className="grid h-[calc(100vh-14rem)] min-h-[550px] grid-cols-1 overflow-hidden rounded-3xl border border-slate-200/90 bg-white shadow-xl shadow-slate-200/50 md:grid-cols-12 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl">
                     {/* Left Sidebar (4 cols on desktop) */}
-                    <div className="flex flex-col border-b border-slate-200 dark:border-white/10 md:col-span-4 md:border-r md:border-b-0">
+                    <div className="flex flex-col border-b border-slate-200 md:col-span-4 md:border-r md:border-b-0 dark:border-white/10">
                         {/* Header & Filter Tags */}
                         <div className="border-b border-slate-200 p-4 dark:border-white/10">
                             <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
@@ -148,7 +130,7 @@ export default function Messages({
                                 <button
                                     type="button"
                                     onClick={() => setSelectedFilter('all')}
-                                    className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer ${
+                                    className={`cursor-pointer rounded-lg px-2.5 py-1 text-xs font-semibold transition ${
                                         selectedFilter === 'all'
                                             ? 'bg-blue-600 text-white shadow-xs dark:bg-[#1f6eff]'
                                             : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:bg-white/[0.05] dark:text-slate-400 dark:hover:text-slate-200'
@@ -159,7 +141,7 @@ export default function Messages({
                                 <button
                                     type="button"
                                     onClick={() => setSelectedFilter('client')}
-                                    className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer ${
+                                    className={`cursor-pointer rounded-lg px-2.5 py-1 text-xs font-semibold transition ${
                                         selectedFilter === 'client'
                                             ? 'bg-blue-600 text-white shadow-xs dark:bg-[#1f6eff]'
                                             : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:bg-white/[0.05] dark:text-slate-400 dark:hover:text-slate-200'
@@ -170,7 +152,7 @@ export default function Messages({
                                 <button
                                     type="button"
                                     onClick={() => setSelectedFilter('school')}
-                                    className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer ${
+                                    className={`cursor-pointer rounded-lg px-2.5 py-1 text-xs font-semibold transition ${
                                         selectedFilter === 'school'
                                             ? 'bg-blue-600 text-white shadow-xs dark:bg-[#1f6eff]'
                                             : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:bg-white/[0.05] dark:text-slate-400 dark:hover:text-slate-200'
@@ -182,11 +164,9 @@ export default function Messages({
                         </div>
 
                         {/* Conversations List */}
-                        <div className="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-white/5">
+                        <div className="flex-1 divide-y divide-slate-100 overflow-y-auto dark:divide-white/5">
                             {filteredConversations.length === 0 ? (
-                                <div className="p-8 text-center text-xs text-slate-500">
-                                    No conversations found.
-                                </div>
+                                <div className="p-8 text-center text-xs text-slate-500">No conversations found.</div>
                             ) : (
                                 filteredConversations.map((conv) => {
                                     const isSelected = activeConversationId === conv.id;
@@ -202,7 +182,7 @@ export default function Messages({
                                                     : 'hover:bg-slate-50 dark:hover:bg-white/[0.04]'
                                             }`}
                                         >
-                                            <div className="flex items-center gap-3 min-w-0">
+                                            <div className="flex min-w-0 items-center gap-3">
                                                 <div className="relative">
                                                     <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-slate-100 text-xs font-bold text-blue-600 dark:border-white/15 dark:bg-slate-800 dark:text-[#8acbff]">
                                                         {conv.other_user?.avatar ? (
@@ -250,7 +230,7 @@ export default function Messages({
                     </div>
 
                     {/* Right Panel: Active Chat Thread (8 cols) */}
-                    <div className="flex flex-col bg-slate-50/40 dark:bg-slate-950/20 md:col-span-8">
+                    <div className="flex flex-col bg-slate-50/40 md:col-span-8 dark:bg-slate-950/20">
                         {activeConversationId && otherUser ? (
                             <>
                                 {/* Active Chat Top Bar */}
@@ -283,10 +263,7 @@ export default function Messages({
                                             const isMine = msg.sender_id !== otherUser.id;
 
                                             return (
-                                                <div
-                                                    key={msg.id}
-                                                    className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}
-                                                >
+                                                <div key={msg.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
                                                     <div
                                                         className={`max-w-xs rounded-2xl p-3.5 text-xs sm:max-w-md ${
                                                             isMine
@@ -300,10 +277,18 @@ export default function Messages({
                                                                 isMine ? 'text-blue-100' : 'text-slate-400'
                                                             }`}
                                                         >
-                                                            <span>{new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                                            {isMine && (
-                                                                msg.read_at ? <CheckCheck className="h-3 w-3 text-sky-200" /> : <Check className="h-3 w-3 text-blue-100" />
-                                                            )}
+                                                            <span>
+                                                                {new Date(msg.created_at).toLocaleTimeString([], {
+                                                                    hour: '2-digit',
+                                                                    minute: '2-digit',
+                                                                })}
+                                                            </span>
+                                                            {isMine &&
+                                                                (msg.read_at ? (
+                                                                    <CheckCheck className="h-3 w-3 text-sky-200" />
+                                                                ) : (
+                                                                    <Check className="h-3 w-3 text-blue-100" />
+                                                                ))}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -316,7 +301,7 @@ export default function Messages({
                                 {/* Chat Input Bar */}
                                 <form
                                     onSubmit={handleSendMessage}
-                                    className="border-t border-slate-200 bg-white p-3 dark:border-white/10 dark:bg-white/[0.02] sm:p-4"
+                                    className="border-t border-slate-200 bg-white p-3 sm:p-4 dark:border-white/10 dark:bg-white/[0.02]"
                                 >
                                     <div className="flex items-center gap-2">
                                         <input

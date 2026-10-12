@@ -1,24 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import {
-    Award,
-    Calendar,
-    Check,
-    CheckCircle2,
-    DollarSign,
-    Edit2,
-    Eye,
-    EyeOff,
-    Layers,
-    LoaderCircle,
-    Package,
-    Plus,
-    Tag,
-    Trash2,
-    Wind,
-    X,
-} from 'lucide-react';
+import { Calendar, Check, CheckCircle2, Edit2, Eye, EyeOff, LoaderCircle, Package, Plus, Tag, Trash2, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface SchoolData {
@@ -146,10 +129,22 @@ export default function Packages({ school, packages }: PackagesProps) {
     };
 
     const typeBadges: Record<string, { label: string; class: string }> = {
-        course: { label: 'Course', class: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/15 dark:text-[#8acbff] dark:border-[#5bb4ff]/30' },
-        rental: { label: 'Rental', class: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-400 dark:border-emerald-500/30' },
-        camp: { label: 'Camp', class: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-500/15 dark:text-purple-300 dark:border-purple-500/30' },
-        private: { label: 'Private Lesson', class: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/30' },
+        course: {
+            label: 'Course',
+            class: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/15 dark:text-[#8acbff] dark:border-[#5bb4ff]/30',
+        },
+        rental: {
+            label: 'Rental',
+            class: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-400 dark:border-emerald-500/30',
+        },
+        camp: {
+            label: 'Camp',
+            class: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-500/15 dark:text-purple-300 dark:border-purple-500/30',
+        },
+        private: {
+            label: 'Private Lesson',
+            class: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/30',
+        },
     };
 
     return (
@@ -158,15 +153,13 @@ export default function Packages({ school, packages }: PackagesProps) {
 
             <div className="space-y-6 p-4 sm:p-6 lg:p-8">
                 {/* Header Card */}
-                <div className="flex flex-col justify-between gap-4 rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl sm:flex-row sm:items-center">
+                <div className="flex flex-col justify-between gap-4 rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm sm:flex-row sm:items-center dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl">
                     <div>
                         <div className="flex items-center gap-2">
                             <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 text-blue-600 dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/15 dark:text-[#5bb4ff]">
                                 <Package className="h-5 w-5" />
                             </span>
-                            <h1 className="text-2xl font-black text-slate-900 dark:text-white">
-                                Packages &amp; Offers
-                            </h1>
+                            <h1 className="text-2xl font-black text-slate-900 dark:text-white">Packages &amp; Offers</h1>
                         </div>
                         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                             Configure structured lesson courses, equipment rental bundles, and camps offered at {school.name}.
@@ -219,7 +212,7 @@ export default function Packages({ school, packages }: PackagesProps) {
                                         {/* Top row / badges */}
                                         <div className="flex items-center justify-between gap-2">
                                             <span
-                                                className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${badge.class}`}
+                                                className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-bold tracking-wider uppercase ${badge.class}`}
                                             >
                                                 <Tag className="h-3 w-3" />
                                                 {badge.label}
@@ -233,22 +226,18 @@ export default function Packages({ school, packages }: PackagesProps) {
 
                                         {/* Package Title & Price */}
                                         <div className="mt-4">
-                                            <h3 className="text-xl font-black text-slate-900 dark:text-white">
-                                                {pkg.name}
-                                            </h3>
+                                            <h3 className="text-xl font-black text-slate-900 dark:text-white">{pkg.name}</h3>
                                             <div className="mt-2 flex items-baseline gap-1">
                                                 <span className="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">
                                                     ${Number(pkg.price).toFixed(0)}
                                                 </span>
-                                                <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
-                                                    / package
-                                                </span>
+                                                <span className="text-xs font-medium text-slate-500 dark:text-slate-400">/ package</span>
                                             </div>
                                         </div>
 
                                         {/* Description */}
                                         {pkg.description && (
-                                            <p className="mt-3 text-xs leading-relaxed text-slate-600 line-clamp-3 dark:text-slate-300">
+                                            <p className="mt-3 line-clamp-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
                                                 {pkg.description}
                                             </p>
                                         )}
@@ -256,15 +245,12 @@ export default function Packages({ school, packages }: PackagesProps) {
                                         {/* Included Features */}
                                         {features.length > 0 && (
                                             <div className="mt-4 space-y-2 border-t border-slate-100 pt-3 dark:border-white/10">
-                                                <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                                                <span className="block text-[11px] font-bold tracking-wider text-slate-400 uppercase">
                                                     What's Included
                                                 </span>
                                                 <ul className="space-y-1.5">
                                                     {features.map((feat, idx) => (
-                                                        <li
-                                                            key={idx}
-                                                            className="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-300"
-                                                        >
+                                                        <li key={idx} className="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-300">
                                                             <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-500" />
                                                             <span>{feat}</span>
                                                         </li>
@@ -302,7 +288,7 @@ export default function Packages({ school, packages }: PackagesProps) {
                                             <button
                                                 type="button"
                                                 onClick={() => openEditModal(pkg)}
-                                                className="cursor-pointer rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-700 hover:bg-white hover:border-blue-400 hover:text-blue-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:text-white"
+                                                className="cursor-pointer rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-700 hover:border-blue-400 hover:bg-white hover:text-blue-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:text-white"
                                                 title="Edit Package"
                                             >
                                                 <Edit2 className="h-3.5 w-3.5" />
@@ -327,7 +313,7 @@ export default function Packages({ school, packages }: PackagesProps) {
                 {/* Create / Edit Modal */}
                 {isCreateOpen && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-                        <div className="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/15 dark:bg-[#070b12] sm:p-8">
+                        <div className="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl sm:p-8 dark:border-white/15 dark:bg-[#070b12]">
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-white/10">
                                 <h3 className="text-lg font-black text-slate-900 dark:text-white">
                                     {editingPackage ? 'Edit Package' : 'Create New Package'}
@@ -343,9 +329,7 @@ export default function Packages({ school, packages }: PackagesProps) {
 
                             <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-700 uppercase dark:text-slate-300">
-                                        Package Name *
-                                    </label>
+                                    <label className="block text-xs font-bold text-slate-700 uppercase dark:text-slate-300">Package Name *</label>
                                     <input
                                         type="text"
                                         required
@@ -364,7 +348,7 @@ export default function Packages({ school, packages }: PackagesProps) {
                                         </label>
                                         <select
                                             value={data.type}
-                                            onChange={(e) => setData('type', e.target.value as any)}
+                                            onChange={(e) => setData('type', e.target.value as 'course' | 'rental' | 'camp' | 'private')}
                                             className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-600 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-white/15 dark:bg-slate-900 dark:text-white"
                                         >
                                             <option value="course">Course (Structured Lesson)</option>
@@ -412,9 +396,7 @@ export default function Packages({ school, packages }: PackagesProps) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-700 uppercase dark:text-slate-300">
-                                        Description
-                                    </label>
+                                    <label className="block text-xs font-bold text-slate-700 uppercase dark:text-slate-300">Description</label>
                                     <textarea
                                         rows={3}
                                         value={data.description}

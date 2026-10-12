@@ -1,15 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import {
-    Calendar,
-    Eye,
-    MessageSquare,
-    Search,
-    Shield,
-    User,
-    X,
-} from 'lucide-react';
+import { MessageSquare, Search, Shield } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface ConversationItem {
@@ -100,35 +92,31 @@ export default function MessagesMonitor({ conversations, activeConversation, fil
                             <Shield className="h-3.5 w-3.5" />
                             Safety & Support Audit Mode
                         </div>
-                        <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
-                            Messages Monitor
-                        </h1>
-                        <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                        <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">Messages Monitor</h1>
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             Inspect communications between students and instructors for quality assurance and safety compliance.
                         </p>
                     </div>
 
-                    <span className="text-xs font-semibold text-slate-500">
-                        {totalConversations} Total Conversations
-                    </span>
+                    <span className="text-xs font-semibold text-slate-500">{totalConversations} Total Conversations</span>
                 </div>
 
                 {/* Main 2-column layout */}
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
                     {/* Left Conversations List (5 cols) */}
-                    <div className="lg:col-span-5 rounded-3xl border border-slate-200/80 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
+                    <div className="rounded-3xl border border-slate-200/80 bg-white p-4 shadow-sm lg:col-span-5 dark:border-white/10 dark:bg-[#0c1220]">
                         <form onSubmit={handleSearch} className="relative mb-4">
-                            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                            <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
                             <input
                                 type="text"
                                 placeholder="Search by participant name..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-1.5 pr-3 pl-9 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                             />
                         </form>
 
-                        <div className="divide-y divide-slate-100 max-h-[600px] overflow-y-auto dark:divide-white/5">
+                        <div className="max-h-[600px] divide-y divide-slate-100 overflow-y-auto dark:divide-white/5">
                             {conversations.data.length === 0 ? (
                                 <p className="py-8 text-center text-xs text-slate-500">No conversations found.</p>
                             ) : (
@@ -139,14 +127,14 @@ export default function MessagesMonitor({ conversations, activeConversation, fil
                                             key={c.id}
                                             type="button"
                                             onClick={() => handleSelectConversation(c.id)}
-                                            className={`w-full text-left p-3 rounded-2xl transition-all ${
+                                            className={`w-full rounded-2xl p-3 text-left transition-all ${
                                                 isSelected
-                                                    ? 'bg-blue-50 border border-blue-200 dark:bg-blue-950/30 dark:border-blue-800/40'
+                                                    ? 'border border-blue-200 bg-blue-50 dark:border-blue-800/40 dark:bg-blue-950/30'
                                                     : 'hover:bg-slate-50 dark:hover:bg-white/[0.03]'
                                             }`}
                                         >
                                             <div className="flex items-center justify-between">
-                                                <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                                                <p className="truncate text-xs font-bold text-slate-900 dark:text-white">
                                                     {c.participant_one?.name} & {c.participant_two?.name}
                                                 </p>
                                                 <span className="text-[10px] text-slate-400">
@@ -170,10 +158,10 @@ export default function MessagesMonitor({ conversations, activeConversation, fil
                     </div>
 
                     {/* Right Conversation Thread Viewer (7 cols) */}
-                    <div className="lg:col-span-7 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
+                    <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm lg:col-span-7 dark:border-white/10 dark:bg-[#0c1220]">
                         {activeConversation ? (
                             <div>
-                                <div className="border-b border-slate-100 pb-3 flex items-center justify-between dark:border-white/5">
+                                <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-white/5">
                                     <div>
                                         <h2 className="text-sm font-bold text-slate-900 dark:text-white">
                                             Conversation Thread #{activeConversation.id}
@@ -188,19 +176,22 @@ export default function MessagesMonitor({ conversations, activeConversation, fil
                                     </span>
                                 </div>
 
-                                <div className="mt-4 space-y-3 max-h-[500px] overflow-y-auto p-2">
+                                <div className="mt-4 max-h-[500px] space-y-3 overflow-y-auto p-2">
                                     {activeConversation.messages.map((m) => {
                                         return (
-                                            <div key={m.id} className="rounded-2xl border border-slate-100 bg-slate-50/70 p-3.5 text-xs dark:border-white/5 dark:bg-white/[0.03]">
-                                                <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1">
+                                            <div
+                                                key={m.id}
+                                                className="rounded-2xl border border-slate-100 bg-slate-50/70 p-3.5 text-xs dark:border-white/5 dark:bg-white/[0.03]"
+                                            >
+                                                <div className="mb-1 flex items-center justify-between text-[11px] text-slate-500">
                                                     <span className="font-bold text-slate-800 dark:text-slate-200">
                                                         {m.sender?.name} ({m.sender?.role})
                                                     </span>
-                                                    <span>{new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                    <span>
+                                                        {new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </span>
                                                 </div>
-                                                <p className="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
-                                                    {m.content}
-                                                </p>
+                                                <p className="leading-relaxed whitespace-pre-line text-slate-700 dark:text-slate-300">{m.content}</p>
                                             </div>
                                         );
                                     })}
@@ -208,13 +199,9 @@ export default function MessagesMonitor({ conversations, activeConversation, fil
                             </div>
                         ) : (
                             <div className="flex flex-col items-center justify-center py-24 text-center">
-                                <MessageSquare className="h-12 w-12 text-slate-300 dark:text-slate-600 mb-3" />
-                                <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300">
-                                    No Conversation Selected
-                                </h3>
-                                <p className="text-xs text-slate-500 mt-1">
-                                    Click any conversation on the left to monitor the chat thread.
-                                </p>
+                                <MessageSquare className="mb-3 h-12 w-12 text-slate-300 dark:text-slate-600" />
+                                <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300">No Conversation Selected</h3>
+                                <p className="mt-1 text-xs text-slate-500">Click any conversation on the left to monitor the chat thread.</p>
                             </div>
                         )}
                     </div>

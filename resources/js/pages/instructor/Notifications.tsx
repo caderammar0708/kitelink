@@ -1,18 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import {
-    Bell,
-    Briefcase,
-    CalendarCheck,
-    Check,
-    CheckCheck,
-    DollarSign,
-    Info,
-    MessageSquare,
-    Star,
-    Trash2,
-} from 'lucide-react';
+import { Bell, Briefcase, CalendarCheck, Check, CheckCheck, DollarSign, MessageSquare, Star } from 'lucide-react';
 import { useState } from 'react';
 
 interface NotificationItem {
@@ -81,15 +70,15 @@ export default function Notifications({ notifications = [], unreadCount = 0 }: N
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Notifications - KiteLink" />
 
-            <div className="relative mx-auto min-h-full max-w-4xl space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white sm:p-6 lg:p-8">
+            <div className="relative mx-auto min-h-full max-w-4xl space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* Header */}
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                             <Bell className="h-7 w-7 text-blue-600 dark:text-[#5bb4ff]" />
                             System Notifications
                         </h1>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             Stay up to date with new lesson bookings, student messages, school contracts, and automated payouts
                         </p>
                     </div>

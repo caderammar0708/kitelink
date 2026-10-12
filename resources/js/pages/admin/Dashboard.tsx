@@ -1,28 +1,8 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import {
-    AlertCircle,
-    ArrowUpRight,
-    Award,
-    Building2,
-    Calendar,
-    CalendarCheck,
-    CheckCircle2,
-    ChevronRight,
-    DollarSign,
-    GraduationCap,
-    MessageSquare,
-    Settings,
-    ShieldAlert,
-    ShieldCheck,
-    Sparkles,
-    Star,
-    TrendingUp,
-    UserCheck,
-    Users,
-} from 'lucide-react';
-import React, { useState } from 'react';
+import { AlertCircle, Building2, CalendarCheck, DollarSign, GraduationCap, Settings, ShieldAlert, ShieldCheck, Sparkles, Users } from 'lucide-react';
+import { useState } from 'react';
 
 interface Stats {
     total_instructors: number;
@@ -157,16 +137,15 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                     <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-blue-500/15 blur-3xl" />
 
                     <div className="relative z-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
-                        <div className="space-y-2 max-w-2xl">
+                        <div className="max-w-2xl space-y-2">
                             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/20 px-3.5 py-1 text-xs font-semibold text-indigo-300">
                                 <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
                                 KiteLink Platform Administration
                             </div>
-                            <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
-                                Welcome to the Admin Control Center
-                            </h1>
+                            <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">Welcome to the Admin Control Center</h1>
                             <p className="text-sm leading-relaxed text-slate-300">
-                                Monitor platform health, verify instructor and school credentials, manage bookings, and moderate the global kitesurfing network.
+                                Monitor platform health, verify instructor and school credentials, manage bookings, and moderate the global
+                                kitesurfing network.
                             </p>
                         </div>
 
@@ -207,7 +186,7 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                         }`}
                     >
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
                                 Pending Approvals
                             </span>
                             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400">
@@ -215,18 +194,14 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                             </div>
                         </div>
                         <div className="mt-3 flex items-baseline gap-2">
-                            <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
-                                {stats.pending_approvals}
-                            </span>
+                            <span className="text-2xl font-extrabold text-slate-900 dark:text-white">{stats.pending_approvals}</span>
                             {stats.pending_approvals > 0 && (
                                 <span className="flex h-2 w-2">
                                     <span className="h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
                                 </span>
                             )}
                         </div>
-                        <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
-                            Requires review &rarr;
-                        </p>
+                        <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">Requires review &rarr;</p>
                     </Link>
 
                     {/* 2. Total Instructors */}
@@ -235,19 +210,13 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                         className="group rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-blue-400 dark:border-white/10 dark:bg-[#0c1220]"
                     >
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                Instructors
-                            </span>
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">Instructors</span>
                             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-400">
                                 <GraduationCap className="h-4 w-4" />
                             </div>
                         </div>
-                        <div className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">
-                            {stats.total_instructors}
-                        </div>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                            Registered instructors
-                        </p>
+                        <div className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">{stats.total_instructors}</div>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Registered instructors</p>
                     </Link>
 
                     {/* 3. Total Schools */}
@@ -256,19 +225,13 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                         className="group rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-purple-400 dark:border-white/10 dark:bg-[#0c1220]"
                     >
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                Kite Schools
-                            </span>
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">Kite Schools</span>
                             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-500/15 text-purple-600 dark:text-purple-400">
                                 <Building2 className="h-4 w-4" />
                             </div>
                         </div>
-                        <div className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">
-                            {stats.total_schools}
-                        </div>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                            Affiliated centers
-                        </p>
+                        <div className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">{stats.total_schools}</div>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Affiliated centers</p>
                     </Link>
 
                     {/* 4. Total Clients */}
@@ -277,19 +240,15 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                         className="group rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-emerald-400 dark:border-white/10 dark:bg-[#0c1220]"
                     >
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
                                 Clients / Students
                             </span>
                             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
                                 <Users className="h-4 w-4" />
                             </div>
                         </div>
-                        <div className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">
-                            {stats.total_clients}
-                        </div>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                            Active learners
-                        </p>
+                        <div className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">{stats.total_clients}</div>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Active learners</p>
                     </Link>
 
                     {/* 5. Total Bookings */}
@@ -298,27 +257,19 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                         className="group rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-sky-400 dark:border-white/10 dark:bg-[#0c1220]"
                     >
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                Total Bookings
-                            </span>
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">Total Bookings</span>
                             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-500/15 text-sky-600 dark:text-sky-400">
                                 <CalendarCheck className="h-4 w-4" />
                             </div>
                         </div>
-                        <div className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">
-                            {stats.total_bookings}
-                        </div>
-                        <p className="mt-1 text-xs text-sky-600 dark:text-sky-400">
-                            {stats.monthly_bookings} this month
-                        </p>
+                        <div className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">{stats.total_bookings}</div>
+                        <p className="mt-1 text-xs text-sky-600 dark:text-sky-400">{stats.monthly_bookings} this month</p>
                     </Link>
 
                     {/* 6. Monthly / Total Revenue */}
                     <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                Monthly Volume
-                            </span>
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">Monthly Volume</span>
                             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-500/15 text-teal-600 dark:text-teal-400">
                                 <DollarSign className="h-4 w-4" />
                             </div>
@@ -326,15 +277,13 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                         <div className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">
                             ${stats.monthly_revenue.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                         </div>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                            Total: ${stats.total_revenue.toLocaleString()}
-                        </p>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Total: ${stats.total_revenue.toLocaleString()}</p>
                     </div>
                 </div>
 
                 {/* Urgent Approvals Callout (if any pending) */}
                 {stats.pending_approvals > 0 && (
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-amber-300 bg-amber-50/80 p-4 text-amber-900 shadow-sm dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+                    <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-amber-300 bg-amber-50/80 p-4 text-amber-900 shadow-sm sm:flex-row dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
                         <div className="flex items-center gap-3">
                             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400">
                                 <AlertCircle className="h-5 w-5" />
@@ -361,14 +310,10 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                     {/* Chart 1: Bookings & Revenue per Month */}
                     <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-4 dark:border-white/5">
+                        <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-white/5">
                             <div>
-                                <h2 className="text-base font-bold text-slate-900 dark:text-white">
-                                    Bookings & Revenue History
-                                </h2>
-                                <p className="text-xs text-slate-500 dark:text-slate-400">
-                                    Monthly volume trends across the platform
-                                </p>
+                                <h2 className="text-base font-bold text-slate-900 dark:text-white">Bookings & Revenue History</h2>
+                                <p className="text-xs text-slate-500 dark:text-slate-400">Monthly volume trends across the platform</p>
                             </div>
 
                             <div className="flex items-center gap-1 rounded-xl bg-slate-100 p-1 dark:bg-white/5">
@@ -407,7 +352,7 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                                 return (
                                     <div key={item.month} className="group relative flex flex-1 flex-col items-center">
                                         {/* Tooltip */}
-                                        <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-lg bg-slate-900 px-2 py-1 text-[11px] font-bold text-white shadow-lg whitespace-nowrap z-20 dark:bg-white dark:text-slate-900">
+                                        <div className="pointer-events-none absolute -top-10 z-20 rounded-lg bg-slate-900 px-2 py-1 text-[11px] font-bold whitespace-nowrap text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 dark:bg-white dark:text-slate-900">
                                             {chartMode === 'bookings' ? `${val} bookings` : `$${val.toLocaleString()}`}
                                         </div>
 
@@ -418,7 +363,7 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                                         />
 
                                         {/* Label */}
-                                        <span className="mt-2 text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate max-w-full">
+                                        <span className="mt-2 max-w-full truncate text-[11px] font-medium text-slate-500 dark:text-slate-400">
                                             {item.month.split(' ')[0]}
                                         </span>
                                     </div>
@@ -430,12 +375,8 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                     {/* Chart 2: New Signups per Month */}
                     <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
                         <div className="border-b border-slate-100 pb-4 dark:border-white/5">
-                            <h2 className="text-base font-bold text-slate-900 dark:text-white">
-                                New User Registrations
-                            </h2>
-                            <p className="text-xs text-slate-500 dark:text-slate-400">
-                                Client, instructor, and school signups past 6 months
-                            </p>
+                            <h2 className="text-base font-bold text-slate-900 dark:text-white">New User Registrations</h2>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">Client, instructor, and school signups past 6 months</p>
                         </div>
 
                         {/* Signups Bars */}
@@ -445,7 +386,7 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
 
                                 return (
                                     <div key={item.month} className="group relative flex flex-1 flex-col items-center">
-                                        <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-lg bg-slate-900 px-2 py-1 text-[11px] font-bold text-white shadow-lg whitespace-nowrap z-20 dark:bg-white dark:text-slate-900">
+                                        <div className="pointer-events-none absolute -top-10 z-20 rounded-lg bg-slate-900 px-2 py-1 text-[11px] font-bold whitespace-nowrap text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 dark:bg-white dark:text-slate-900">
                                             {item.signups} users
                                         </div>
 
@@ -454,7 +395,7 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                                             className="w-full max-w-[42px] rounded-t-xl bg-gradient-to-t from-emerald-600 to-teal-400 transition-all duration-300 group-hover:from-emerald-500 group-hover:to-teal-300"
                                         />
 
-                                        <span className="mt-2 text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate max-w-full">
+                                        <span className="mt-2 max-w-full truncate text-[11px] font-medium text-slate-500 dark:text-slate-400">
                                             {item.month.split(' ')[0]}
                                         </span>
                                     </div>
@@ -470,12 +411,8 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                     <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm lg:col-span-1 dark:border-white/10 dark:bg-[#0c1220]">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-white/5">
                             <div>
-                                <h2 className="text-base font-bold text-slate-900 dark:text-white">
-                                    Top Instructors
-                                </h2>
-                                <p className="text-xs text-slate-500 dark:text-slate-400">
-                                    By completed & confirmed bookings
-                                </p>
+                                <h2 className="text-base font-bold text-slate-900 dark:text-white">Top Instructors</h2>
+                                <p className="text-xs text-slate-500 dark:text-slate-400">By completed & confirmed bookings</p>
                             </div>
                             <Link href="/admin/instructors" className="text-xs font-semibold text-blue-600 hover:underline dark:text-blue-400">
                                 View all
@@ -500,10 +437,8 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                                                 </div>
                                             )}
                                             <div>
-                                                <p className="text-xs font-bold text-slate-900 dark:text-white truncate max-w-[120px]">
-                                                    {inst.name}
-                                                </p>
-                                                <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate max-w-[120px]">
+                                                <p className="max-w-[120px] truncate text-xs font-bold text-slate-900 dark:text-white">{inst.name}</p>
+                                                <p className="max-w-[120px] truncate text-[11px] text-slate-500 dark:text-slate-400">
                                                     {inst.location || 'Location unset'}
                                                 </p>
                                             </div>
@@ -524,12 +459,8 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                     <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm lg:col-span-1 dark:border-white/10 dark:bg-[#0c1220]">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-white/5">
                             <div>
-                                <h2 className="text-base font-bold text-slate-900 dark:text-white">
-                                    Latest Bookings
-                                </h2>
-                                <p className="text-xs text-slate-500 dark:text-slate-400">
-                                    Recent platform lesson activity
-                                </p>
+                                <h2 className="text-base font-bold text-slate-900 dark:text-white">Latest Bookings</h2>
+                                <p className="text-xs text-slate-500 dark:text-slate-400">Recent platform lesson activity</p>
                             </div>
                             <Link href="/admin/bookings" className="text-xs font-semibold text-blue-600 hover:underline dark:text-blue-400">
                                 View all
@@ -541,7 +472,7 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                                 <p className="py-6 text-center text-xs text-slate-500">No bookings yet.</p>
                             ) : (
                                 recent.bookings.map((b) => (
-                                    <div key={b.id} className="py-3 flex items-center justify-between">
+                                    <div key={b.id} className="flex items-center justify-between py-3">
                                         <div>
                                             <p className="text-xs font-bold text-slate-900 dark:text-white">
                                                 {b.student?.name || 'Client'} &rarr; {b.instructor?.user?.name || 'Instructor'}
@@ -552,20 +483,20 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                                         </div>
 
                                         <div className="text-right">
-                                            <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                                                b.status === 'confirmed'
-                                                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
-                                                    : b.status === 'completed'
-                                                      ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300'
-                                                      : b.status === 'cancelled'
-                                                        ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300'
-                                                        : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
-                                            }`}>
+                                            <span
+                                                className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                                                    b.status === 'confirmed'
+                                                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
+                                                        : b.status === 'completed'
+                                                          ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300'
+                                                          : b.status === 'cancelled'
+                                                            ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300'
+                                                            : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
+                                                }`}
+                                            >
                                                 {b.status}
                                             </span>
-                                            <p className="text-xs font-extrabold text-slate-900 dark:text-white mt-0.5">
-                                                ${b.total_price}
-                                            </p>
+                                            <p className="mt-0.5 text-xs font-extrabold text-slate-900 dark:text-white">${b.total_price}</p>
                                         </div>
                                     </div>
                                 ))
@@ -577,12 +508,8 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                     <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm lg:col-span-1 dark:border-white/10 dark:bg-[#0c1220]">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-white/5">
                             <div>
-                                <h2 className="text-base font-bold text-slate-900 dark:text-white">
-                                    Newest Registrations
-                                </h2>
-                                <p className="text-xs text-slate-500 dark:text-slate-400">
-                                    Latest community signups
-                                </p>
+                                <h2 className="text-base font-bold text-slate-900 dark:text-white">Newest Registrations</h2>
+                                <p className="text-xs text-slate-500 dark:text-slate-400">Latest community signups</p>
                             </div>
                             <Link href="/admin/clients" className="text-xs font-semibold text-blue-600 hover:underline dark:text-blue-400">
                                 Directory
@@ -597,25 +524,23 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                                             {u.name.charAt(0)}
                                         </div>
                                         <div>
-                                            <p className="text-xs font-semibold text-slate-900 dark:text-white truncate max-w-[120px]">
-                                                {u.name}
-                                            </p>
-                                            <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[120px]">
-                                                {u.email}
-                                            </p>
+                                            <p className="max-w-[120px] truncate text-xs font-semibold text-slate-900 dark:text-white">{u.name}</p>
+                                            <p className="max-w-[120px] truncate text-[10px] text-slate-500 dark:text-slate-400">{u.email}</p>
                                         </div>
                                     </div>
 
                                     <div className="text-right">
-                                        <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                                            u.role === 'instructor'
-                                                ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300'
-                                                : u.role === 'school'
-                                                  ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300'
-                                                  : u.role === 'admin'
-                                                    ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300'
-                                                    : 'bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-300'
-                                        }`}>
+                                        <span
+                                            className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                                                u.role === 'instructor'
+                                                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300'
+                                                    : u.role === 'school'
+                                                      ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300'
+                                                      : u.role === 'admin'
+                                                        ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300'
+                                                        : 'bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-300'
+                                            }`}
+                                        >
                                             {u.role}
                                         </span>
                                     </div>

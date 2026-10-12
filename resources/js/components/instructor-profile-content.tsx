@@ -18,7 +18,7 @@ import {
     X,
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import React, { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 export interface BookingItem {
     id: number;
@@ -63,33 +63,25 @@ export interface InstructorProfileContentProps {
     hideTopNav?: boolean;
 }
 
-export function InstructorProfileSkeleton({
-    name,
-    photo,
-    location,
-}: {
-    name?: string;
-    photo?: string | null;
-    location?: string | null;
-}) {
+export function InstructorProfileSkeleton({ name, photo }: { name?: string; photo?: string | null; location?: string | null }) {
     return (
         <div className="space-y-8 sm:space-y-10">
             {/* Hero Header Skeleton */}
-            <div className="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xl dark:border-white/15 dark:bg-slate-900/80 sm:p-10">
+            <div className="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xl sm:p-10 dark:border-white/15 dark:bg-slate-900/80">
                 <div className="flex flex-col items-center gap-6 sm:gap-8 md:flex-row md:items-start">
-                    <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-3xl border-2 border-blue-200 bg-slate-100 shadow-md dark:border-[#5bb4ff]/40 dark:bg-slate-900 sm:h-36 sm:w-36 lg:h-40 lg:w-40">
+                    <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-3xl border-2 border-blue-200 bg-slate-100 shadow-md sm:h-36 sm:w-36 lg:h-40 lg:w-40 dark:border-[#5bb4ff]/40 dark:bg-slate-900">
                         {photo ? (
                             <img src={photo} alt={name || 'Instructor'} className="h-full w-full object-cover" />
                         ) : (
                             <div className="h-full w-full animate-pulse bg-slate-200 dark:bg-white/10" />
                         )}
                     </div>
-                    <div className="flex-1 space-y-3.5 w-full text-center md:text-left">
-                        <div className="h-8 w-48 mx-auto md:mx-0 rounded-xl bg-slate-200 dark:bg-white/10 animate-pulse" />
-                        <div className="h-4 w-64 mx-auto md:mx-0 rounded-lg bg-slate-200 dark:bg-white/10 animate-pulse" />
+                    <div className="w-full flex-1 space-y-3.5 text-center md:text-left">
+                        <div className="mx-auto h-8 w-48 animate-pulse rounded-xl bg-slate-200 md:mx-0 dark:bg-white/10" />
+                        <div className="mx-auto h-4 w-64 animate-pulse rounded-lg bg-slate-200 md:mx-0 dark:bg-white/10" />
                         <div className="space-y-2 pt-2">
-                            <div className="h-3 w-full rounded-md bg-slate-200 dark:bg-white/10 animate-pulse" />
-                            <div className="h-3 w-5/6 rounded-md bg-slate-200 dark:bg-white/10 animate-pulse" />
+                            <div className="h-3 w-full animate-pulse rounded-md bg-slate-200 dark:bg-white/10" />
+                            <div className="h-3 w-5/6 animate-pulse rounded-md bg-slate-200 dark:bg-white/10" />
                         </div>
                     </div>
                 </div>
@@ -100,14 +92,17 @@ export function InstructorProfileSkeleton({
                 <div className="space-y-8 lg:col-span-7">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         {[1, 2, 3].map((i) => (
-                            <div key={i} className="h-28 rounded-2xl border border-slate-200/90 bg-white p-5 animate-pulse dark:border-white/10 dark:bg-white/[0.04]" />
+                            <div
+                                key={i}
+                                className="h-28 animate-pulse rounded-2xl border border-slate-200/90 bg-white p-5 dark:border-white/10 dark:bg-white/[0.04]"
+                            />
                         ))}
                     </div>
-                    <div className="h-40 rounded-3xl border border-slate-200/90 bg-white p-6 animate-pulse dark:border-white/10 dark:bg-white/[0.04]" />
-                    <div className="h-56 rounded-3xl border border-slate-200/90 bg-white p-6 animate-pulse dark:border-white/10 dark:bg-white/[0.04]" />
+                    <div className="h-40 animate-pulse rounded-3xl border border-slate-200/90 bg-white p-6 dark:border-white/10 dark:bg-white/[0.04]" />
+                    <div className="h-56 animate-pulse rounded-3xl border border-slate-200/90 bg-white p-6 dark:border-white/10 dark:bg-white/[0.04]" />
                 </div>
                 <div className="lg:col-span-5">
-                    <div className="h-96 rounded-3xl border border-slate-200/90 bg-white p-6 animate-pulse dark:border-white/15 dark:bg-slate-900/90" />
+                    <div className="h-96 animate-pulse rounded-3xl border border-slate-200/90 bg-white p-6 dark:border-white/15 dark:bg-slate-900/90" />
                 </div>
             </div>
         </div>
@@ -135,14 +130,11 @@ export default function InstructorProfileContent({
         Array.isArray(instructor.languages) && instructor.languages.length > 0
             ? instructor.languages.join(', ')
             : typeof instructor.languages === 'string' && instructor.languages
-            ? instructor.languages
-            : 'English';
+              ? instructor.languages
+              : 'English';
 
     const realReviews = instructor.reviews || [];
-    const averageRating =
-        realReviews.length > 0
-            ? realReviews.reduce((sum, r) => sum + Number(r.rating || 5), 0) / realReviews.length
-            : null;
+    const averageRating = realReviews.length > 0 ? realReviews.reduce((sum, r) => sum + Number(r.rating || 5), 0) / realReviews.length : null;
 
     // Tomorrow's date as default
     const tomorrow = new Date();
@@ -188,7 +180,8 @@ export default function InstructorProfileContent({
             onSuccess: (page) => {
                 setBookingSubmitted(true);
                 reset('notes');
-                const flashId = (page.props as any)?.flash?.booking_id || (page.props as any)?.booking_id;
+                const props = page.props as unknown as { flash?: { booking_id?: number | string }; booking_id?: number | string };
+                const flashId = props?.flash?.booking_id || props?.booking_id;
                 if (flashId) {
                     setCreatedBookingId(Number(flashId));
                 }
@@ -203,7 +196,7 @@ export default function InstructorProfileContent({
                 <div className="flex items-center justify-between">
                     <Link
                         href={route('instructors.index')}
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 transition-colors hover:text-blue-600 dark:text-slate-400 dark:hover:text-[#5bb4ff] sm:text-sm"
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 transition-colors hover:text-blue-600 sm:text-sm dark:text-slate-400 dark:hover:text-[#5bb4ff]"
                     >
                         <ChevronLeft className="h-4 w-4" />
                         Back to All Instructors
@@ -231,7 +224,7 @@ export default function InstructorProfileContent({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-2xs transition-colors hover:bg-slate-100 hover:text-slate-900 dark:border-white/15 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 sm:text-sm"
+                        className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-2xs transition-colors hover:bg-slate-100 hover:text-slate-900 sm:text-sm dark:border-white/15 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
                     >
                         <ChevronLeft className="h-4 w-4 text-[#5bb4ff]" />
                         <span>Back to Instructors</span>
@@ -261,20 +254,15 @@ export default function InstructorProfileContent({
             )}
 
             {/* Hero Header Glass Card */}
-            <div className="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xl shadow-slate-200/50 dark:border-white/15 dark:bg-gradient-to-r dark:from-blue-950/60 dark:via-slate-900/80 dark:to-slate-950/90 dark:shadow-2xl dark:shadow-black/60 dark:backdrop-blur-2xl sm:p-10">
+            <div className="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xl shadow-slate-200/50 sm:p-10 dark:border-white/15 dark:bg-gradient-to-r dark:from-blue-950/60 dark:via-slate-900/80 dark:to-slate-950/90 dark:shadow-2xl dark:shadow-black/60 dark:backdrop-blur-2xl">
                 <div className="pointer-events-none absolute top-0 right-0 -mt-10 -mr-10 h-96 w-96 rounded-full bg-blue-100/70 blur-3xl dark:bg-[#3b82f6]/15" />
 
                 <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8 md:flex-row md:items-start">
                     {/* Profile Photo */}
-                    <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-3xl border-2 border-blue-200 bg-slate-100 shadow-md dark:border-[#5bb4ff]/40 dark:bg-slate-900 dark:shadow-[0_0_25px_rgba(91,180,255,0.25)] sm:h-36 sm:w-36 lg:h-40 lg:w-40">
+                    <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-3xl border-2 border-blue-200 bg-slate-100 shadow-md sm:h-36 sm:w-36 lg:h-40 lg:w-40 dark:border-[#5bb4ff]/40 dark:bg-slate-900 dark:shadow-[0_0_25px_rgba(91,180,255,0.25)]">
                         {photo ? (
                             layoutId ? (
-                                <motion.img
-                                    layoutId={`image-${layoutId}`}
-                                    src={photo}
-                                    alt={name}
-                                    className="h-full w-full object-cover"
-                                />
+                                <motion.img layoutId={`image-${layoutId}`} src={photo} alt={name} className="h-full w-full object-cover" />
                             ) : (
                                 <img src={photo} alt={name} className="h-full w-full object-cover" />
                             )
@@ -283,12 +271,12 @@ export default function InstructorProfileContent({
                                 layoutId={`image-${layoutId}`}
                                 className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-900/60 via-slate-900 to-indigo-950 text-white"
                             >
-                                <span className="bg-gradient-to-br from-blue-600 to-indigo-600 bg-clip-text text-4xl font-black text-transparent dark:from-[#b8e6ff] dark:to-[#4da6ff] sm:text-5xl">
+                                <span className="bg-gradient-to-br from-blue-600 to-indigo-600 bg-clip-text text-4xl font-black text-transparent sm:text-5xl dark:from-[#b8e6ff] dark:to-[#4da6ff]">
                                     {name.charAt(0)}
                                 </span>
                             </motion.div>
                         ) : (
-                            <span className="bg-gradient-to-br from-blue-600 to-indigo-600 bg-clip-text text-4xl font-black text-transparent dark:from-[#b8e6ff] dark:to-[#4da6ff] sm:text-5xl">
+                            <span className="bg-gradient-to-br from-blue-600 to-indigo-600 bg-clip-text text-4xl font-black text-transparent sm:text-5xl dark:from-[#b8e6ff] dark:to-[#4da6ff]">
                                 {name.charAt(0)}
                             </span>
                         )}
@@ -300,14 +288,12 @@ export default function InstructorProfileContent({
                             {layoutId ? (
                                 <motion.h1
                                     layoutId={`title-${layoutId}`}
-                                    className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl"
+                                    className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-4xl dark:text-white"
                                 >
                                     {name}
                                 </motion.h1>
                             ) : (
-                                <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-                                    {name}
-                                </h1>
+                                <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-4xl dark:text-white">{name}</h1>
                             )}
                             {certs && (
                                 <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/15 dark:text-[#8acbff]">
@@ -317,9 +303,9 @@ export default function InstructorProfileContent({
                             )}
                         </div>
 
-                        <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-600 dark:text-slate-300 sm:text-sm md:justify-start">
-                            {location && (
-                                layoutId ? (
+                        <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-600 sm:text-sm md:justify-start dark:text-slate-300">
+                            {location &&
+                                (layoutId ? (
                                     <motion.span
                                         layoutId={`subtitle-${layoutId}`}
                                         className="flex items-center gap-1 font-medium text-blue-600 dark:text-[#8acbff]"
@@ -332,14 +318,9 @@ export default function InstructorProfileContent({
                                         <MapPin className="h-4 w-4 text-blue-600 dark:text-[#5bb4ff]" />
                                         {location}
                                     </span>
-                                )
-                            )}
+                                ))}
                             {location && <span className="text-slate-400">•</span>}
-                            <span>
-                                {instructor.is_freelance
-                                    ? 'Freelance Coach'
-                                    : instructor.school?.name || 'Center Instructor'}
-                            </span>
+                            <span>{instructor.is_freelance ? 'Freelance Coach' : instructor.school?.name || 'Center Instructor'}</span>
                             {averageRating !== null ? (
                                 <>
                                     <span className="text-slate-400">•</span>
@@ -358,13 +339,11 @@ export default function InstructorProfileContent({
                         </div>
 
                         {instructor.bio ? (
-                            <p className="max-w-3xl pt-1 text-sm leading-relaxed text-slate-700 whitespace-pre-line dark:text-slate-300/90 sm:text-base">
+                            <p className="max-w-3xl pt-1 text-sm leading-relaxed whitespace-pre-line text-slate-700 sm:text-base dark:text-slate-300/90">
                                 {instructor.bio}
                             </p>
                         ) : (
-                            <p className="max-w-3xl pt-1 text-xs italic text-slate-500 dark:text-slate-400">
-                                No biography provided yet.
-                            </p>
+                            <p className="max-w-3xl pt-1 text-xs text-slate-500 italic dark:text-slate-400">No biography provided yet.</p>
                         )}
                     </div>
                 </div>
@@ -384,10 +363,8 @@ export default function InstructorProfileContent({
                             <p className="text-xs text-slate-600 dark:text-slate-300">
                                 {instructor.experience_years !== null &&
                                 instructor.experience_years !== undefined &&
-                                instructor.experience_years !== ('' as any)
-                                    ? `${instructor.experience_years} Year${
-                                          Number(instructor.experience_years) === 1 ? '' : 's'
-                                      } Active Coaching`
+                                String(instructor.experience_years).trim() !== ''
+                                    ? `${instructor.experience_years} Year${Number(instructor.experience_years) === 1 ? '' : 's'} Active Coaching`
                                     : 'Experience not specified'}
                             </p>
                         </div>
@@ -397,9 +374,7 @@ export default function InstructorProfileContent({
                                 <ShieldCheck className="h-5 w-5" />
                             </div>
                             <h3 className="mb-0.5 text-sm font-bold text-slate-900 dark:text-white">Certifications</h3>
-                            <p className="text-xs text-slate-600 dark:text-slate-300">
-                                {instructor.certifications || 'Verified Professional Coach'}
-                            </p>
+                            <p className="text-xs text-slate-600 dark:text-slate-300">{instructor.certifications || 'Verified Professional Coach'}</p>
                         </div>
 
                         <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-lg dark:backdrop-blur-xl">
@@ -412,7 +387,7 @@ export default function InstructorProfileContent({
                     </div>
 
                     {/* Specialties & Gear Card */}
-                    <div className="space-y-4 rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl sm:p-8">
+                    <div className="space-y-4 rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm sm:p-8 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl">
                         <h3 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white">
                             <Sparkles className="h-5 w-5 text-blue-600 dark:text-[#5bb4ff]" />
                             Coaching Disciplines &amp; Specialties
@@ -441,7 +416,7 @@ export default function InstructorProfileContent({
                     </div>
 
                     {/* Verified Student Reviews Section */}
-                    <div className="space-y-6 rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl sm:p-8">
+                    <div className="space-y-6 rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm sm:p-8 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-xl dark:backdrop-blur-xl">
                         <div className="flex items-center justify-between">
                             <h3 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white">
                                 <MessageSquare className="h-5 w-5 text-blue-600 dark:text-[#5bb4ff]" />
@@ -476,13 +451,11 @@ export default function InstructorProfileContent({
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <h4 className="text-xs font-bold text-slate-900 dark:text-white sm:text-sm">
+                                                    <h4 className="text-xs font-bold text-slate-900 sm:text-sm dark:text-white">
                                                         {rev.student?.name || 'Verified Student'}
                                                     </h4>
                                                     <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                                                        {rev.created_at
-                                                            ? new Date(rev.created_at).toLocaleDateString()
-                                                            : 'Verified Session'}
+                                                        {rev.created_at ? new Date(rev.created_at).toLocaleDateString() : 'Verified Session'}
                                                     </span>
                                                 </div>
                                             </div>
@@ -494,15 +467,13 @@ export default function InstructorProfileContent({
                                             </div>
                                         </div>
 
-                                        <p className="text-xs leading-relaxed text-slate-700 italic dark:text-slate-300/90 sm:text-sm">
+                                        <p className="text-xs leading-relaxed text-slate-700 italic sm:text-sm dark:text-slate-300/90">
                                             "{rev.comment}"
                                         </p>
 
                                         {rev.instructor_reply && (
                                             <div className="mt-2.5 rounded-xl border border-blue-100 bg-blue-50/60 p-3 text-xs text-slate-700 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
-                                                <span className="font-semibold text-blue-700 dark:text-[#8acbff]">
-                                                    Response from coach:{' '}
-                                                </span>
+                                                <span className="font-semibold text-blue-700 dark:text-[#8acbff]">Response from coach: </span>
                                                 <span className="italic">"{rev.instructor_reply}"</span>
                                             </div>
                                         )}
@@ -519,7 +490,7 @@ export default function InstructorProfileContent({
 
                 {/* Right Column: Sticky Booking & Availability Card */}
                 <div className="sticky top-24 lg:col-span-5">
-                    <div className="space-y-6 rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xl shadow-slate-200/50 dark:border-white/15 dark:bg-gradient-to-b dark:from-slate-900/90 dark:to-[#070b12]/95 dark:shadow-2xl dark:shadow-black/80 dark:backdrop-blur-2xl sm:p-8">
+                    <div className="space-y-6 rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xl shadow-slate-200/50 sm:p-8 dark:border-white/15 dark:bg-gradient-to-b dark:from-slate-900/90 dark:to-[#070b12]/95 dark:shadow-2xl dark:shadow-black/80 dark:backdrop-blur-2xl">
                         {/* Header Price */}
                         <div className="flex items-baseline justify-between border-b border-slate-200 pb-5 dark:border-white/10">
                             <div>
@@ -528,10 +499,7 @@ export default function InstructorProfileContent({
                                 </span>
                                 <div className="mt-1 text-3xl font-black text-slate-900 dark:text-white">
                                     ${hourlyRate}
-                                    <span className="text-sm font-normal text-slate-500 dark:text-slate-400">
-                                        {' '}
-                                        / hour
-                                    </span>
+                                    <span className="text-sm font-normal text-slate-500 dark:text-slate-400"> / hour</span>
                                 </div>
                                 {instructor.daily_rate && (
                                     <div className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
@@ -554,12 +522,9 @@ export default function InstructorProfileContent({
                                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-300 bg-white text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
                                     <Wind className="h-6 w-6" />
                                 </div>
-                                <h4 className="text-base font-bold text-slate-900 dark:text-white">
-                                    Bookings Currently Paused
-                                </h4>
+                                <h4 className="text-base font-bold text-slate-900 dark:text-white">Bookings Currently Paused</h4>
                                 <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                                    {name} has paused their listing and is not accepting new booking requests at this
-                                    time.
+                                    {name} has paused their listing and is not accepting new booking requests at this time.
                                 </p>
                                 <Link
                                     href={route('instructors.index')}
@@ -576,8 +541,7 @@ export default function InstructorProfileContent({
                                 </div>
                                 <h4 className="text-lg font-bold text-slate-900 dark:text-white">Ready to Ride?</h4>
                                 <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300/80">
-                                    Sign in to book a session with {name}, choose available time slots, and connect
-                                    directly.
+                                    Sign in to book a session with {name}, choose available time slots, and connect directly.
                                 </p>
                                 <Link
                                     href={route('login')}
@@ -588,32 +552,24 @@ export default function InstructorProfileContent({
                                 </Link>
                                 <p className="text-[11px] text-slate-500 dark:text-slate-400">
                                     Don't have an account?{' '}
-                                    <Link
-                                        href={route('register')}
-                                        className="font-semibold text-blue-600 hover:underline dark:text-[#5bb4ff]"
-                                    >
+                                    <Link href={route('register')} className="font-semibold text-blue-600 hover:underline dark:text-[#5bb4ff]">
                                         Register in 30 seconds
                                     </Link>
                                 </p>
                             </div>
                         ) : bookingSubmitted || existingBooking ? (
-                            <div className="space-y-4 rounded-2xl border border-emerald-500/30 bg-emerald-50/80 p-6 text-xs text-emerald-800 shadow-sm dark:border-emerald-500/40 dark:bg-gradient-to-br dark:from-emerald-950/60 dark:to-slate-950/80 dark:text-emerald-300 dark:shadow-xl dark:shadow-black/40 sm:text-sm">
+                            <div className="space-y-4 rounded-2xl border border-emerald-500/30 bg-emerald-50/80 p-6 text-xs text-emerald-800 shadow-sm sm:text-sm dark:border-emerald-500/40 dark:bg-gradient-to-br dark:from-emerald-950/60 dark:to-slate-950/80 dark:text-emerald-300 dark:shadow-xl dark:shadow-black/40">
                                 <div className="flex items-start gap-3">
                                     <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-emerald-600 dark:text-emerald-400" />
                                     <div className="space-y-1">
-                                        <p className="text-base font-bold text-slate-900 dark:text-white">
-                                            Booking Request Sent!
-                                        </p>
-                                        <p className="text-xs text-emerald-700 leading-relaxed dark:text-emerald-200/90 sm:text-sm">
+                                        <p className="text-base font-bold text-slate-900 dark:text-white">Booking Request Sent!</p>
+                                        <p className="text-xs leading-relaxed text-emerald-700 sm:text-sm dark:text-emerald-200/90">
                                             {name} has received your request and will confirm your session shortly.
                                         </p>
                                         {(existingBooking?.date || data.date) && (
                                             <div className="mt-2 rounded-xl border border-emerald-300 bg-white/80 p-3 text-[11px] text-emerald-900 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-200">
-                                                <span className="font-semibold text-slate-900 dark:text-white">
-                                                    Requested Session:
-                                                </span>{' '}
-                                                {existingBooking?.date || data.date} (
-                                                {existingBooking?.time || data.time})
+                                                <span className="font-semibold text-slate-900 dark:text-white">Requested Session:</span>{' '}
+                                                {existingBooking?.date || data.date} ({existingBooking?.time || data.time})
                                             </div>
                                         )}
                                     </div>
@@ -621,9 +577,7 @@ export default function InstructorProfileContent({
                                 <div className="pt-2">
                                     <Link
                                         href={`/client/bookings${
-                                            createdBookingId || existingBooking?.id
-                                                ? `?highlight=${createdBookingId || existingBooking?.id}`
-                                                : ''
+                                            createdBookingId || existingBooking?.id ? `?highlight=${createdBookingId || existingBooking?.id}` : ''
                                         }`}
                                         className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-3 text-xs font-bold text-white shadow-md transition-all hover:scale-[1.02] hover:from-emerald-500 hover:to-teal-500 sm:text-sm"
                                     >
@@ -632,8 +586,7 @@ export default function InstructorProfileContent({
                                     </Link>
                                 </div>
                                 <p className="text-center text-[11px] text-slate-500 dark:text-slate-400">
-                                    No upfront payment required. You can manage your booking or message your coach in My
-                                    Bookings.
+                                    No upfront payment required. You can manage your booking or message your coach in My Bookings.
                                 </p>
                             </div>
                         ) : (
@@ -653,9 +606,7 @@ export default function InstructorProfileContent({
                                             required
                                         />
                                     </div>
-                                    {errors.date && (
-                                        <p className="text-xs text-rose-500 dark:text-rose-400">{errors.date}</p>
-                                    )}
+                                    {errors.date && <p className="text-xs text-rose-500 dark:text-rose-400">{errors.date}</p>}
                                 </div>
 
                                 {/* Time Slot Selection */}
@@ -672,11 +623,7 @@ export default function InstructorProfileContent({
                                         className="w-full cursor-pointer appearance-none rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-white/15 dark:bg-slate-950/60 dark:text-white dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                     >
                                         {timeSlots.map((slot) => (
-                                            <option
-                                                key={slot}
-                                                value={slot}
-                                                className="bg-white text-slate-900 dark:bg-[#070b12] dark:text-white"
-                                            >
+                                            <option key={slot} value={slot} className="bg-white text-slate-900 dark:bg-[#070b12] dark:text-white">
                                                 {slot}
                                             </option>
                                         ))}
@@ -758,9 +705,7 @@ export default function InstructorProfileContent({
                                             {activeLesson.hours}h session · {data.students_count} student(s)
                                         </span>
                                     </div>
-                                    <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400">
-                                        ${estimatedPrice}
-                                    </div>
+                                    <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400">${estimatedPrice}</div>
                                 </div>
 
                                 {/* Submit Button */}

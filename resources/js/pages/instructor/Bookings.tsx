@@ -1,22 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import {
-    Calendar,
-    CalendarCheck,
-    CheckCircle2,
-    Clock,
-    DollarSign,
-    Filter,
-    Mail,
-    MapPin,
-    MessageSquare,
-    Search,
-    User,
-    Users,
-    Wind,
-    XCircle,
-} from 'lucide-react';
+import { Calendar, CalendarCheck, CheckCircle2, Clock, MapPin, MessageSquare, Search, Users, Wind, XCircle } from 'lucide-react';
 import { useState } from 'react';
 
 interface Client {
@@ -78,7 +63,7 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
             {
                 preserveScroll: true,
                 onFinish: () => setActionLoading(null),
-            }
+            },
         );
     };
 
@@ -90,7 +75,7 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
             {
                 preserveScroll: true,
                 onFinish: () => setActionLoading(null),
-            }
+            },
         );
     };
 
@@ -116,15 +101,15 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Instructor Bookings - KiteLink" />
 
-            <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white sm:p-6 lg:p-8">
+            <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* Header Banner */}
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                             <CalendarCheck className="h-7 w-7 text-blue-600 dark:text-[#5bb4ff]" />
                             Bookings Management
                         </h1>
-                        <p className="mt-1 text-xs text-slate-600 dark:text-slate-400 sm:text-sm">
+                        <p className="mt-1 text-xs text-slate-600 sm:text-sm dark:text-slate-400">
                             Manage lesson requests, review student details, and track your completed kitesurfing sessions
                         </p>
                     </div>
@@ -149,7 +134,7 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                                 type="button"
                                 key={t.key}
                                 onClick={() => handleTabChange(t.key)}
-                                className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all sm:text-sm cursor-pointer ${
+                                className={`inline-flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all sm:text-sm ${
                                     isActive
                                         ? 'border border-blue-200 bg-blue-50 text-blue-700 shadow-sm dark:border-[#5bb4ff]/40 dark:bg-[#1f6eff]/20 dark:text-white'
                                         : 'border border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/[0.04] dark:hover:text-slate-200'
@@ -158,7 +143,9 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                                 <span>{t.label}</span>
                                 <span
                                     className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${
-                                        isActive ? 'bg-blue-100 text-blue-700 dark:bg-[#5bb4ff]/30 dark:text-white' : 'bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-400'
+                                        isActive
+                                            ? 'bg-blue-100 text-blue-700 dark:bg-[#5bb4ff]/30 dark:text-white'
+                                            : 'bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-400'
                                     }`}
                                 >
                                     {t.count}
@@ -208,7 +195,7 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                             return (
                                 <div
                                     key={booking.id}
-                                    className="group relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm transition-all hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-white/[0.05] dark:hover:border-white/20 dark:hover:bg-white/[0.07] sm:p-6"
+                                    className="group relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm transition-all hover:border-slate-300 hover:shadow-md sm:p-6 dark:border-white/10 dark:bg-white/[0.05] dark:hover:border-white/20 dark:hover:bg-white/[0.07]"
                                 >
                                     <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
                                         {/* Left: Student Info & Lesson Details */}
@@ -234,7 +221,7 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                                                         ({booking.student?.email || 'email not provided'})
                                                     </span>
                                                     <span
-                                                        className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                                                        className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase ${
                                                             isPending
                                                                 ? 'border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-300'
                                                                 : isUpcoming
@@ -287,9 +274,9 @@ export default function Bookings({ bookings = [], tab = 'pending', counts }: Boo
                                         </div>
 
                                         {/* Right: Price & Action Buttons */}
-                                        <div className="flex flex-col items-end justify-between gap-3 border-t border-slate-200 pt-4 dark:border-white/10 lg:border-t-0 lg:pt-0">
+                                        <div className="flex flex-col items-end justify-between gap-3 border-t border-slate-200 pt-4 lg:border-t-0 lg:pt-0 dark:border-white/10">
                                             <div className="text-right">
-                                                <span className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider dark:text-slate-400">
+                                                <span className="block text-[11px] font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
                                                     Session Total
                                                 </span>
                                                 <span className="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400">

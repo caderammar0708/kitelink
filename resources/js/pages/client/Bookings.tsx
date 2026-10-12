@@ -2,20 +2,16 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router, useForm, usePoll } from '@inertiajs/react';
 import {
-    AlertCircle,
     Calendar,
     CalendarCheck,
     CheckCircle2,
     Clock,
-    DollarSign,
-    Filter,
     MapPin,
     MessageSquare,
     Search,
     Send,
     Sparkles,
     Star,
-    User,
     Users,
     Wind,
     X,
@@ -163,19 +159,13 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
             const location = (b.instructor?.location || '').toLowerCase();
             const schoolName = (b.instructor?.school?.name || '').toLowerCase();
 
-            return (
-                instructorName.includes(q) ||
-                lessonType.includes(q) ||
-                location.includes(q) ||
-                schoolName.includes(q) ||
-                b.date.includes(q)
-            );
+            return instructorName.includes(q) || lessonType.includes(q) || location.includes(q) || schoolName.includes(q) || b.date.includes(q);
         }
 
         return true;
     });
 
-    const tabs = [
+    const tabs: { key: 'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled'; label: string; count: number; color: string }[] = [
         { key: 'all', label: 'All Sessions', count: totalCounts.all, color: 'text-slate-300' },
         { key: 'pending', label: 'Pending', count: totalCounts.pending, color: 'text-amber-400' },
         { key: 'confirmed', label: 'Confirmed', count: totalCounts.confirmed, color: 'text-emerald-400' },
@@ -187,15 +177,15 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="My Bookings - KiteLink" />
 
-            <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white sm:p-6 lg:p-8">
+            <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* Header Banner */}
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                        <h1 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                             <CalendarCheck className="h-7 w-7 text-blue-600 dark:text-[#5bb4ff]" />
                             My Kitesurfing Bookings
                         </h1>
-                        <p className="mt-1 text-xs text-slate-600 dark:text-slate-400 sm:text-sm">
+                        <p className="mt-1 text-xs text-slate-600 sm:text-sm dark:text-slate-400">
                             Track the status of your lesson requests, message confirmed coaches, and leave verified session reviews.
                         </p>
                     </div>
@@ -219,7 +209,7 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                                 <button
                                     key={tab.key}
                                     type="button"
-                                    onClick={() => setActiveTab(tab.key as any)}
+                                    onClick={() => setActiveTab(tab.key)}
                                     className={`flex cursor-pointer items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold whitespace-nowrap transition-all duration-200 sm:text-sm ${
                                         isActive
                                             ? 'bg-blue-600 text-white shadow-sm dark:bg-gradient-to-r dark:from-[#1f6eff] dark:to-[#3b82f6] dark:shadow-md dark:shadow-blue-600/30'
@@ -249,7 +239,7 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Filter bookings..."
-                            className="w-full rounded-2xl border border-slate-300 bg-white py-2 pr-3 pl-9 text-xs text-slate-900 placeholder-slate-400 shadow-sm transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-white/15 dark:bg-slate-950/60 dark:text-white dark:placeholder-slate-400/60 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40 sm:text-sm"
+                            className="w-full rounded-2xl border border-slate-300 bg-white py-2 pr-3 pl-9 text-xs text-slate-900 placeholder-slate-400 shadow-sm transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none sm:text-sm dark:border-white/15 dark:bg-slate-950/60 dark:text-white dark:placeholder-slate-400/60 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                         />
                         {searchQuery && (
                             <button
@@ -269,8 +259,8 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-200 bg-blue-50 text-blue-600 shadow-sm dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/10 dark:text-[#5bb4ff]">
                             <Wind className="h-7 w-7" />
                         </div>
-                        <h3 className="text-lg font-bold text-slate-900 dark:text-white sm:text-xl">No Bookings Found</h3>
-                        <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-slate-500 dark:text-slate-400 sm:text-sm">
+                        <h3 className="text-lg font-bold text-slate-900 sm:text-xl dark:text-white">No Bookings Found</h3>
+                        <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-slate-500 sm:text-sm dark:text-slate-400">
                             {activeTab === 'all'
                                 ? "You haven't booked any kitesurfing lessons yet. Explore verified instructors worldwide and book your first progression session!"
                                 : `You currently have no ${activeTab} bookings.`}
@@ -290,8 +280,7 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                         {filteredBookings.map((booking) => {
                             const isHighlighted = String(booking.id) === String(highlightId);
                             const instructorName = booking.instructor?.user?.name || 'Certified Instructor';
-                            const instructorPhoto =
-                                booking.instructor?.profile_photo || booking.instructor?.user?.profile_picture;
+                            const instructorPhoto = booking.instructor?.profile_photo || booking.instructor?.user?.profile_picture;
                             const schoolName = booking.instructor?.school?.name;
                             const location = booking.instructor?.location || booking.instructor?.school?.location;
 
@@ -309,13 +298,9 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                                         {/* Left Side: Instructor + Lesson Details */}
                                         <div className="flex items-start gap-4 sm:gap-5">
                                             {/* Instructor Avatar */}
-                                            <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm dark:border-white/20 dark:bg-slate-900 sm:h-16 sm:w-16">
+                                            <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm sm:h-16 sm:w-16 dark:border-white/20 dark:bg-slate-900">
                                                 {instructorPhoto ? (
-                                                    <img
-                                                        src={instructorPhoto}
-                                                        alt={instructorName}
-                                                        className="h-full w-full object-cover"
-                                                    />
+                                                    <img src={instructorPhoto} alt={instructorName} className="h-full w-full object-cover" />
                                                 ) : (
                                                     <span className="bg-gradient-to-br from-blue-600 to-indigo-600 bg-clip-text text-xl font-black text-transparent dark:from-[#b8e6ff] dark:to-[#4da6ff]">
                                                         {instructorName.charAt(0)}
@@ -326,7 +311,7 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                                             {/* Details */}
                                             <div className="space-y-1.5">
                                                 <div className="flex flex-wrap items-center gap-2">
-                                                    <h3 className="text-base font-bold text-slate-900 dark:text-white sm:text-lg">
+                                                    <h3 className="text-base font-bold text-slate-900 sm:text-lg dark:text-white">
                                                         {instructorName}
                                                     </h3>
                                                     {schoolName && (
@@ -336,9 +321,7 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                                                     )}
                                                 </div>
 
-                                                <p className="text-sm font-semibold text-blue-600 dark:text-[#8acbff]">
-                                                    {booking.lesson_type}
-                                                </p>
+                                                <p className="text-sm font-semibold text-blue-600 dark:text-[#8acbff]">{booking.lesson_type}</p>
 
                                                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-600 dark:text-slate-300/80">
                                                     <span className="flex items-center gap-1.5 font-medium text-slate-800 dark:text-slate-200">
@@ -363,15 +346,13 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                                                 </div>
 
                                                 {booking.notes && (
-                                                    <p className="mt-2 text-xs italic text-slate-500 dark:text-slate-400">
-                                                        "{booking.notes}"
-                                                    </p>
+                                                    <p className="mt-2 text-xs text-slate-500 italic dark:text-slate-400">"{booking.notes}"</p>
                                                 )}
                                             </div>
                                         </div>
 
                                         {/* Right Side: Status Badge, Price & Actions */}
-                                        <div className="flex flex-row items-center justify-between gap-4 border-t border-slate-200 pt-4 dark:border-white/10 lg:flex-col lg:items-end lg:border-t-0 lg:pt-0">
+                                        <div className="flex flex-row items-center justify-between gap-4 border-t border-slate-200 pt-4 lg:flex-col lg:items-end lg:border-t-0 lg:pt-0 dark:border-white/10">
                                             {/* Status Badge */}
                                             <div>
                                                 {booking.status === 'pending' && (
@@ -408,7 +389,7 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                                                 <span className="block text-[11px] font-medium tracking-wider text-slate-500 uppercase dark:text-slate-400">
                                                     Session Total
                                                 </span>
-                                                <span className="text-lg font-black text-emerald-600 dark:text-emerald-400 sm:text-xl">
+                                                <span className="text-lg font-black text-emerald-600 sm:text-xl dark:text-emerald-400">
                                                     ${Number(booking.total_price).toFixed(2)}
                                                 </span>
                                             </div>
@@ -470,7 +451,7 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                         onClick={() => setReviewModalBooking(null)}
                     />
 
-                    <div className="relative w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/15 dark:bg-gradient-to-b dark:from-[#0c1424] dark:to-[#070b12] sm:p-8">
+                    <div className="relative w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl sm:p-8 dark:border-white/15 dark:bg-gradient-to-b dark:from-[#0c1424] dark:to-[#070b12]">
                         <button
                             type="button"
                             onClick={() => setReviewModalBooking(null)}
@@ -484,16 +465,13 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                                 <Sparkles className="h-3.5 w-3.5" />
                                 Verified Student Review
                             </div>
-                            <h2 className="text-xl font-extrabold text-slate-900 dark:text-white sm:text-2xl">
-                                Review Coaching Session
-                            </h2>
-                            <p className="text-xs text-slate-600 dark:text-slate-400 sm:text-sm">
+                            <h2 className="text-xl font-extrabold text-slate-900 sm:text-2xl dark:text-white">Review Coaching Session</h2>
+                            <p className="text-xs text-slate-600 sm:text-sm dark:text-slate-400">
                                 Rate your session with{' '}
                                 <span className="font-semibold text-slate-900 dark:text-white">
                                     {reviewModalBooking.instructor?.user?.name || 'Instructor'}
                                 </span>{' '}
-                                for{' '}
-                                <span className="text-blue-600 dark:text-[#8acbff]">{reviewModalBooking.lesson_type}</span>.
+                                for <span className="text-blue-600 dark:text-[#8acbff]">{reviewModalBooking.lesson_type}</span>.
                             </p>
                         </div>
 
@@ -505,8 +483,7 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                                 </label>
                                 <div className="flex items-center gap-2">
                                     {[1, 2, 3, 4, 5].map((star) => {
-                                        const isFilled =
-                                            (hoverRating !== null ? hoverRating : selectedRating) >= star;
+                                        const isFilled = (hoverRating !== null ? hoverRating : selectedRating) >= star;
                                         return (
                                             <button
                                                 key={star}
@@ -529,9 +506,7 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                                             </button>
                                         );
                                     })}
-                                    <span className="ml-2 text-sm font-bold text-amber-700 dark:text-amber-300">
-                                        {selectedRating} of 5 Stars
-                                    </span>
+                                    <span className="ml-2 text-sm font-bold text-amber-700 dark:text-amber-300">{selectedRating} of 5 Stars</span>
                                 </div>
                             </div>
 
@@ -547,9 +522,7 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                                     rows={4}
                                     className="w-full rounded-2xl border border-slate-300 bg-white p-4 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-white/15 dark:bg-slate-950/60 dark:text-white dark:placeholder-slate-400/50"
                                 />
-                                {reviewForm.errors.comment && (
-                                    <p className="text-xs text-rose-500 dark:text-rose-400">{reviewForm.errors.comment}</p>
-                                )}
+                                {reviewForm.errors.comment && <p className="text-xs text-rose-500 dark:text-rose-400">{reviewForm.errors.comment}</p>}
                             </div>
 
                             {/* Submit & Cancel */}
@@ -568,9 +541,7 @@ export default function Bookings({ bookings = [], counts, highlightId }: Booking
                                     className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-amber-600/30 transition-all hover:scale-[1.02] hover:from-amber-400 hover:to-amber-500 disabled:opacity-50"
                                 >
                                     <Send className="h-3.5 w-3.5" />
-                                    <span>
-                                        {reviewForm.processing ? 'Publishing Review...' : 'Publish Review'}
-                                    </span>
+                                    <span>{reviewForm.processing ? 'Publishing Review...' : 'Publish Review'}</span>
                                 </button>
                             </div>
                         </form>

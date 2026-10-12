@@ -54,9 +54,15 @@ export function Register({ role }: RegisterProps) {
 
     return (
         <>
-            <Head title={isSchool ? 'School Registration - KiteLink' : isInstructor ? 'Instructor Registration - KiteLink' : 'Create an Account - KiteLink'} />
+            <Head
+                title={
+                    isSchool ? 'School Registration - KiteLink' : isInstructor ? 'Instructor Registration - KiteLink' : 'Create an Account - KiteLink'
+                }
+            />
 
-            <div className={`w-full ${isSchool ? 'max-w-xl' : 'max-w-md'} rounded-3xl border border-white/10 bg-white/[0.07] p-6 shadow-2xl shadow-black/60 backdrop-blur-xl transition-all duration-300 sm:p-8`}>
+            <div
+                className={`w-full ${isSchool ? 'max-w-xl' : 'max-w-md'} rounded-3xl border border-white/10 bg-white/[0.07] p-6 shadow-2xl shadow-black/60 backdrop-blur-xl transition-all duration-300 sm:p-8`}
+            >
                 {/* Header with Logo & Role Badge */}
                 <div className="mb-6 flex flex-col items-center text-center">
                     <Link
@@ -84,13 +90,9 @@ export function Register({ role }: RegisterProps) {
                     )}
 
                     <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                        {isSchool
-                            ? 'Register Your Kite Center'
-                            : isInstructor
-                              ? 'Join as an Instructor'
-                              : 'Create an account'}
+                        {isSchool ? 'Register Your Kite Center' : isInstructor ? 'Join as an Instructor' : 'Create an account'}
                     </h1>
-                    <p className="mt-1.5 text-xs sm:text-sm text-slate-300/80 max-w-sm">
+                    <p className="mt-1.5 max-w-sm text-xs text-slate-300/80 sm:text-sm">
                         {isSchool
                             ? 'Quick application for kite schools and centers. Full profile, gear, and roster setup opens after approval.'
                             : isInstructor
@@ -112,7 +114,7 @@ export function Register({ role }: RegisterProps) {
                                     School / Business Name
                                 </label>
                                 <div className="relative">
-                                    <Building2 className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                    <Building2 className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                     <input
                                         id="school_name"
                                         type="text"
@@ -129,7 +131,7 @@ export function Register({ role }: RegisterProps) {
                                         }}
                                         disabled={processing}
                                         placeholder="e.g. Kite Paradise Tarifa"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                     />
                                 </div>
                                 {errors.school_name && (
@@ -146,7 +148,7 @@ export function Register({ role }: RegisterProps) {
                                         Business Reg. No.
                                     </label>
                                     <div className="relative">
-                                        <FileText className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                        <FileText className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                         <input
                                             id="registration_number"
                                             type="text"
@@ -156,12 +158,10 @@ export function Register({ role }: RegisterProps) {
                                             onChange={(e) => setData('registration_number', e.target.value)}
                                             disabled={processing}
                                             placeholder="e.g. REG-984210"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                         />
                                     </div>
-                                    {errors.registration_number && (
-                                        <div className="mt-1 text-xs text-rose-300">{errors.registration_number}</div>
-                                    )}
+                                    {errors.registration_number && <div className="mt-1 text-xs text-rose-300">{errors.registration_number}</div>}
                                 </div>
 
                                 <div className="space-y-1.5">
@@ -169,7 +169,7 @@ export function Register({ role }: RegisterProps) {
                                         Contact Person Name
                                     </label>
                                     <div className="relative">
-                                        <User className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                        <User className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                         <input
                                             id="contact_name"
                                             type="text"
@@ -179,12 +179,10 @@ export function Register({ role }: RegisterProps) {
                                             onChange={(e) => setData('contact_name', e.target.value)}
                                             disabled={processing}
                                             placeholder="Full name of director/manager"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                         />
                                     </div>
-                                    {errors.contact_name && (
-                                        <div className="mt-1 text-xs text-rose-300">{errors.contact_name}</div>
-                                    )}
+                                    {errors.contact_name && <div className="mt-1 text-xs text-rose-300">{errors.contact_name}</div>}
                                 </div>
                             </div>
 
@@ -195,7 +193,7 @@ export function Register({ role }: RegisterProps) {
                                         Email Address
                                     </label>
                                     <div className="relative">
-                                        <Mail className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                        <Mail className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                         <input
                                             id="email"
                                             type="email"
@@ -206,12 +204,10 @@ export function Register({ role }: RegisterProps) {
                                             onChange={(e) => setData('email', e.target.value)}
                                             disabled={processing}
                                             placeholder="contact@school.com"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                         />
                                     </div>
-                                    {errors.email && (
-                                        <div className="mt-1 text-xs text-rose-300">{errors.email}</div>
-                                    )}
+                                    {errors.email && <div className="mt-1 text-xs text-rose-300">{errors.email}</div>}
                                 </div>
 
                                 <div className="space-y-1.5">
@@ -219,7 +215,7 @@ export function Register({ role }: RegisterProps) {
                                         Phone Number
                                     </label>
                                     <div className="relative">
-                                        <Phone className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                        <Phone className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                         <input
                                             id="phone"
                                             type="tel"
@@ -229,12 +225,10 @@ export function Register({ role }: RegisterProps) {
                                             onChange={(e) => setData('phone', e.target.value)}
                                             disabled={processing}
                                             placeholder="+1 (555) 000-0000"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                         />
                                     </div>
-                                    {errors.phone && (
-                                        <div className="mt-1 text-xs text-rose-300">{errors.phone}</div>
-                                    )}
+                                    {errors.phone && <div className="mt-1 text-xs text-rose-300">{errors.phone}</div>}
                                 </div>
                             </div>
 
@@ -244,7 +238,7 @@ export function Register({ role }: RegisterProps) {
                                     Location (City / Area)
                                 </label>
                                 <div className="relative">
-                                    <MapPin className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                    <MapPin className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                     <input
                                         id="location"
                                         type="text"
@@ -254,12 +248,10 @@ export function Register({ role }: RegisterProps) {
                                         onChange={(e) => setData('location', e.target.value)}
                                         disabled={processing}
                                         placeholder="e.g. Tarifa, Cadiz, Spain"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                     />
                                 </div>
-                                {errors.location && (
-                                    <div className="mt-1 text-xs text-rose-300">{errors.location}</div>
-                                )}
+                                {errors.location && <div className="mt-1 text-xs text-rose-300">{errors.location}</div>}
                             </div>
                         </>
                     ) : (
@@ -271,7 +263,7 @@ export function Register({ role }: RegisterProps) {
                                     Full Name
                                 </label>
                                 <div className="relative">
-                                    <User className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                    <User className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                     <input
                                         id="name"
                                         type="text"
@@ -283,12 +275,10 @@ export function Register({ role }: RegisterProps) {
                                         onChange={(e) => setData('name', e.target.value)}
                                         disabled={processing}
                                         placeholder="Your full name"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                     />
                                 </div>
-                                {errors.name && (
-                                    <div className="mt-1 text-xs text-rose-300">{errors.name}</div>
-                                )}
+                                {errors.name && <div className="mt-1 text-xs text-rose-300">{errors.name}</div>}
                             </div>
 
                             {/* Email Address */}
@@ -297,7 +287,7 @@ export function Register({ role }: RegisterProps) {
                                     Email Address
                                 </label>
                                 <div className="relative">
-                                    <Mail className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                    <Mail className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                     <input
                                         id="email"
                                         type="email"
@@ -308,12 +298,10 @@ export function Register({ role }: RegisterProps) {
                                         onChange={(e) => setData('email', e.target.value)}
                                         disabled={processing}
                                         placeholder="name@example.com"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                     />
                                 </div>
-                                {errors.email && (
-                                    <div className="mt-1 text-xs text-rose-300">{errors.email}</div>
-                                )}
+                                {errors.email && <div className="mt-1 text-xs text-rose-300">{errors.email}</div>}
                             </div>
 
                             {/* Phone Number (for Instructor) */}
@@ -323,7 +311,7 @@ export function Register({ role }: RegisterProps) {
                                         Phone Number
                                     </label>
                                     <div className="relative">
-                                        <Phone className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                        <Phone className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                         <input
                                             id="phone"
                                             type="tel"
@@ -333,12 +321,10 @@ export function Register({ role }: RegisterProps) {
                                             onChange={(e) => setData('phone', e.target.value)}
                                             disabled={processing}
                                             placeholder="+1 (555) 000-0000"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                         />
                                     </div>
-                                    {errors.phone && (
-                                        <div className="mt-1 text-xs text-rose-300">{errors.phone}</div>
-                                    )}
+                                    {errors.phone && <div className="mt-1 text-xs text-rose-300">{errors.phone}</div>}
                                 </div>
                             )}
 
@@ -349,7 +335,7 @@ export function Register({ role }: RegisterProps) {
                                         Certification / License Number <span className="text-rose-400">*</span>
                                     </label>
                                     <div className="relative">
-                                        <Award className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                        <Award className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                         <input
                                             id="license_number"
                                             type="text"
@@ -359,15 +345,14 @@ export function Register({ role }: RegisterProps) {
                                             onChange={(e) => setData('license_number', e.target.value)}
                                             disabled={processing}
                                             placeholder="e.g. IKO-123456 or VDWS-654321"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                         />
                                     </div>
                                     <p className="text-[11px] text-slate-400">
-                                        Your IKO, VDWS, or equivalent kitesurf instructor certification ID — used by our team to verify your credentials.
+                                        Your IKO, VDWS, or equivalent kitesurf instructor certification ID — used by our team to verify your
+                                        credentials.
                                     </p>
-                                    {errors.license_number && (
-                                        <div className="mt-1 text-xs text-rose-300">{errors.license_number}</div>
-                                    )}
+                                    {errors.license_number && <div className="mt-1 text-xs text-rose-300">{errors.license_number}</div>}
                                 </div>
                             )}
                         </>
@@ -381,7 +366,7 @@ export function Register({ role }: RegisterProps) {
                                 Password
                             </label>
                             <div className="relative">
-                                <Lock className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                <Lock className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                 <input
                                     id="password"
                                     type={showPassword ? 'text' : 'password'}
@@ -392,7 +377,7 @@ export function Register({ role }: RegisterProps) {
                                     onChange={(e) => setData('password', e.target.value)}
                                     disabled={processing}
                                     placeholder="••••••••"
-                                    className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-10 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                    className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-10 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                 />
                                 <button
                                     type="button"
@@ -404,9 +389,7 @@ export function Register({ role }: RegisterProps) {
                                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                 </button>
                             </div>
-                            {errors.password && (
-                                <div className="mt-1 text-xs text-rose-300">{errors.password}</div>
-                            )}
+                            {errors.password && <div className="mt-1 text-xs text-rose-300">{errors.password}</div>}
                         </div>
 
                         {/* Confirm Password Field */}
@@ -415,7 +398,7 @@ export function Register({ role }: RegisterProps) {
                                 Confirm Password
                             </label>
                             <div className="relative">
-                                <Lock className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                <Lock className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                 <input
                                     id="password_confirmation"
                                     type={showConfirmPassword ? 'text' : 'password'}
@@ -426,7 +409,7 @@ export function Register({ role }: RegisterProps) {
                                     onChange={(e) => setData('password_confirmation', e.target.value)}
                                     disabled={processing}
                                     placeholder="••••••••"
-                                    className="w-full rounded-xl border border-white/15 bg-slate-950/40 pl-10 pr-10 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                    className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-10 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
                                 />
                                 <button
                                     type="button"
@@ -438,9 +421,7 @@ export function Register({ role }: RegisterProps) {
                                     {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                 </button>
                             </div>
-                            {errors.password_confirmation && (
-                                <div className="mt-1 text-xs text-rose-300">{errors.password_confirmation}</div>
-                            )}
+                            {errors.password_confirmation && <div className="mt-1 text-xs text-rose-300">{errors.password_confirmation}</div>}
                         </div>
                     </div>
 
@@ -448,7 +429,7 @@ export function Register({ role }: RegisterProps) {
                     {(isInstructor || isSchool) && (
                         <div className="rounded-xl border border-blue-500/20 bg-blue-500/10 p-3 text-xs text-blue-200/90 backdrop-blur-sm">
                             <div className="flex items-start gap-2">
-                                <ShieldCheck className="h-4 w-4 shrink-0 text-blue-400 mt-0.5" />
+                                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
                                 <div>
                                     <span className="font-semibold text-white">Verification Step:</span>{' '}
                                     {isSchool
@@ -479,11 +460,7 @@ export function Register({ role }: RegisterProps) {
                             ) : (
                                 <>
                                     <span>
-                                        {isSchool
-                                            ? 'Submit School Application'
-                                            : isInstructor
-                                              ? 'Submit Instructor Application'
-                                              : 'Create account'}
+                                        {isSchool ? 'Submit School Application' : isInstructor ? 'Submit Instructor Application' : 'Create account'}
                                     </span>
                                     <i className="fas fa-arrow-right text-xs transition-transform duration-200 group-hover:translate-x-1" />
                                 </>
@@ -492,7 +469,7 @@ export function Register({ role }: RegisterProps) {
                     </div>
 
                     {/* Already have an account */}
-                    <div className="pt-2 text-center text-xs sm:text-sm text-slate-300">
+                    <div className="pt-2 text-center text-xs text-slate-300 sm:text-sm">
                         Already have an account?{' '}
                         <Link
                             href={route('login')}

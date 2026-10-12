@@ -1,7 +1,6 @@
 import { type SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
-import { Bell, Briefcase, Calendar, Check, MessageSquare, Star, Wind } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface NotificationItem {
     id: string;
@@ -54,12 +53,11 @@ export function NotificationBell({ className = '' }: { className?: string }) {
     };
 
     // Helper to play notification sound
-    const playChime = () => {
+    const playChime = useCallback(() => {
         if (!soundEnabled) return;
         try {
             const AudioContextClass =
-                window.AudioContext ||
-                (window as unknown as { webkitAudioContext: typeof window.AudioContext }).webkitAudioContext;
+                window.AudioContext || (window as unknown as { webkitAudioContext: typeof window.AudioContext }).webkitAudioContext;
             if (AudioContextClass) {
                 const ctx = new AudioContextClass();
                 const now = ctx.currentTime;
@@ -86,10 +84,10 @@ export function NotificationBell({ className = '' }: { className?: string }) {
         } catch {
             // Ignore audio error
         }
-    };
+    }, [soundEnabled]);
 
     // Fetch notifications from backend
-    const fetchNotifications = async () => {
+    const fetchNotifications = useCallback(async () => {
         try {
             const res = await fetch(`/notifications?_t=${Date.now()}`, {
                 headers: {
@@ -133,7 +131,7 @@ export function NotificationBell({ className = '' }: { className?: string }) {
         } catch {
             // Background fetch error - silent retry
         }
-    };
+    }, [playChime]);
 
     // Initial fetch and poll every 25 seconds
     useEffect(() => {
@@ -144,7 +142,7 @@ export function NotificationBell({ className = '' }: { className?: string }) {
         }, 25000);
 
         return () => clearInterval(interval);
-    }, [soundEnabled]);
+    }, [fetchNotifications]);
 
     // Listen to Inertia finish navigation event to automatically sync read states
     useEffect(() => {
@@ -152,7 +150,7 @@ export function NotificationBell({ className = '' }: { className?: string }) {
             fetchNotifications();
         });
         return () => unregister();
-    }, []);
+    }, [fetchNotifications]);
 
     // Re-fetch when tab becomes visible again
     useEffect(() => {
@@ -163,7 +161,7 @@ export function NotificationBell({ className = '' }: { className?: string }) {
         };
         document.addEventListener('visibilitychange', handleVisibility);
         return () => document.removeEventListener('visibilitychange', handleVisibility);
-    }, []);
+    }, [fetchNotifications]);
 
     // Close dropdown on outside click
     useEffect(() => {
@@ -195,9 +193,7 @@ export function NotificationBell({ className = '' }: { className?: string }) {
         setOpen(false);
 
         // Optimistically mark as read in local state immediately
-        const nextList = notifications.map((n) =>
-            n.id === item.id ? { ...n, read_at: new Date().toISOString() } : n,
-        );
+        const nextList = notifications.map((n) => (n.id === item.id ? { ...n, read_at: new Date().toISOString() } : n));
         setNotifications(nextList);
         setHasUnread(nextList.some((n) => !n.read_at));
 
@@ -310,7 +306,7 @@ export function NotificationBell({ className = '' }: { className?: string }) {
 
             {/* Dropdown Panel */}
             {open && (
-                <div className="absolute right-0 z-50 mt-2 w-80 sm:w-96 rounded-2xl border border-slate-200 bg-white/95 p-0 shadow-2xl backdrop-blur-2xl ring-1 ring-slate-900/5 animate-in fade-in zoom-in-95 duration-150 dark:border-white/10 dark:bg-[#0c1220]/95 dark:ring-black/40">
+                <div className="animate-in fade-in zoom-in-95 absolute right-0 z-50 mt-2 w-80 rounded-2xl border border-slate-200 bg-white/95 p-0 shadow-2xl ring-1 ring-slate-900/5 backdrop-blur-2xl duration-150 sm:w-96 dark:border-white/10 dark:bg-[#0c1220]/95 dark:ring-black/40">
                     {/* Header */}
                     <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-white/10">
                         <div className="flex items-center gap-2">
@@ -338,14 +334,12 @@ export function NotificationBell({ className = '' }: { className?: string }) {
                     {/* Notifications List */}
                     <div className="max-h-[380px] divide-y divide-slate-100 overflow-y-auto dark:divide-white/5">
                         {notifications.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 mb-2 dark:bg-white/5 dark:text-slate-400">
+                            <div className="flex flex-col items-center justify-center px-4 py-10 text-center">
+                                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 dark:bg-white/5 dark:text-slate-400">
                                     <Wind className="h-5 w-5" />
                                 </div>
                                 <p className="text-xs font-medium text-slate-700 dark:text-slate-300">No notifications yet</p>
-                                <p className="text-[11px] text-slate-500 mt-0.5">
-                                    We'll notify you here when bookings, messages, or updates arrive.
-                                </p>
+                                <p className="mt-0.5 text-[11px] text-slate-500">We'll notify you here when bookings, messages, or updates arrive.</p>
                             </div>
                         ) : (
                             notifications.map((item) => {
@@ -358,7 +352,7 @@ export function NotificationBell({ className = '' }: { className?: string }) {
                                         className={`flex w-full cursor-pointer items-start gap-3 p-3.5 text-left transition ${
                                             isUnread
                                                 ? 'border-l-2 border-[#3b82f6] bg-blue-50/80 hover:bg-blue-100/60 dark:bg-blue-500/[0.08] dark:hover:bg-blue-500/[0.14]'
-                                                : 'opacity-80 hover:opacity-100 hover:bg-slate-50 dark:hover:bg-white/[0.04]'
+                                                : 'opacity-80 hover:bg-slate-50 hover:opacity-100 dark:hover:bg-white/[0.04]'
                                         }`}
                                     >
                                         {renderIcon(item.data.type || item.type)}
@@ -367,23 +361,21 @@ export function NotificationBell({ className = '' }: { className?: string }) {
                                             <div className="flex items-center justify-between gap-2">
                                                 <p
                                                     className={`truncate text-xs ${
-                                                        isUnread ? 'font-semibold text-slate-900 dark:text-white' : 'font-medium text-slate-700 dark:text-slate-300'
+                                                        isUnread
+                                                            ? 'font-semibold text-slate-900 dark:text-white'
+                                                            : 'font-medium text-slate-700 dark:text-slate-300'
                                                     }`}
                                                 >
                                                     {item.data.title || 'Notification'}
                                                 </p>
-                                                {isUnread && (
-                                                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
-                                                )}
+                                                {isUnread && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />}
                                             </div>
 
-                                             <p className="mt-0.5 line-clamp-2 text-[11px] text-slate-600 leading-relaxed dark:text-slate-400">
+                                            <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-slate-600 dark:text-slate-400">
                                                 {item.data.message || ''}
                                             </p>
 
-                                            <p className="mt-1 text-[10px] text-slate-400 dark:text-slate-500">
-                                                {item.created_at_human}
-                                            </p>
+                                            <p className="mt-1 text-[10px] text-slate-400 dark:text-slate-500">{item.created_at_human}</p>
                                         </div>
                                     </button>
                                 );

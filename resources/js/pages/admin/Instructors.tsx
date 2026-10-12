@@ -1,26 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import {
-    AlertCircle,
-    Calendar,
-    Check,
-    CheckCircle2,
-    DollarSign,
-    ExternalLink,
-    Eye,
-    FileCheck,
-    GraduationCap,
-    MapPin,
-    MoreVertical,
-    Power,
-    Search,
-    ShieldAlert,
-    Trash2,
-    User,
-    UserCheck,
-    X,
-} from 'lucide-react';
+import { Eye, FileCheck, Power, Search, Trash2, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface InstructorItem {
@@ -86,7 +67,7 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                 status: newStatus ?? statusFilter,
                 search: newSearch ?? search,
             },
-            { preserveState: true, preserveScroll: true }
+            { preserveState: true, preserveScroll: true },
         );
     };
 
@@ -99,9 +80,7 @@ export default function Instructors({ instructors, filters, counts }: Instructor
         const isSuspended = instructor.status === 'suspended';
         const actionText = isSuspended ? 'reactivate' : 'suspend';
         if (confirm(`Are you sure you want to ${actionText} ${instructor.user?.name}?`)) {
-            const url = isSuspended
-                ? `/admin/instructors/${instructor.id}/reactivate`
-                : `/admin/instructors/${instructor.id}/suspend`;
+            const url = isSuspended ? `/admin/instructors/${instructor.id}/reactivate` : `/admin/instructors/${instructor.id}/suspend`;
             router.post(url, {}, { preserveScroll: true });
         }
     };
@@ -120,10 +99,8 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
-                            Instructor Management
-                        </h1>
-                        <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">Instructor Management</h1>
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                             View all instructors, monitor bookings, manage suspension, and view certifications.
                         </p>
                     </div>
@@ -136,7 +113,7 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                 </div>
 
                 {/* Filters */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
+                <div className="flex flex-col items-stretch justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm sm:flex-row sm:items-center dark:border-white/10 dark:bg-[#0c1220]">
                     <div className="flex items-center gap-1 rounded-xl bg-slate-100 p-1 dark:bg-white/5">
                         {(['all', 'approved', 'pending', 'suspended'] as const).map((s) => (
                             <button
@@ -158,14 +135,13 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                     </div>
 
                     <form onSubmit={handleSearchSubmit} className="relative min-w-[240px]">
-                        <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                        <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
                         <input
                             type="text"
                             placeholder="Search by name, email, location..."
                             value={search}
-                            onChange={(e) => setSearch}
-                            onInput={(e: any) => setSearch(e.target.value)}
-                            className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-1.5 pr-3 pl-9 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white"
                         />
                     </form>
                 </div>
@@ -173,15 +149,15 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                 {/* Table */}
                 <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="w-full border-collapse text-left">
                             <thead>
-                                <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-400">
-                                    <th className="py-3.5 px-4">Instructor</th>
-                                    <th className="py-3.5 px-4">Location</th>
-                                    <th className="py-3.5 px-4">Rate</th>
-                                    <th className="py-3.5 px-4">Bookings</th>
-                                    <th className="py-3.5 px-4">Status</th>
-                                    <th className="py-3.5 px-4 text-right">Actions</th>
+                                <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold tracking-wider text-slate-500 uppercase dark:border-white/5 dark:bg-white/[0.02] dark:text-slate-400">
+                                    <th className="px-4 py-3.5">Instructor</th>
+                                    <th className="px-4 py-3.5">Location</th>
+                                    <th className="px-4 py-3.5">Rate</th>
+                                    <th className="px-4 py-3.5">Bookings</th>
+                                    <th className="px-4 py-3.5">Status</th>
+                                    <th className="px-4 py-3.5 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 text-xs dark:divide-white/5">
@@ -196,7 +172,7 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                                         const isSuspended = inst.status === 'suspended';
                                         return (
                                             <tr key={inst.id} className="transition-colors hover:bg-slate-50/60 dark:hover:bg-white/[0.02]">
-                                                <td className="py-3.5 px-4">
+                                                <td className="px-4 py-3.5">
                                                     <div className="flex items-center gap-3">
                                                         {inst.user?.profile_picture ? (
                                                             <img
@@ -210,29 +186,23 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                                                             </div>
                                                         )}
                                                         <div>
-                                                            <p className="font-bold text-slate-900 dark:text-white">
-                                                                {inst.user?.name || 'Unnamed'}
-                                                            </p>
-                                                            <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                                                                {inst.user?.email}
-                                                            </p>
+                                                            <p className="font-bold text-slate-900 dark:text-white">{inst.user?.name || 'Unnamed'}</p>
+                                                            <p className="text-[11px] text-slate-500 dark:text-slate-400">{inst.user?.email}</p>
                                                         </div>
                                                     </div>
                                                 </td>
 
-                                                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300">
-                                                    {inst.location || 'Not set'}
-                                                </td>
+                                                <td className="px-4 py-3.5 text-slate-600 dark:text-slate-300">{inst.location || 'Not set'}</td>
 
-                                                <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
+                                                <td className="px-4 py-3.5 font-semibold text-slate-900 dark:text-white">
                                                     {inst.hourly_rate ? `$${inst.hourly_rate}/hr` : 'Custom'}
                                                 </td>
 
-                                                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-medium">
+                                                <td className="px-4 py-3.5 font-medium text-slate-600 dark:text-slate-300">
                                                     {inst.bookings_count} lessons
                                                 </td>
 
-                                                <td className="py-3.5 px-4">
+                                                <td className="px-4 py-3.5">
                                                     <span
                                                         className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold capitalize ${
                                                             inst.status === 'approved'
@@ -248,7 +218,7 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                                                     </span>
                                                 </td>
 
-                                                <td className="py-3.5 px-4 text-right">
+                                                <td className="px-4 py-3.5 text-right">
                                                     <div className="flex items-center justify-end gap-1.5">
                                                         {/* Detail View Button */}
                                                         <button
@@ -312,7 +282,7 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                                                 ? 'bg-blue-600 text-white'
                                                 : link.url
                                                   ? 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-300'
-                                                  : 'opacity-40 text-slate-400'
+                                                  : 'text-slate-400 opacity-40'
                                         }`}
                                     />
                                 ))}
@@ -324,12 +294,10 @@ export default function Instructors({ instructors, filters, counts }: Instructor
 
             {/* Profile Detail Slide-over / Modal */}
             {selectedInstructor && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in">
+                <div className="animate-in fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
                     <div className="w-full max-w-xl rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#0c1220]">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-white/10">
-                            <h2 className="text-base font-bold text-slate-900 dark:text-white">
-                                Instructor Profile Overview
-                            </h2>
+                            <h2 className="text-base font-bold text-slate-900 dark:text-white">Instructor Profile Overview</h2>
                             <button
                                 type="button"
                                 onClick={() => setSelectedInstructor(null)}
@@ -345,11 +313,9 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                                     {selectedInstructor.user?.name?.charAt(0) || 'I'}
                                 </div>
                                 <div>
-                                    <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                                        {selectedInstructor.user?.name}
-                                    </h3>
+                                    <h3 className="text-base font-bold text-slate-900 dark:text-white">{selectedInstructor.user?.name}</h3>
                                     <p className="text-slate-500">{selectedInstructor.user?.email}</p>
-                                    <span className="inline-block mt-1 font-semibold text-blue-600 dark:text-blue-400">
+                                    <span className="mt-1 inline-block font-semibold text-blue-600 dark:text-blue-400">
                                         Status: {selectedInstructor.status}
                                     </span>
                                 </div>
@@ -358,9 +324,7 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                             <div className="grid grid-cols-2 gap-3 rounded-2xl bg-slate-50 p-4 dark:bg-white/5">
                                 <div>
                                     <span className="text-slate-500">Location:</span>
-                                    <p className="font-semibold text-slate-900 dark:text-white">
-                                        {selectedInstructor.location || 'N/A'}
-                                    </p>
+                                    <p className="font-semibold text-slate-900 dark:text-white">{selectedInstructor.location || 'N/A'}</p>
                                 </div>
                                 <div>
                                     <span className="text-slate-500">Experience:</span>
@@ -376,17 +340,13 @@ export default function Instructors({ instructors, filters, counts }: Instructor
                                 </div>
                                 <div>
                                     <span className="text-slate-500">Total Bookings:</span>
-                                    <p className="font-semibold text-slate-900 dark:text-white">
-                                        {selectedInstructor.bookings_count} bookings
-                                    </p>
+                                    <p className="font-semibold text-slate-900 dark:text-white">{selectedInstructor.bookings_count} bookings</p>
                                 </div>
                             </div>
 
                             <div>
                                 <span className="font-bold text-slate-700 dark:text-slate-300">Certifications:</span>
-                                <p className="mt-1 text-slate-600 dark:text-slate-400">
-                                    {selectedInstructor.certifications || 'None specified'}
-                                </p>
+                                <p className="mt-1 text-slate-600 dark:text-slate-400">{selectedInstructor.certifications || 'None specified'}</p>
                             </div>
 
                             {selectedInstructor.certification_proof && (
@@ -405,7 +365,7 @@ export default function Instructors({ instructors, filters, counts }: Instructor
 
                             <div>
                                 <span className="font-bold text-slate-700 dark:text-slate-300">Bio:</span>
-                                <p className="mt-1 text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line">
+                                <p className="mt-1 leading-relaxed whitespace-pre-line text-slate-600 dark:text-slate-400">
                                     {selectedInstructor.bio || 'No biography written.'}
                                 </p>
                             </div>
