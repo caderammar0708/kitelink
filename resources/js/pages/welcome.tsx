@@ -2,12 +2,26 @@ import ThemeToggle from '@/components/theme-toggle';
 import WeatherWidget from '@/components/weather-widget';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function KiteLinkLanding() {
     const seasonRefs = useRef<(HTMLDivElement | null)[]>([]);
     const { auth } = usePage<SharedData>().props;
     const isAuthenticated = !!auth?.user;
+
+    // Track scroll position to make navbar transparent on scroll
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     // Interactive spot preview switcher
     const [selectedSpot, setSelectedSpot] = useState(0);
@@ -98,9 +112,19 @@ export default function KiteLinkLanding() {
                 <div className="tech-grid-bg absolute inset-0 opacity-70 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_70%,transparent_100%)] dark:opacity-35" />
             </div>
 
-            {/* STICKY FROSTED NAVBAR */}
-            <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/75 backdrop-blur-xl transition-colors duration-200 dark:border-white/[0.08] dark:bg-[#070b12]/80">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
+            {/* FIXED NAVBAR (How it was at top, transparent while scrolling) */}
+            <header
+                className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
+                    isScrolled
+                        ? 'border-b border-slate-200/20 bg-transparent backdrop-blur-md dark:border-white/[0.03]'
+                        : 'border-b border-slate-200/80 bg-white/80 backdrop-blur-xl shadow-xs dark:border-white/[0.08] dark:bg-[#070b12]/85'
+                }`}
+            >
+                <div
+                    className={`mx-auto flex max-w-7xl items-center justify-between px-4 transition-all duration-300 sm:px-6 lg:px-8 ${
+                        isScrolled ? 'py-2.5 sm:py-3' : 'py-3.5'
+                    }`}
+                >
                     {/* Brand Logo */}
                     <div className="flex items-center gap-6">
                         <Link href={route('home')} className="group flex items-center gap-2.5 no-underline">
@@ -108,14 +132,9 @@ export default function KiteLinkLanding() {
                                 <i className="fas fa-wind text-lg text-white transition-transform duration-300 group-hover:rotate-12" />
                             </div>
                             <div className="flex flex-col">
-                                <div className="flex items-center gap-1.5">
-                                    <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-xl font-extrabold tracking-tight text-transparent dark:from-[#c2e7ff] dark:via-[#8acbff] dark:to-[#60a5fa]">
-                                        KiteLink
-                                    </span>
-                                    <span className="rounded-md border border-blue-500/20 bg-blue-50 px-1.5 py-0.5 text-[10px] font-bold text-blue-700 dark:border-blue-400/30 dark:bg-blue-500/10 dark:text-sky-300">
-                                        PRO
-                                    </span>
-                                </div>
+                                <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-xl font-extrabold tracking-tight text-transparent dark:from-[#c2e7ff] dark:via-[#8acbff] dark:to-[#60a5fa]">
+                                    KiteLink
+                                </span>
                             </div>
                         </Link>
 
@@ -193,9 +212,9 @@ export default function KiteLinkLanding() {
             </header>
 
             {/* MAIN CONTENT CONTAINER */}
-            <div className="app">
+            <div className="app pt-24 sm:pt-28 lg:pt-32">
                 {/* HERO SECTION */}
-                <section className="relative pt-12 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
+                <section className="relative pt-6 pb-16 sm:pt-8 sm:pb-20 lg:pt-10 lg:pb-24">
                     <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
                         {/* Left Hero Column */}
                         <div className="animate-slideUp flex flex-col justify-center lg:col-span-7">
@@ -205,19 +224,19 @@ export default function KiteLinkLanding() {
                                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                                     <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                                 </span>
-                                <span>Global Spot Network &middot; Live Wind Telemetry</span>
+                                <span>Certified IKO &amp; VDWS Pros &middot; Direct Booking &middot; Live Wind</span>
                             </div>
 
                             {/* Main Heading */}
                             <h1 className="mt-5 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white">
-                                The Modern OS for <br />
+                                Find &amp; Book Top <br />
                                 <span className="bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-600 bg-clip-text text-transparent dark:from-[#78c6ff] dark:via-[#38bdf8] dark:to-[#818cf8]">
-                                    Kitesurfing Worldwide
+                                    Kitesurf Instructors &amp; Centers
                                 </span>
                             </h1>
 
                             <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
-                                Direct connection to certified IKO &amp; VDWS instructors, real-time wind telemetry, and premier kite centers. Book directly with zero middleman markups.
+                                Connect directly with certified kitesurfing instructors and premier kite centers worldwide. Access real-time spot wind telemetry and book your sessions with zero middleman fees.
                             </p>
 
                             {/* CTAs */}
@@ -298,7 +317,7 @@ export default function KiteLinkLanding() {
                                     </div>
 
                                     {/* Spot Switcher Tabs */}
-                                    <div className="mt-4 flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                                    <div className="no-scrollbar mt-4 flex gap-1.5 overflow-x-auto pb-1">
                                         {spots.map((spot, idx) => (
                                             <button
                                                 key={spot.name}
