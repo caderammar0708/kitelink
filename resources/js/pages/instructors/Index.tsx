@@ -1,11 +1,20 @@
 import ExpandableProfileCard from '@/components/expandable-profile-card';
-import InstructorProfileContent, { InstructorProfileSkeleton } from '@/components/instructor-profile-content';
+import InstructorProfileContent, {
+    type BookingItem,
+    type InstructorData,
+    InstructorProfileSkeleton,
+} from '@/components/instructor-profile-content';
 import AppLayout from '@/layouts/app-layout';
 import PublicLayout from '@/layouts/public-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { Award, Compass, MapPin, Search, Wind } from 'lucide-react';
 import { useMemo, useState } from 'react';
+
+interface InstructorFullProfileResponse {
+    instructor?: InstructorData;
+    existingBooking?: BookingItem | null;
+}
 
 interface InstructorItem {
     id: number;
@@ -277,7 +286,7 @@ export function Index({ instructors = [], filters }: IndexProps) {
                         ];
 
                         return (
-                            <ExpandableProfileCard
+                            <ExpandableProfileCard<InstructorFullProfileResponse>
                                 key={ins.id}
                                 id={ins.id}
                                 title={name}

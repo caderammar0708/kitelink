@@ -8,15 +8,15 @@ export interface ProfileDetailItem {
     value: React.ReactNode;
 }
 
-export interface RenderFullProfileProps {
-    data: unknown;
+export interface RenderFullProfileProps<T = any> {
+    data: T | null;
     isLoading: boolean;
     error: string | null;
     onClose: () => void;
     layoutId: string;
 }
 
-export interface ExpandableProfileCardProps {
+export interface ExpandableProfileCardProps<T = any> {
     id: string | number;
     title: string;
     location?: string | null;
@@ -30,12 +30,12 @@ export interface ExpandableProfileCardProps {
     profileUrl: string;
     profileButtonText?: string;
     content?: React.ReactNode;
-    renderFullProfile?: (props: RenderFullProfileProps) => React.ReactNode;
+    renderFullProfile?: (props: RenderFullProfileProps<T>) => React.ReactNode;
 }
 
 export type ViewState = 'collapsed' | 'modal' | 'full';
 
-export default function ExpandableProfileCard({
+export default function ExpandableProfileCard<T = any>({
     id,
     title,
     location,
@@ -50,9 +50,9 @@ export default function ExpandableProfileCard({
     profileButtonText = 'View Full Profile',
     content,
     renderFullProfile,
-}: ExpandableProfileCardProps) {
+}: ExpandableProfileCardProps<T>) {
     const [viewState, setViewState] = useState<ViewState>('collapsed');
-    const [fullData, setFullData] = useState<unknown>(null);
+    const [fullData, setFullData] = useState<T | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -78,7 +78,7 @@ export default function ExpandableProfileCard({
                 if (!res.ok) throw new Error('Failed to load profile details');
                 return res.json();
             })
-            .then((data: unknown) => {
+            .then((data: T) => {
                 setFullData(data);
                 setIsLoading(false);
                 isFetchingRef.current = false;

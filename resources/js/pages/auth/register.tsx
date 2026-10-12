@@ -3,7 +3,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { Award, Building2, Eye, EyeOff, FileText, LoaderCircle, Lock, Mail, MapPin, Phone, ShieldCheck, Sparkles, User } from 'lucide-react';
 import { FormEventHandler, ReactNode, useState } from 'react';
 
-interface RegisterForm {
+type RegisterForm = {
     name: string;
     school_name: string;
     registration_number: string;
@@ -15,7 +15,7 @@ interface RegisterForm {
     password: string;
     password_confirmation: string;
     role: string;
-}
+};
 
 interface RegisterProps {
     role?: string;

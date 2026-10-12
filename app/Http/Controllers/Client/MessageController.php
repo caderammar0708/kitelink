@@ -29,6 +29,7 @@ class MessageController extends Controller
         $formattedConversations = $this->formatConversations($conversations, $user->id);
 
         $requestedConvId = $request->query('conversation');
+        /** @var Conversation|null $activeConv */
         $activeConv = null;
 
         if ($requestedConvId) {

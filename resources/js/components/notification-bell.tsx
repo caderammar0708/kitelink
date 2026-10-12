@@ -1,5 +1,6 @@
 import { type SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
+import { Bell, Briefcase, Calendar, Check, MessageSquare, Star, Wind } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface NotificationItem {

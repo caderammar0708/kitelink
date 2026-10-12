@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @method static Builder<static> forUser(int $userId)
+ */
 class Conversation extends Model
 {
     use HasFactory;
@@ -54,10 +58,15 @@ class Conversation extends Model
 
     /**
      * Scope conversations for a given user.
+     *
+     * @param  Builder<Conversation>  $query
+     * @return Builder<Conversation>
      */
-    public function scopeForUser($query, int $userId)
+    public function scopeForUser(Builder $query, int $userId): Builder
     {
-        return $query->where('participant_one_id', $userId)
-            ->orWhere('participant_two_id', $userId);
+        return $query->where(function (Builder $q) use ($userId) {
+            $q->where('participant_one_id', $userId)
+                ->orWhere('participant_two_id', $userId);
+        });
     }
 }

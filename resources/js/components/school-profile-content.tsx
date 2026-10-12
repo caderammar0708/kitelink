@@ -29,14 +29,14 @@ import { FormEventHandler, useMemo, useState } from 'react';
 
 export interface PackageItem {
     id: number;
-    school_id: number;
+    school_id?: number;
     name: string;
-    type: 'course' | 'rental' | 'camp' | 'private' | string;
-    duration_label: string;
+    type?: 'course' | 'rental' | 'camp' | 'private' | string;
+    duration_label?: string;
     price: number | string;
     description?: string | null;
     features?: string[] | null;
-    is_active: boolean;
+    is_active?: boolean;
 }
 
 export interface InstructorItem {
@@ -47,7 +47,7 @@ export interface InstructorItem {
     location?: string | null;
     hourly_rate?: number | string | null;
     profile_photo?: string | null;
-    user?: { id: number; name: string; email?: string; profile_picture?: string } | null;
+    user?: { id?: number; name: string; email?: string; profile_picture?: string } | null;
 }
 
 export interface ReviewItem {
@@ -76,7 +76,7 @@ export interface SchoolData {
     phone?: string | null;
     website?: string | null;
     is_active?: boolean;
-    user?: { id: number; name: string; email: string } | null;
+    user?: { id?: number; name?: string; email?: string } | null;
     instructors?: InstructorItem[];
     packages?: PackageItem[];
 }
@@ -419,7 +419,7 @@ export default function SchoolProfileContent({ school, reviews = [], layoutId, o
                         ) : (
                             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                                 {packages.map((pkg) => {
-                                    const badge = typeBadges[pkg.type] || typeBadges.course;
+                                    const badge = (pkg.type ? typeBadges[pkg.type] : null) || typeBadges.course;
                                     const features = Array.isArray(pkg.features) ? pkg.features : [];
 
                                     return (

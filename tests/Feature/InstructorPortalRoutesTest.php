@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Booking;
+use App\Models\Conversation;
 use App\Models\Instructor;
 use App\Models\User;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
@@ -62,4 +63,17 @@ test('instructor can accept and decline bookings', function () {
         ->assertRedirect('/instructor/bookings');
 
     expect($booking->refresh()->status)->toBe('cancelled');
+});
+
+test('instructor can view messages with existing conversation', function () {
+    $user = User::factory()->create(['role' => 'instructor']);
+    $other = User::factory()->create(['role' => 'client']);
+    Conversation::create([
+        'participant_one_id' => $user->id,
+        'participant_two_id' => $other->id,
+        'type' => 'client',
+        'last_message_at' => now(),
+    ]);
+
+    $this->actingAs($user)->get('/instructor/messages')->assertOk();
 });

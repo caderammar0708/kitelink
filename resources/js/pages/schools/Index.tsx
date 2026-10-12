@@ -1,5 +1,9 @@
 import ExpandableProfileCard from '@/components/expandable-profile-card';
-import SchoolProfileContent, { SchoolProfileSkeleton } from '@/components/school-profile-content';
+import SchoolProfileContent, {
+    SchoolProfileSkeleton,
+    type ReviewItem,
+    type SchoolData,
+} from '@/components/school-profile-content';
 import AppLayout from '@/layouts/app-layout';
 import PublicLayout from '@/layouts/public-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
@@ -7,44 +11,13 @@ import { Head, usePage } from '@inertiajs/react';
 import { Award, Building2, MapPin, Search, ShieldCheck, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
-interface InstructorItem {
-    id: number;
-    bio?: string;
-    certifications?: string;
-    hourly_rate?: number | string;
-    profile_photo?: string;
-    user?: { name: string; profile_picture?: string };
-}
-
-interface SchoolPackageItem {
-    id: number;
-    name: string;
-    type?: string;
-    duration_label?: string;
-    price: number | string;
-    description?: string;
-    features?: string[] | null;
-}
-
-interface SchoolItem {
-    id: number;
-    name: string;
-    location?: string | null;
-    description?: string | null;
-    certifications?: string | null;
-    facilities?: string[] | null;
-    gear_list?: string[] | null;
-    photos?: string[] | null;
-    logo?: string | null;
-    phone?: string | null;
-    website?: string | null;
-    contact_name?: string | null;
-    instructors?: InstructorItem[];
-    packages?: SchoolPackageItem[];
+interface SchoolFullProfileResponse {
+    school?: SchoolData;
+    reviews?: ReviewItem[];
 }
 
 interface IndexProps {
-    schools?: SchoolItem[];
+    schools?: SchoolData[];
     filters?: {
         search?: string;
         location?: string;
@@ -327,7 +300,7 @@ export function Index({ schools = [], filters }: IndexProps) {
                         );
 
                         return (
-                            <ExpandableProfileCard
+                            <ExpandableProfileCard<SchoolFullProfileResponse>
                                 key={school.id}
                                 id={school.id}
                                 title={school.name}

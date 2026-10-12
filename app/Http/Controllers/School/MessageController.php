@@ -28,6 +28,7 @@ class MessageController extends Controller
 
         $formattedConversations = $this->formatConversations($conversations, $user->id);
 
+        /** @var Conversation|null $firstConv */
         $firstConv = $conversations->first();
         $messages = [];
         $otherUser = null;
