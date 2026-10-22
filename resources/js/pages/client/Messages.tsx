@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, router, usePoll } from '@inertiajs/react';
+import { type BreadcrumbItem, type SharedData } from '@/types';
+import { Head, router, usePage, usePoll } from '@inertiajs/react';
 import { Award, Check, CheckCheck, MessageSquare, Search, Send, Sparkles } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -55,18 +55,53 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Messages({ conversations = [], activeConversationId, messages = [], otherUser }: MessagesProps) {
-    // Automatically poll every 10s for incoming chat messages
-    usePoll(10000);
+    const { auth } = usePage<SharedData>().props;
+
+    // Automatically poll every 2.5s for incoming chat messages & live read receipts (single tick -> double tick)
+    usePoll(2500, { only: ['messages', 'conversations'] });
 
     const [searchQuery, setSearchQuery] = useState('');
     const [inputMessage, setInputMessage] = useState('');
     const [sending, setSending] = useState(false);
+    const [localMessages, setLocalMessages] = useState<Message[]>(messages);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-    // Scroll to bottom when messages update
+    // Sync localMessages when incoming props change from polling or navigation
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        setLocalMessages(messages);
     }, [messages]);
+
+    const prevMessagesLengthRef = useRef(localMessages.length);
+    const prevActiveConvIdRef = useRef(activeConversationId);
+
+    // Scroll to bottom when new messages arrive or conversation changes (do not jump on read_at status update)
+    useEffect(() => {
+        const isConvChanged = activeConversationId !== prevActiveConvIdRef.current;
+        const hasNewMessage = localMessages.length > prevMessagesLengthRef.current;
+
+        if (isConvChanged) {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+        } else if (hasNewMessage) {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        prevMessagesLengthRef.current = localMessages.length;
+        prevActiveConvIdRef.current = activeConversationId;
+    }, [localMessages, activeConversationId]);
+
+    // Fast sync when notification bell detects an incoming message
+    useEffect(() => {
+        const handleNewMessage = () => {
+            router.reload({ only: ['messages', 'conversations'] });
+        };
+        window.addEventListener('kitelink:new-message', handleNewMessage);
+        return () => window.removeEventListener('kitelink:new-message', handleNewMessage);
+    }, []);
+
+    // Sync navbar notification bell whenever messages are viewed
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent('kitelink:refresh-notifications'));
+    }, [activeConversationId, localMessages.length]);
 
     const filteredConversations = conversations.filter((c) => {
         if (searchQuery) {
@@ -80,22 +115,63 @@ export default function Messages({ conversations = [], activeConversationId, mes
         router.get(route('client.messages.show', convId), {}, { preserveState: true });
     };
 
-    const handleSendMessage = (e: React.FormEvent) => {
+    const handleSendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!inputMessage.trim() || !activeConversationId || sending) return;
+        const text = inputMessage.trim();
+        if (!text || !activeConversationId || sending) return;
 
-        setSending(true);
-        router.post(
-            route('client.messages.store', activeConversationId),
-            { body: inputMessage },
-            {
-                preserveScroll: true,
-                onSuccess: () => {
-                    setInputMessage('');
-                },
-                onFinish: () => setSending(false),
+        // Instantly clear the input bar so user can keep typing without waiting
+        setInputMessage('');
+
+        // Optimistically render bubble on screen immediately (0ms latency, no page refresh!)
+        const tempId = -Date.now();
+        const optimisticMsg: Message = {
+            id: tempId,
+            conversation_id: activeConversationId,
+            sender_id: auth?.user?.id ?? 0,
+            body: text,
+            read_at: undefined,
+            created_at: new Date().toISOString(),
+            sender: {
+                id: auth?.user?.id ?? 0,
+                name: auth?.user?.name ?? 'Client',
+                profile_picture: auth?.user?.avatar,
             },
-        );
+        };
+
+        setLocalMessages((prev) => [...prev, optimisticMsg]);
+        setSending(true);
+
+        try {
+            const metaTag = document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null;
+            const res = await fetch(route('client.messages.store', activeConversationId), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': metaTag?.content ?? '',
+                },
+                body: JSON.stringify({ body: text }),
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data?.message) {
+                    setLocalMessages((prev) =>
+                        prev.map((m) => (m.id === tempId ? data.message : m))
+                    );
+                }
+            } else {
+                // If API returned error status, quietly sync with Inertia
+                router.reload({ only: ['messages', 'conversations'] });
+            }
+        } catch {
+            // Network fallback: silent reload
+            router.reload({ only: ['messages', 'conversations'] });
+        } finally {
+            setSending(false);
+        }
     };
 
     return (
@@ -106,9 +182,9 @@ export default function Messages({ conversations = [], activeConversationId, mes
                 {/* 2-Column Chat Box Window */}
                 <div className="grid h-[calc(100vh-14rem)] min-h-[550px] grid-cols-1 overflow-hidden rounded-3xl border border-slate-200/90 bg-white shadow-xl shadow-slate-200/50 md:grid-cols-12 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl">
                     {/* Left Sidebar (4 cols on desktop) */}
-                    <div className="flex flex-col border-b border-slate-200 md:col-span-4 md:border-r md:border-b-0 dark:border-white/10">
+                    <div className="flex h-full min-h-0 flex-col border-b border-slate-200 md:col-span-4 md:border-r md:border-b-0 dark:border-white/10">
                         {/* Header & Search */}
-                        <div className="border-b border-slate-200 p-4 dark:border-white/10">
+                        <div className="shrink-0 border-b border-slate-200 p-4 dark:border-white/10">
                             <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                                 <MessageSquare className="h-5 w-5 text-blue-600 dark:text-[#5bb4ff]" />
                                 Direct Messages
@@ -128,7 +204,7 @@ export default function Messages({ conversations = [], activeConversationId, mes
                         </div>
 
                         {/* Conversations List */}
-                        <div className="flex-1 divide-y divide-slate-100 overflow-y-auto dark:divide-white/5">
+                        <div className="flex-1 min-h-0 divide-y divide-slate-100 overflow-y-auto dark:divide-white/5">
                             {filteredConversations.length === 0 ? (
                                 <div className="p-8 text-center text-xs text-slate-500 dark:text-slate-400">
                                     <MessageSquare className="mx-auto mb-2 h-7 w-7 text-slate-400 dark:text-slate-600" />
@@ -172,7 +248,7 @@ export default function Messages({ conversations = [], activeConversationId, mes
                                             {/* Preview Details */}
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center justify-between">
-                                                    <h3 className="truncate text-xs font-bold text-slate-900 sm:text-sm dark:text-white">
+                                                    <h3 className="truncate text-xs font-bold text-slate-900 dark:text-white">
                                                         {conv.other_user?.name || 'Instructor'}
                                                     </h3>
                                                     {conv.last_message?.created_at && (
@@ -210,11 +286,11 @@ export default function Messages({ conversations = [], activeConversationId, mes
                     </div>
 
                     {/* Right Chat Panel (8 cols on desktop) */}
-                    <div className="flex flex-col bg-slate-50/40 md:col-span-8 dark:bg-transparent">
+                    <div className="flex h-full min-h-0 flex-col bg-slate-50/40 md:col-span-8 dark:bg-transparent">
                         {activeConversationId && otherUser ? (
                             <>
                                 {/* Chat Header */}
-                                <div className="flex items-center justify-between border-b border-slate-200 bg-white p-4 px-6 dark:border-white/10 dark:bg-white/[0.02]">
+                                <div className="shrink-0 flex items-center justify-between border-b border-slate-200 bg-white p-4 px-6 dark:border-white/10 dark:bg-white/[0.02]">
                                     <div className="flex items-center gap-3">
                                         <div className="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-100 shadow-xs dark:border-white/10 dark:bg-slate-900">
                                             {otherUser.avatar ? (
@@ -245,8 +321,8 @@ export default function Messages({ conversations = [], activeConversationId, mes
                                 </div>
 
                                 {/* Messages Stream */}
-                                <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-6">
-                                    {messages.length === 0 ? (
+                                <div className="flex-1 min-h-0 space-y-4 overflow-y-auto p-4 sm:p-6">
+                                    {localMessages.length === 0 ? (
                                         <div className="flex h-full flex-col items-center justify-center p-6 text-center text-xs text-slate-500 dark:text-slate-400">
                                             <Sparkles className="mb-2 h-8 w-8 text-blue-600 dark:text-[#5bb4ff]" />
                                             <p className="text-sm font-bold text-slate-900 dark:text-white">Start the Conversation</p>
@@ -255,8 +331,8 @@ export default function Messages({ conversations = [], activeConversationId, mes
                                             </p>
                                         </div>
                                     ) : (
-                                        messages.map((msg) => {
-                                            const isMine = msg.sender_id !== otherUser.id;
+                                        localMessages.map((msg) => {
+                                            const isMine = msg.sender_id === auth?.user?.id || msg.sender_id !== otherUser.id;
                                             return (
                                                 <div key={msg.id} className={`flex items-end gap-2.5 ${isMine ? 'justify-end' : 'justify-start'}`}>
                                                     {!isMine && (
@@ -315,7 +391,7 @@ export default function Messages({ conversations = [], activeConversationId, mes
                                 {/* Message Composer */}
                                 <form
                                     onSubmit={handleSendMessage}
-                                    className="border-t border-slate-200 bg-white p-3 sm:p-4 dark:border-white/10 dark:bg-white/[0.02]"
+                                    className="shrink-0 border-t border-slate-200 bg-white p-3 sm:p-4 dark:border-white/10 dark:bg-white/[0.02]"
                                 >
                                     <div className="flex items-center gap-2">
                                         <input

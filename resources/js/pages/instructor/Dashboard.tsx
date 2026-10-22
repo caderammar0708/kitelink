@@ -131,7 +131,7 @@ export default function Dashboard({ instructor, bookings = [], stats }: Dashboar
                 <div className="relative overflow-hidden rounded-2xl border border-blue-200/60 bg-gradient-to-r from-blue-50/80 via-white to-blue-50/50 p-6 shadow-sm dark:border-white/10 dark:bg-gradient-to-r dark:from-blue-950/40 dark:via-slate-900/60 dark:to-slate-950/70 dark:shadow-2xl dark:backdrop-blur-xl">
                     <div className="pointer-events-none absolute top-0 right-0 -mt-8 -mr-8 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl dark:bg-[#3b82f6]/10" />
 
-                    <div className="relative z-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
+                    <div className="relative z-1 flex flex-col justify-between gap-6 md:flex-row md:items-center">
                         <div className="flex items-center gap-4">
                             <div className="group relative">
                                 <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border-2 border-blue-400/40 bg-white shadow-[0_0_20px_rgba(59,130,246,0.15)] sm:h-20 sm:w-20 dark:border-[#5bb4ff]/40 dark:bg-slate-900 dark:shadow-[0_0_20px_rgba(91,180,255,0.25)]">

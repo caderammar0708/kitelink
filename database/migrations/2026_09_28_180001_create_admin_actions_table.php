@@ -14,9 +14,10 @@ return new class extends Migration
         if (! Schema::hasTable('admin_actions')) {
             Schema::create('admin_actions', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
-                $table->string('action'); // approve, reject, suspend, reactivate, delete, cancel_booking, hide_review, update_settings, request_info
-                $table->string('target_type');
+                $table->foreignId('admin_id')->nullable()->constrained('users')->onDelete('cascade');
+                $table->string('action')->nullable(); // approve, reject, suspend, reactivate, delete, cancel_booking, hide_review, update_settings, request_info
+                $table->string('target_type')->nullable();
+
                 $table->unsignedBigInteger('target_id')->nullable();
                 $table->string('target_name')->nullable();
                 $table->json('details')->nullable();

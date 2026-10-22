@@ -61,7 +61,7 @@ export function Register({ role }: RegisterProps) {
             />
 
             <div
-                className={`w-full ${isSchool ? 'max-w-xl' : 'max-w-md'} rounded-3xl border border-white/10 bg-white/[0.07] p-6 shadow-2xl shadow-black/60 backdrop-blur-xl transition-all duration-300 sm:p-8`}
+                className={`w-full ${isSchool ? 'max-w-xl' : 'max-w-md'} rounded-3xl border border-slate-200/90 bg-white/90 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl transition-all duration-300 sm:p-8 dark:border-white/10 dark:bg-white/[0.07] dark:shadow-2xl dark:shadow-black/60`}
             >
                 {/* Header with Logo & Role Badge */}
                 <div className="mb-6 flex flex-col items-center text-center">
@@ -69,30 +69,32 @@ export function Register({ role }: RegisterProps) {
                         href={route('home')}
                         className="group mb-4 inline-flex items-center gap-2.5 transition-transform duration-300 hover:scale-105"
                     >
-                        <i className="fas fa-wind text-3xl text-[#5bb4ff] drop-shadow-[0_0_14px_rgba(91,180,255,0.7)] transition-transform group-hover:rotate-6" />
-                        <span className="bg-gradient-to-r from-[#b8e6ff] via-[#8acbff] to-[#4da6ff] bg-clip-text text-2xl font-extrabold tracking-tight text-transparent">
+                        <div className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-blue-200 bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-blue-500/35 dark:border-blue-400/30 dark:shadow-[0_0_15px_rgba(59,130,246,0.35)]">
+                            <i className="fas fa-wind text-lg text-white transition-transform duration-300 group-hover:rotate-12" />
+                        </div>
+                        <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent dark:from-[#c2e7ff] dark:via-[#8acbff] dark:to-[#60a5fa]">
                             KiteLink
                         </span>
                     </Link>
 
                     {isInstructor && (
-                        <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-[rgba(91,180,255,0.25)] bg-[rgba(91,180,255,0.12)] px-3.5 py-1 text-xs font-semibold tracking-wider text-[#b0daff] uppercase shadow-sm backdrop-blur-md">
-                            <Sparkles className="h-3.5 w-3.5 text-[#7bc9ff]" />
+                        <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1 text-xs font-semibold tracking-wider text-blue-700 uppercase shadow-xs backdrop-blur-md dark:border-[rgba(91,180,255,0.25)] dark:bg-[rgba(91,180,255,0.12)] dark:text-[#b0daff]">
+                            <Sparkles className="h-3.5 w-3.5 text-blue-600 dark:text-[#7bc9ff]" />
                             <span>Instructor Application</span>
                         </div>
                     )}
 
                     {isSchool && (
-                        <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-[rgba(168,85,247,0.3)] bg-[rgba(168,85,247,0.12)] px-3.5 py-1 text-xs font-semibold tracking-wider text-[#e9d5ff] uppercase shadow-sm backdrop-blur-md">
-                            <Building2 className="h-3.5 w-3.5 text-[#c084fc]" />
+                        <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50 px-3.5 py-1 text-xs font-semibold tracking-wider text-purple-700 uppercase shadow-xs backdrop-blur-md dark:border-[rgba(168,85,247,0.3)] dark:bg-[rgba(168,85,247,0.12)] dark:text-[#e9d5ff]">
+                            <Building2 className="h-3.5 w-3.5 text-purple-600 dark:text-[#c084fc]" />
                             <span>Kite School Registration</span>
                         </div>
                     )}
 
-                    <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                    <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                         {isSchool ? 'Register Your Kite Center' : isInstructor ? 'Join as an Instructor' : 'Create an account'}
                     </h1>
-                    <p className="mt-1.5 max-w-sm text-xs text-slate-300/80 sm:text-sm">
+                    <p className="mt-1.5 max-w-sm text-xs text-slate-600 sm:text-sm dark:text-slate-300/80">
                         {isSchool
                             ? 'Quick application for kite schools and centers. Full profile, gear, and roster setup opens after approval.'
                             : isInstructor
@@ -110,7 +112,7 @@ export function Register({ role }: RegisterProps) {
                         <>
                             {/* School / Business Name */}
                             <div className="space-y-1.5">
-                                <label htmlFor="school_name" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                                <label htmlFor="school_name" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                     School / Business Name
                                 </label>
                                 <div className="relative">
@@ -131,11 +133,11 @@ export function Register({ role }: RegisterProps) {
                                         }}
                                         disabled={processing}
                                         placeholder="e.g. Kite Paradise Tarifa"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                        className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                     />
                                 </div>
                                 {errors.school_name && (
-                                    <div className="mt-1 flex items-center gap-1.5 text-xs text-rose-300">
+                                    <div className="mt-1 flex items-center gap-1.5 text-xs text-rose-600 dark:text-rose-300">
                                         <span>{errors.school_name}</span>
                                     </div>
                                 )}
@@ -144,7 +146,7 @@ export function Register({ role }: RegisterProps) {
                             {/* Business Registration Number & Contact Person Name (2 columns on sm+) */}
                             <div className="grid gap-3 sm:grid-cols-2">
                                 <div className="space-y-1.5">
-                                    <label htmlFor="registration_number" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                                    <label htmlFor="registration_number" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                         Business Reg. No.
                                     </label>
                                     <div className="relative">
@@ -158,14 +160,14 @@ export function Register({ role }: RegisterProps) {
                                             onChange={(e) => setData('registration_number', e.target.value)}
                                             disabled={processing}
                                             placeholder="e.g. REG-984210"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                         />
                                     </div>
-                                    {errors.registration_number && <div className="mt-1 text-xs text-rose-300">{errors.registration_number}</div>}
+                                    {errors.registration_number && <div className="mt-1 text-xs text-rose-600 dark:text-rose-300">{errors.registration_number}</div>}
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <label htmlFor="contact_name" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                                    <label htmlFor="contact_name" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                         Contact Person Name
                                     </label>
                                     <div className="relative">
@@ -178,18 +180,18 @@ export function Register({ role }: RegisterProps) {
                                             value={data.contact_name}
                                             onChange={(e) => setData('contact_name', e.target.value)}
                                             disabled={processing}
-                                            placeholder="Full name of director/manager"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            placeholder="Full name of manager"
+                                            className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                         />
                                     </div>
-                                    {errors.contact_name && <div className="mt-1 text-xs text-rose-300">{errors.contact_name}</div>}
+                                    {errors.contact_name && <div className="mt-1 text-xs text-rose-600 dark:text-rose-300">{errors.contact_name}</div>}
                                 </div>
                             </div>
 
                             {/* Email Address & Phone Number (2 columns on sm+) */}
                             <div className="grid gap-3 sm:grid-cols-2">
                                 <div className="space-y-1.5">
-                                    <label htmlFor="email" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                                    <label htmlFor="email" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                         Email Address
                                     </label>
                                     <div className="relative">
@@ -204,14 +206,14 @@ export function Register({ role }: RegisterProps) {
                                             onChange={(e) => setData('email', e.target.value)}
                                             disabled={processing}
                                             placeholder="contact@school.com"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                         />
                                     </div>
-                                    {errors.email && <div className="mt-1 text-xs text-rose-300">{errors.email}</div>}
+                                    {errors.email && <div className="mt-1 text-xs text-rose-600 dark:text-rose-300">{errors.email}</div>}
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <label htmlFor="phone" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                                    <label htmlFor="phone" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                         Phone Number
                                     </label>
                                     <div className="relative">
@@ -225,16 +227,16 @@ export function Register({ role }: RegisterProps) {
                                             onChange={(e) => setData('phone', e.target.value)}
                                             disabled={processing}
                                             placeholder="+1 (555) 000-0000"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                         />
                                     </div>
-                                    {errors.phone && <div className="mt-1 text-xs text-rose-300">{errors.phone}</div>}
+                                    {errors.phone && <div className="mt-1 text-xs text-rose-600 dark:text-rose-300">{errors.phone}</div>}
                                 </div>
                             </div>
 
                             {/* Location (city/area) */}
                             <div className="space-y-1.5">
-                                <label htmlFor="location" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                                <label htmlFor="location" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                     Location (City / Area)
                                 </label>
                                 <div className="relative">
@@ -248,10 +250,10 @@ export function Register({ role }: RegisterProps) {
                                         onChange={(e) => setData('location', e.target.value)}
                                         disabled={processing}
                                         placeholder="e.g. Tarifa, Cadiz, Spain"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                        className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                     />
                                 </div>
-                                {errors.location && <div className="mt-1 text-xs text-rose-300">{errors.location}</div>}
+                                {errors.location && <div className="mt-1 text-xs text-rose-600 dark:text-rose-300">{errors.location}</div>}
                             </div>
                         </>
                     ) : (
@@ -259,7 +261,7 @@ export function Register({ role }: RegisterProps) {
                         <>
                             {/* Full Name */}
                             <div className="space-y-1.5">
-                                <label htmlFor="name" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                                <label htmlFor="name" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                     Full Name
                                 </label>
                                 <div className="relative">
@@ -275,15 +277,15 @@ export function Register({ role }: RegisterProps) {
                                         onChange={(e) => setData('name', e.target.value)}
                                         disabled={processing}
                                         placeholder="Your full name"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                        className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                     />
                                 </div>
-                                {errors.name && <div className="mt-1 text-xs text-rose-300">{errors.name}</div>}
+                                {errors.name && <div className="mt-1 text-xs text-rose-600 dark:text-rose-300">{errors.name}</div>}
                             </div>
 
                             {/* Email Address */}
                             <div className="space-y-1.5">
-                                <label htmlFor="email" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                                <label htmlFor="email" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                     Email Address
                                 </label>
                                 <div className="relative">
@@ -298,16 +300,16 @@ export function Register({ role }: RegisterProps) {
                                         onChange={(e) => setData('email', e.target.value)}
                                         disabled={processing}
                                         placeholder="name@example.com"
-                                        className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                        className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                     />
                                 </div>
-                                {errors.email && <div className="mt-1 text-xs text-rose-300">{errors.email}</div>}
+                                {errors.email && <div className="mt-1 text-xs text-rose-600 dark:text-rose-300">{errors.email}</div>}
                             </div>
 
                             {/* Phone Number (for Instructor) */}
                             {isInstructor && (
                                 <div className="space-y-1.5">
-                                    <label htmlFor="phone" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                                    <label htmlFor="phone" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                         Phone Number
                                     </label>
                                     <div className="relative">
@@ -321,18 +323,18 @@ export function Register({ role }: RegisterProps) {
                                             onChange={(e) => setData('phone', e.target.value)}
                                             disabled={processing}
                                             placeholder="+1 (555) 000-0000"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                         />
                                     </div>
-                                    {errors.phone && <div className="mt-1 text-xs text-rose-300">{errors.phone}</div>}
+                                    {errors.phone && <div className="mt-1 text-xs text-rose-600 dark:text-rose-300">{errors.phone}</div>}
                                 </div>
                             )}
 
                             {/* Certification / License Number (for Instructor) */}
                             {isInstructor && (
                                 <div className="space-y-1.5">
-                                    <label htmlFor="license_number" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
-                                        Certification / License Number <span className="text-rose-400">*</span>
+                                    <label htmlFor="license_number" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
+                                        Certification / License Number <span className="text-rose-500">*</span>
                                     </label>
                                     <div className="relative">
                                         <Award className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -345,14 +347,14 @@ export function Register({ role }: RegisterProps) {
                                             onChange={(e) => setData('license_number', e.target.value)}
                                             disabled={processing}
                                             placeholder="e.g. IKO-123456 or VDWS-654321"
-                                            className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                            className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                         />
                                     </div>
-                                    <p className="text-[11px] text-slate-400">
+                                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
                                         Your IKO, VDWS, or equivalent kitesurf instructor certification ID — used by our team to verify your
                                         credentials.
                                     </p>
-                                    {errors.license_number && <div className="mt-1 text-xs text-rose-300">{errors.license_number}</div>}
+                                    {errors.license_number && <div className="mt-1 text-xs text-rose-600 dark:text-rose-300">{errors.license_number}</div>}
                                 </div>
                             )}
                         </>
@@ -362,7 +364,7 @@ export function Register({ role }: RegisterProps) {
                     <div className="grid gap-3 sm:grid-cols-2">
                         {/* Password Field */}
                         <div className="space-y-1.5">
-                            <label htmlFor="password" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                            <label htmlFor="password" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                 Password
                             </label>
                             <div className="relative">
@@ -377,24 +379,24 @@ export function Register({ role }: RegisterProps) {
                                     onChange={(e) => setData('password', e.target.value)}
                                     disabled={processing}
                                     placeholder="••••••••"
-                                    className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-10 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                    className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-10 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
                                     tabIndex={-1}
                                     aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                    className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-slate-400 transition-colors hover:text-slate-200 focus:outline-none"
+                                    className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-slate-400 transition-colors hover:text-slate-600 focus:outline-none dark:hover:text-slate-200"
                                 >
                                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                 </button>
                             </div>
-                            {errors.password && <div className="mt-1 text-xs text-rose-300">{errors.password}</div>}
+                            {errors.password && <div className="mt-1 text-xs text-rose-600 dark:text-rose-300">{errors.password}</div>}
                         </div>
 
                         {/* Confirm Password Field */}
                         <div className="space-y-1.5">
-                            <label htmlFor="password_confirmation" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                            <label htmlFor="password_confirmation" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                 Confirm Password
                             </label>
                             <div className="relative">
@@ -409,29 +411,29 @@ export function Register({ role }: RegisterProps) {
                                     onChange={(e) => setData('password_confirmation', e.target.value)}
                                     disabled={processing}
                                     placeholder="••••••••"
-                                    className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-10 pl-10 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                    className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-10 pl-10 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                     tabIndex={-1}
                                     aria-label={showConfirmPassword ? 'Hide password confirmation' : 'Show password confirmation'}
-                                    className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-slate-400 transition-colors hover:text-slate-200 focus:outline-none"
+                                    className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-slate-400 transition-colors hover:text-slate-600 focus:outline-none dark:hover:text-slate-200"
                                 >
                                     {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                 </button>
                             </div>
-                            {errors.password_confirmation && <div className="mt-1 text-xs text-rose-300">{errors.password_confirmation}</div>}
+                            {errors.password_confirmation && <div className="mt-1 text-xs text-rose-600 dark:text-rose-300">{errors.password_confirmation}</div>}
                         </div>
                     </div>
 
                     {/* Notice for Instructors & Schools about Approval Workflow */}
                     {(isInstructor || isSchool) && (
-                        <div className="rounded-xl border border-blue-500/20 bg-blue-500/10 p-3 text-xs text-blue-200/90 backdrop-blur-sm">
+                        <div className="rounded-xl border border-blue-200 bg-blue-50/80 p-3 text-xs text-blue-900 backdrop-blur-sm dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-200/90">
                             <div className="flex items-start gap-2">
-                                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
+                                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
                                 <div>
-                                    <span className="font-semibold text-white">Verification Step:</span>{' '}
+                                    <span className="font-semibold text-blue-950 dark:text-white">Verification Step:</span>{' '}
                                     {isSchool
                                         ? 'Your application will be submitted for admin verification. Once verified, you will gain full access to configure your school profile, gear, and instructor roster.'
                                         : 'Your instructor application will be submitted for verification. Once approved, you can complete your certifications, bio, and lesson rates.'}
@@ -446,10 +448,10 @@ export function Register({ role }: RegisterProps) {
                             type="submit"
                             disabled={processing}
                             tabIndex={9}
-                            className={`group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] disabled:pointer-events-none disabled:opacity-60 sm:text-base ${
+                            className={`group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] disabled:pointer-events-none disabled:opacity-60 sm:text-base ${
                                 isSchool
-                                    ? 'bg-gradient-to-r from-purple-500 to-indigo-600 shadow-purple-600/30 hover:from-purple-400 hover:to-indigo-500 hover:shadow-purple-500/50'
-                                    : 'bg-gradient-to-r from-[#4ba9ff] to-[#1f6eff] shadow-blue-600/30 hover:from-[#5bb4ff] hover:to-[#2e7bff] hover:shadow-blue-500/50'
+                                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 shadow-purple-600/25 hover:from-purple-500 hover:to-indigo-500 dark:from-purple-500 dark:to-indigo-600 dark:shadow-purple-600/30'
+                                    : 'bg-gradient-to-r from-blue-600 to-sky-500 shadow-blue-500/25 hover:from-blue-500 hover:to-sky-400 dark:from-[#4ba9ff] dark:to-[#1f6eff] dark:shadow-blue-600/30 dark:hover:from-[#5bb4ff] dark:hover:to-[#2e7bff]'
                             }`}
                         >
                             {processing ? (
@@ -469,12 +471,12 @@ export function Register({ role }: RegisterProps) {
                     </div>
 
                     {/* Already have an account */}
-                    <div className="pt-2 text-center text-xs text-slate-300 sm:text-sm">
+                    <div className="pt-2 text-center text-xs text-slate-600 sm:text-sm dark:text-slate-300">
                         Already have an account?{' '}
                         <Link
                             href={route('login')}
                             tabIndex={10}
-                            className="font-semibold text-[#5bb4ff] underline-offset-4 transition-colors hover:text-[#8acbff] hover:underline"
+                            className="font-semibold text-blue-600 underline-offset-4 transition-colors hover:text-blue-700 hover:underline dark:text-[#5bb4ff] dark:hover:text-[#8acbff]"
                         >
                             Sign in
                         </Link>
@@ -490,7 +492,7 @@ Register.layout = (page: ReactNode) => (
         headerRight={
             <Link
                 href={route('login')}
-                className="rounded-full border border-white/15 bg-white/[0.07] px-4 py-1.5 text-xs font-semibold text-slate-200 shadow-sm backdrop-blur-md transition-all duration-200 hover:bg-white/[0.14] hover:text-white sm:text-sm"
+                className="rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-slate-700 shadow-xs backdrop-blur-md transition-all duration-200 hover:bg-slate-100 hover:text-slate-900 sm:text-sm dark:border-white/15 dark:bg-white/[0.07] dark:text-slate-200 dark:hover:bg-white/[0.14] dark:hover:text-white"
             >
                 Sign in
             </Link>

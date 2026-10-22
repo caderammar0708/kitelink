@@ -18,7 +18,7 @@ export default function Dashboard() {
                 {/* Hero Card */}
                 <div className="relative overflow-hidden rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50/90 via-sky-50/50 to-indigo-50/40 p-6 shadow-sm backdrop-blur-xl sm:p-8 dark:border-white/10 dark:bg-gradient-to-r dark:from-blue-950/40 dark:via-slate-900/60 dark:to-slate-950/70 dark:shadow-2xl">
                     <div className="pointer-events-none absolute top-0 right-0 -mt-8 -mr-8 h-64 w-64 rounded-full bg-[#3b82f6]/10 blur-3xl" />
-                    <div className="relative z-10 max-w-2xl space-y-3">
+                    <div className="relative z-1 max-w-2xl space-y-3">
                         <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/15 dark:text-[#8acbff]">
                             <Sparkles className="h-3.5 w-3.5" />
                             Welcome to KiteLink

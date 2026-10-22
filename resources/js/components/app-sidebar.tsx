@@ -12,7 +12,9 @@ import {
     CloudSun,
     Compass,
     DollarSign,
+    History,
     LayoutDashboard,
+
     MessageSquare,
     Package,
     Settings,
@@ -83,11 +85,17 @@ export function AppSidebar() {
             icon: Bell,
         },
         {
+            title: 'Audit Log',
+            url: '/admin/audit-logs',
+            icon: History,
+        },
+        {
             title: 'Settings',
             url: '/admin/settings',
             icon: Settings,
         },
     ];
+
 
     const instructorNavItems: NavItem[] = [
         {

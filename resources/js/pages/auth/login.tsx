@@ -34,25 +34,27 @@ export function Login({ status, canResetPassword }: LoginProps) {
         <>
             <Head title="Log in - KiteLink" />
 
-            <div className="w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.07] p-6 shadow-2xl shadow-black/60 backdrop-blur-xl transition-all duration-300 sm:p-8">
+            <div className="w-full max-w-md rounded-2xl border border-slate-200/90 bg-white/90 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl transition-all duration-300 sm:p-8 dark:border-white/10 dark:bg-white/[0.07] dark:shadow-2xl dark:shadow-black/60">
                 {/* Header with Logo */}
                 <div className="mb-6 flex flex-col items-center text-center">
                     <Link
                         href={route('home')}
                         className="group mb-4 inline-flex items-center gap-2.5 transition-transform duration-300 hover:scale-105"
                     >
-                        <i className="fas fa-wind text-3xl text-[#5bb4ff] drop-shadow-[0_0_14px_rgba(91,180,255,0.7)] transition-transform group-hover:rotate-6" />
-                        <span className="bg-gradient-to-r from-[#b8e6ff] via-[#8acbff] to-[#4da6ff] bg-clip-text text-2xl font-extrabold tracking-tight text-transparent">
+                        <div className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-blue-200 bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-blue-500/35 dark:border-blue-400/30 dark:shadow-[0_0_15px_rgba(59,130,246,0.35)]">
+                            <i className="fas fa-wind text-lg text-white transition-transform duration-300 group-hover:rotate-12" />
+                        </div>
+                        <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent dark:from-[#c2e7ff] dark:via-[#8acbff] dark:to-[#60a5fa]">
                             KiteLink
                         </span>
                     </Link>
 
-                    <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">Log in to your account</h1>
-                    <p className="mt-1.5 text-sm text-slate-300/80">Enter your email and password below to log in</p>
+                    <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">Log in to your account</h1>
+                    <p className="mt-1.5 text-sm text-slate-600 dark:text-slate-300/80">Enter your email and password below to log in</p>
                 </div>
 
                 {status && (
-                    <div className="mb-4 rounded-lg border border-emerald-500/30 bg-emerald-950/40 px-3 py-2 text-center text-xs font-medium text-emerald-300">
+                    <div className="mb-4 rounded-lg border border-emerald-500/30 bg-emerald-50 px-3 py-2 text-center text-xs font-medium text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300">
                         {status}
                     </div>
                 )}
@@ -61,7 +63,7 @@ export function Login({ status, canResetPassword }: LoginProps) {
                 <form onSubmit={submit} className="space-y-4">
                     {/* Email Field */}
                     <div className="space-y-1.5">
-                        <label htmlFor="email" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                        <label htmlFor="email" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                             Email Address
                         </label>
                         <div className="relative">
@@ -76,12 +78,12 @@ export function Login({ status, canResetPassword }: LoginProps) {
                                 onChange={(e) => setData('email', e.target.value)}
                                 disabled={processing}
                                 placeholder="name@example.com"
-                                className="w-full rounded-xl border border-white/15 bg-slate-950/40 px-4 py-2.5 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                             />
                         </div>
                         {errors.email && (
-                            <div className="mt-1.5 flex items-center gap-1.5 rounded-lg border border-rose-500/25 bg-rose-950/40 px-2.5 py-1 text-xs text-rose-300 backdrop-blur-sm">
-                                <i className="fas fa-exclamation-circle shrink-0 text-xs text-rose-400" />
+                            <div className="mt-1.5 flex items-center gap-1.5 rounded-lg border border-rose-500/25 bg-rose-50 px-2.5 py-1 text-xs text-rose-700 backdrop-blur-sm dark:bg-rose-950/40 dark:text-rose-300">
+                                <i className="fas fa-exclamation-circle shrink-0 text-xs text-rose-500 dark:text-rose-400" />
                                 <span>{errors.email}</span>
                             </div>
                         )}
@@ -90,14 +92,14 @@ export function Login({ status, canResetPassword }: LoginProps) {
                     {/* Password Field */}
                     <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
-                            <label htmlFor="password" className="block text-xs font-medium tracking-wide text-slate-200 uppercase">
+                            <label htmlFor="password" className="block text-xs font-semibold tracking-wide text-slate-700 uppercase dark:text-slate-200">
                                 Password
                             </label>
                             {canResetPassword && (
                                 <Link
                                     href={route('password.request')}
                                     tabIndex={5}
-                                    className="text-xs font-medium text-[#5bb4ff] underline-offset-4 transition-colors hover:text-[#8acbff] hover:underline"
+                                    className="text-xs font-medium text-blue-600 underline-offset-4 transition-colors hover:text-blue-700 hover:underline dark:text-[#5bb4ff] dark:hover:text-[#8acbff]"
                                 >
                                     Forgot password?
                                 </Link>
@@ -114,21 +116,21 @@ export function Login({ status, canResetPassword }: LoginProps) {
                                 onChange={(e) => setData('password', e.target.value)}
                                 disabled={processing}
                                 placeholder="••••••••"
-                                className="w-full rounded-xl border border-white/15 bg-slate-950/40 py-2.5 pr-10 pl-4 text-sm text-white placeholder-slate-400/50 backdrop-blur-sm transition-all duration-200 hover:border-white/25 focus:border-[#3b82f6] focus:ring-2 focus:ring-[#3b82f6]/40 focus:outline-none disabled:opacity-50"
+                                className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-10 pl-4 text-sm text-slate-900 placeholder-slate-400 shadow-2xs backdrop-blur-sm transition-all duration-200 hover:border-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 focus:outline-none disabled:opacity-50 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder-slate-400/50 dark:hover:border-white/25 dark:focus:border-[#3b82f6] dark:focus:ring-[#3b82f6]/40"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
                                 tabIndex={-1}
                                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-slate-400 transition-colors hover:text-slate-200 focus:outline-none"
+                                className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-slate-400 transition-colors hover:text-slate-600 focus:outline-none dark:hover:text-slate-200"
                             >
                                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </button>
                         </div>
                         {errors.password && (
-                            <div className="mt-1.5 flex items-center gap-1.5 rounded-lg border border-rose-500/25 bg-rose-950/40 px-2.5 py-1 text-xs text-rose-300 backdrop-blur-sm">
-                                <i className="fas fa-exclamation-circle shrink-0 text-xs text-rose-400" />
+                            <div className="mt-1.5 flex items-center gap-1.5 rounded-lg border border-rose-500/25 bg-rose-50 px-2.5 py-1 text-xs text-rose-700 backdrop-blur-sm dark:bg-rose-950/40 dark:text-rose-300">
+                                <i className="fas fa-exclamation-circle shrink-0 text-xs text-rose-500 dark:text-rose-400" />
                                 <span>{errors.password}</span>
                             </div>
                         )}
@@ -147,7 +149,7 @@ export function Login({ status, canResetPassword }: LoginProps) {
                                     onChange={(e) => setData('remember', e.target.checked)}
                                     className="peer sr-only"
                                 />
-                                <div className="flex h-4 w-4 items-center justify-center rounded-md border border-white/20 bg-slate-950/60 transition-all duration-200 peer-checked:border-[#3b82f6] peer-checked:bg-[#2563eb] peer-focus:ring-2 peer-focus:ring-[#3b82f6]/40">
+                                <div className="flex h-4 w-4 items-center justify-center rounded-md border border-slate-300 bg-white transition-all duration-200 peer-checked:border-blue-600 peer-checked:bg-blue-600 peer-focus:ring-2 peer-focus:ring-blue-500/30 dark:border-white/20 dark:bg-slate-950/60 dark:peer-checked:border-[#3b82f6] dark:peer-checked:bg-[#2563eb] dark:peer-focus:ring-[#3b82f6]/40">
                                     <svg
                                         className={`h-3 w-3 text-white transition-opacity duration-150 ${data.remember ? 'opacity-100' : 'opacity-0'}`}
                                         fill="none"
@@ -158,7 +160,7 @@ export function Login({ status, canResetPassword }: LoginProps) {
                                     </svg>
                                 </div>
                             </div>
-                            <span className="text-xs text-slate-300 transition-colors hover:text-white">Remember me</span>
+                            <span className="text-xs text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">Remember me</span>
                         </label>
                     </div>
 
@@ -168,7 +170,7 @@ export function Login({ status, canResetPassword }: LoginProps) {
                             type="submit"
                             disabled={processing}
                             tabIndex={4}
-                            className="group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#4ba9ff] to-[#1f6eff] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 transition-all duration-300 hover:scale-[1.01] hover:from-[#5bb4ff] hover:to-[#2e7bff] hover:shadow-blue-500/50 active:scale-[0.99] disabled:pointer-events-none disabled:opacity-60 sm:text-base"
+                            className="group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 px-4 py-3 text-sm font-semibold text-white shadow-md shadow-blue-500/25 transition-all duration-300 hover:scale-[1.01] hover:shadow-blue-500/40 active:scale-[0.99] disabled:pointer-events-none disabled:opacity-60 sm:text-base dark:from-[#4ba9ff] dark:to-[#1f6eff] dark:shadow-blue-600/30 dark:hover:from-[#5bb4ff] dark:hover:to-[#2e7bff]"
                         >
                             {processing ? (
                                 <>
@@ -185,12 +187,12 @@ export function Login({ status, canResetPassword }: LoginProps) {
                     </div>
 
                     {/* Sign up Link */}
-                    <div className="pt-2 text-center text-sm text-slate-300">
+                    <div className="pt-2 text-center text-sm text-slate-600 dark:text-slate-300">
                         Don't have an account?{' '}
                         <Link
                             href={route('register')}
                             tabIndex={6}
-                            className="font-semibold text-[#5bb4ff] underline-offset-4 transition-colors hover:text-[#8acbff] hover:underline"
+                            className="font-semibold text-blue-600 underline-offset-4 transition-colors hover:text-blue-700 hover:underline dark:text-[#5bb4ff] dark:hover:text-[#8acbff]"
                         >
                             Sign up
                         </Link>
@@ -206,7 +208,7 @@ Login.layout = (page: ReactNode) => (
         headerRight={
             <Link
                 href={route('register')}
-                className="rounded-full border border-white/15 bg-white/[0.07] px-4 py-1.5 text-xs font-semibold text-slate-200 shadow-sm backdrop-blur-md transition-all duration-200 hover:bg-white/[0.14] hover:text-white sm:text-sm"
+                className="rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-slate-700 shadow-xs backdrop-blur-md transition-all duration-200 hover:bg-slate-100 hover:text-slate-900 sm:text-sm dark:border-white/15 dark:bg-white/[0.07] dark:text-slate-200 dark:hover:bg-white/[0.14] dark:hover:text-white"
             >
                 Sign up
             </Link>

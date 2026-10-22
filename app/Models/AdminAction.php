@@ -6,35 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class AdminAction extends Model
+class AdminAction extends AuditLog
 {
     use HasFactory;
 
-    protected $fillable = [
-        'admin_id',
-        'action',
-        'target_type',
-        'target_id',
-        'target_name',
-        'details',
-        'ip_address',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'details' => 'array',
-        ];
-    }
+    protected $table = 'audit_logs';
 
     public function admin(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'admin_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -56,14 +36,55 @@ class AdminAction extends Model
             $name = '#'.$target->id;
         }
 
-        return self::create([
-            'admin_id' => $admin->id,
-            'action' => $action,
-            'target_type' => class_basename($target),
-            'target_id' => $target->getKey(),
-            'target_name' => $name,
-            'details' => array_merge(['summary' => $details], $meta ?? []),
-            'ip_address' => request()->ip(),
-        ]);
+        $eventMap = [
+            'approve' => 'approved',
+            'reject' => 'rejected',
+            'suspend' => 'suspended',
+            'reactivate' => 'reactivated',
+            'delete' => 'deleted',
+            'delete_user' => 'deleted',
+            'cancel_booking' => 'cancelled',
+            'update_settings' => 'settings_changed',
+            'request_info' => 'request_info',
+            'hide_review' => 'hidden',
+            'delete_review' => 'deleted',
+        ];
+        $event = $eventMap[$action] ?? $action;
+
+        $description = $details ?: "Admin {$action} ".class_basename($target).($name ? " {$name}" : '');
+
+        try {
+            $req = request();
+            $metaData = array_merge(['summary' => $details], $meta ?? []);
+
+            /** @var self $created */
+            $created = self::create([
+                'user_id' => $admin->id,
+                'user_name' => $admin->name,
+                'user_role' => $admin->role ?? 'admin',
+                'event' => $event,
+                'auditable_type' => get_class($target),
+                'auditable_id' => $target->getKey(),
+                'description' => $description,
+                'new_values' => $metaData,
+                'ip_address' => $req?->ip() ?? '127.0.0.1',
+                'user_agent' => $req?->userAgent(),
+                'url' => $req?->fullUrl(),
+                'method' => $req?->method() ?? 'POST',
+                // Legacy columns
+                'admin_id' => $admin->id,
+                'action' => $action,
+                'target_type' => class_basename($target),
+                'target_id' => $target->getKey(),
+                'target_name' => $name,
+                'details' => $metaData,
+            ]);
+
+            return $created;
+        } catch (\Throwable $e) {
+            report($e);
+
+            return new self;
+        }
     }
 }

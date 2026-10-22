@@ -105,12 +105,11 @@ export function NotificationBell({ className = '' }: { className?: string }) {
             const fetchedList: NotificationItem[] = data.notifications || [];
 
             // Detect if any new unread notification has arrived
-            let hasNewArrival = false;
+            const newUnreads: NotificationItem[] = [];
             if (!isFirstFetchRef.current) {
                 for (const item of fetchedList) {
                     if (!knownIdsRef.current.has(item.id) && !item.read_at) {
-                        hasNewArrival = true;
-                        break;
+                        newUnreads.push(item);
                     }
                 }
             }
@@ -124,8 +123,13 @@ export function NotificationBell({ className = '' }: { className?: string }) {
             const serverHasUnread = data.has_unread ?? fetchedList.some((n) => !n.read_at);
             setHasUnread(serverHasUnread);
 
-            if (hasNewArrival) {
+            if (newUnreads.length > 0) {
                 playChime();
+                window.dispatchEvent(new CustomEvent('kitelink:new-notification', { detail: newUnreads }));
+                const newMsg = newUnreads.find((n) => n.data?.type === 'message' || Boolean(n.data?.conversation_id));
+                if (newMsg) {
+                    window.dispatchEvent(new CustomEvent('kitelink:new-message', { detail: newMsg.data }));
+                }
             }
 
             isFirstFetchRef.current = false;
@@ -134,15 +138,26 @@ export function NotificationBell({ className = '' }: { className?: string }) {
         }
     }, [playChime]);
 
-    // Initial fetch and poll every 25 seconds
+    // Initial fetch and poll every 8 seconds when tab is active
     useEffect(() => {
         fetchNotifications();
 
         const interval = setInterval(() => {
-            fetchNotifications();
-        }, 25000);
+            if (document.visibilityState === 'visible') {
+                fetchNotifications();
+            }
+        }, 8000);
 
         return () => clearInterval(interval);
+    }, [fetchNotifications]);
+
+    // Listen to refresh events dispatched by chat or other actions
+    useEffect(() => {
+        const handleRefresh = () => {
+            fetchNotifications();
+        };
+        window.addEventListener('kitelink:refresh-notifications', handleRefresh);
+        return () => window.removeEventListener('kitelink:refresh-notifications', handleRefresh);
     }, [fetchNotifications]);
 
     // Listen to Inertia finish navigation event to automatically sync read states

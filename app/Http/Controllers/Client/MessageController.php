@@ -7,6 +7,7 @@ use App\Models\Conversation;
 use App\Models\Instructor;
 use App\Models\Message;
 use App\Notifications\MessageReceivedNotification;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -25,8 +26,6 @@ class MessageController extends Controller
             ->with(['participantOne', 'participantTwo', 'messages' => fn ($q) => $q->latest()->limit(1)])
             ->orderBy('last_message_at', 'desc')
             ->get();
-
-        $formattedConversations = $this->formatConversations($conversations, $user->id);
 
         $requestedConvId = $request->query('conversation');
         /** @var Conversation|null $activeConv */
@@ -72,7 +71,7 @@ class MessageController extends Controller
         }
 
         return Inertia::render('client/Messages', [
-            'conversations' => $formattedConversations,
+            'conversations' => $this->formatConversations($conversations, $user->id),
             'activeConversationId' => $activeId,
             'messages' => $messages,
             'otherUser' => $otherUser,
@@ -163,7 +162,7 @@ class MessageController extends Controller
     /**
      * Send a new message in the conversation.
      */
-    public function store(Request $request, Conversation $conversation): RedirectResponse
+    public function store(Request $request, Conversation $conversation): RedirectResponse|JsonResponse
     {
         $user = $request->user();
 
@@ -184,6 +183,27 @@ class MessageController extends Controller
         $recipient = $conversation->getOtherParticipant($user->id);
         if ($recipient) {
             $recipient->notify(new MessageReceivedNotification($message, $conversation));
+        }
+
+        if ($request->wantsJson() || $request->ajax()) {
+            $message->load('sender:id,name,profile_picture');
+
+            return response()->json([
+                'success' => true,
+                'message' => [
+                    'id' => $message->id,
+                    'conversation_id' => $message->conversation_id,
+                    'sender_id' => $message->sender_id,
+                    'body' => $message->body,
+                    'read_at' => null,
+                    'created_at' => $message->created_at?->toISOString() ?? now()->toISOString(),
+                    'sender' => $message->sender ? [
+                        'id' => $message->sender->id,
+                        'name' => $message->sender->name,
+                        'profile_picture' => $message->sender->profile_picture,
+                    ] : null,
+                ],
+            ]);
         }
 
         return back();

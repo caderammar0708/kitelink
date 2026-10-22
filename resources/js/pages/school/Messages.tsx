@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, router } from '@inertiajs/react';
-import { MessageSquare, Search, Send } from 'lucide-react';
+import { type BreadcrumbItem, type SharedData } from '@/types';
+import { Head, router, usePage, usePoll } from '@inertiajs/react';
+import { Check, CheckCheck, MessageSquare, Search, Send } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface OtherUser {
@@ -49,15 +49,54 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Messages({ conversations = [], activeConversationId, messages = [], otherUser }: MessagesProps) {
+    const { auth } = usePage<SharedData>().props;
+
+    // Automatically poll every 2.5s for incoming chat messages & live read receipts (single tick -> double tick)
+    usePoll(2500, { only: ['messages', 'conversations'] });
+
     const [selectedFilter, setSelectedFilter] = useState<'all' | 'client' | 'instructor'>('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [inputMessage, setInputMessage] = useState('');
     const [sending, setSending] = useState(false);
+    const [localMessages, setLocalMessages] = useState<Message[]>(messages);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+    // Sync localMessages when incoming props change from polling or navigation
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        setLocalMessages(messages);
     }, [messages]);
+
+    const prevMessagesLengthRef = useRef(localMessages.length);
+    const prevActiveConvIdRef = useRef(activeConversationId);
+
+    // Scroll to bottom when new messages arrive or conversation changes (do not jump on read_at status update)
+    useEffect(() => {
+        const isConvChanged = activeConversationId !== prevActiveConvIdRef.current;
+        const hasNewMessage = localMessages.length > prevMessagesLengthRef.current;
+
+        if (isConvChanged) {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+        } else if (hasNewMessage) {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        prevMessagesLengthRef.current = localMessages.length;
+        prevActiveConvIdRef.current = activeConversationId;
+    }, [localMessages, activeConversationId]);
+
+    // Fast sync when notification bell detects an incoming message
+    useEffect(() => {
+        const handleNewMessage = () => {
+            router.reload({ only: ['messages', 'conversations'] });
+        };
+        window.addEventListener('kitelink:new-message', handleNewMessage);
+        return () => window.removeEventListener('kitelink:new-message', handleNewMessage);
+    }, []);
+
+    // Sync navbar notification bell whenever messages are viewed
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent('kitelink:refresh-notifications'));
+    }, [activeConversationId, localMessages.length]);
 
     const filteredConversations = conversations.filter((c) => {
         if (selectedFilter !== 'all') {
@@ -75,22 +114,63 @@ export default function Messages({ conversations = [], activeConversationId, mes
         router.get(`/school/messages/${convId}`, {}, { preserveState: true });
     };
 
-    const handleSendMessage = (e: React.FormEvent) => {
+    const handleSendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!inputMessage.trim() || !activeConversationId || sending) return;
+        const text = inputMessage.trim();
+        if (!text || !activeConversationId || sending) return;
 
-        setSending(true);
-        router.post(
-            `/school/messages/${activeConversationId}`,
-            { body: inputMessage },
-            {
-                preserveScroll: true,
-                onSuccess: () => {
-                    setInputMessage('');
-                },
-                onFinish: () => setSending(false),
+        // Instantly clear the input bar so user can keep typing without waiting
+        setInputMessage('');
+
+        // Optimistically render bubble on screen immediately (0ms latency, no page refresh!)
+        const tempId = -Date.now();
+        const optimisticMsg: Message = {
+            id: tempId,
+            conversation_id: activeConversationId,
+            sender_id: auth?.user?.id ?? 0,
+            body: text,
+            read_at: undefined,
+            created_at: new Date().toISOString(),
+            sender: {
+                id: auth?.user?.id ?? 0,
+                name: auth?.user?.name ?? 'School',
+                profile_picture: auth?.user?.avatar,
             },
-        );
+        };
+
+        setLocalMessages((prev) => [...prev, optimisticMsg]);
+        setSending(true);
+
+        try {
+            const metaTag = document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null;
+            const res = await fetch(`/school/messages/${activeConversationId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': metaTag?.content ?? '',
+                },
+                body: JSON.stringify({ body: text }),
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data?.message) {
+                    setLocalMessages((prev) =>
+                        prev.map((m) => (m.id === tempId ? data.message : m))
+                    );
+                }
+            } else {
+                // If API returned error status, quietly sync with Inertia
+                router.reload({ only: ['messages', 'conversations'] });
+            }
+        } catch {
+            // Network fallback: silent reload
+            router.reload({ only: ['messages', 'conversations'] });
+        } finally {
+            setSending(false);
+        }
     };
 
     return (
@@ -220,11 +300,11 @@ export default function Messages({ conversations = [], activeConversationId, mes
                     </div>
 
                     {/* Right Active Chat Stream */}
-                    <div className="flex flex-1 flex-col">
+                    <div className="flex h-full min-h-0 flex-1 flex-col">
                         {activeConversationId && otherUser ? (
                             <>
                                 {/* Chat Header */}
-                                <div className="flex items-center justify-between border-b border-slate-100 p-4 dark:border-white/5">
+                                <div className="shrink-0 flex items-center justify-between border-b border-slate-100 p-4 dark:border-white/5">
                                     <div className="flex items-center gap-3">
                                         {otherUser.avatar ? (
                                             <img
@@ -248,14 +328,14 @@ export default function Messages({ conversations = [], activeConversationId, mes
                                 </div>
 
                                 {/* Messages Stream */}
-                                <div className="flex-1 space-y-3 overflow-y-auto p-4">
-                                    {messages.length === 0 ? (
+                                <div className="flex-1 min-h-0 space-y-3 overflow-y-auto p-4">
+                                    {localMessages.length === 0 ? (
                                         <div className="flex h-full items-center justify-center text-xs text-slate-400">
                                             No messages in this chat yet. Send the first message!
                                         </div>
                                     ) : (
-                                        messages.map((m) => {
-                                            const isMine = m.sender_id !== otherUser.id;
+                                        localMessages.map((m) => {
+                                            const isMine = m.sender_id === auth?.user?.id || m.sender_id !== otherUser.id;
 
                                             return (
                                                 <div key={m.id} className={`flex flex-col ${isMine ? 'items-end' : 'items-start'}`}>
@@ -268,9 +348,18 @@ export default function Messages({ conversations = [], activeConversationId, mes
                                                     >
                                                         {m.body}
                                                     </div>
-                                                    <span className="mt-1 text-[10px] text-slate-400">
-                                                        {new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                    </span>
+                                                    <div className={`mt-1 flex items-center justify-end gap-1 text-[10px] ${isMine ? 'text-purple-200' : 'text-slate-400'}`}>
+                                                        <span>
+                                                            {new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        </span>
+                                                        {isMine && (
+                                                            m.read_at ? (
+                                                                <CheckCheck className="h-3 w-3 text-purple-200" />
+                                                            ) : (
+                                                                <Check className="h-3 w-3 text-purple-300/70" />
+                                                            )
+                                                        )}
+                                                    </div>
                                                 </div>
                                             );
                                         })
@@ -279,7 +368,7 @@ export default function Messages({ conversations = [], activeConversationId, mes
                                 </div>
 
                                 {/* Send Input Form */}
-                                <form onSubmit={handleSendMessage} className="flex gap-2 border-t border-slate-100 p-3 dark:border-white/5">
+                                <form onSubmit={handleSendMessage} className="shrink-0 flex gap-2 border-t border-slate-100 p-3 dark:border-white/5">
                                     <input
                                         type="text"
                                         placeholder="Type your message..."

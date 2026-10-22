@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Notifications\MessageReceivedNotification;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -25,17 +26,25 @@ class MessageController extends Controller
             ->orderBy('last_message_at', 'desc')
             ->get();
 
-        $formattedConversations = $this->formatConversations($conversations, $user->id);
+        $requestedConvId = $request->query('conversation');
+        /** @var Conversation|null $activeConv */
+        $activeConv = null;
 
-        /** @var Conversation|null $firstConv */
-        $firstConv = $conversations->first();
+        if ($requestedConvId) {
+            $activeConv = $conversations->firstWhere('id', (int) $requestedConvId);
+        }
+
+        if (! $activeConv) {
+            $activeConv = $conversations->first();
+        }
+
         $messages = [];
         $otherUser = null;
         $activeId = null;
 
-        if ($firstConv) {
-            $activeId = $firstConv->id;
-            $firstConv->messages()
+        if ($activeConv) {
+            $activeId = $activeConv->id;
+            $activeConv->messages()
                 ->where('sender_id', '!=', $user->id)
                 ->whereNull('read_at')
                 ->update(['read_at' => now()]);
@@ -44,12 +53,12 @@ class MessageController extends Controller
                 ->filter(fn ($n) => ($n->data['conversation_id'] ?? null) == $activeId)
                 ->each->markAsRead();
 
-            $messages = $firstConv->messages()
+            $messages = $activeConv->messages()
                 ->with('sender:id,name,profile_picture')
                 ->orderBy('created_at', 'asc')
                 ->get();
 
-            $other = $firstConv->getOtherParticipant($user->id);
+            $other = $activeConv->getOtherParticipant($user->id);
             if ($other) {
                 $otherUser = [
                     'id' => $other->id,
@@ -61,7 +70,7 @@ class MessageController extends Controller
         }
 
         return Inertia::render('instructor/Messages', [
-            'conversations' => $formattedConversations,
+            'conversations' => $this->formatConversations($conversations, $user->id),
             'activeConversationId' => $activeId,
             'messages' => $messages,
             'otherUser' => $otherUser,
@@ -115,7 +124,7 @@ class MessageController extends Controller
     /**
      * Send a new message in the conversation.
      */
-    public function store(Request $request, Conversation $conversation): RedirectResponse
+    public function store(Request $request, Conversation $conversation): RedirectResponse|JsonResponse
     {
         $user = $request->user();
 
@@ -136,6 +145,27 @@ class MessageController extends Controller
         $recipient = $conversation->getOtherParticipant($user->id);
         if ($recipient) {
             $recipient->notify(new MessageReceivedNotification($message, $conversation));
+        }
+
+        if ($request->wantsJson() || $request->ajax()) {
+            $message->load('sender:id,name,profile_picture');
+
+            return response()->json([
+                'success' => true,
+                'message' => [
+                    'id' => $message->id,
+                    'conversation_id' => $message->conversation_id,
+                    'sender_id' => $message->sender_id,
+                    'body' => $message->body,
+                    'read_at' => null,
+                    'created_at' => $message->created_at?->toISOString() ?? now()->toISOString(),
+                    'sender' => $message->sender ? [
+                        'id' => $message->sender->id,
+                        'name' => $message->sender->name,
+                        'profile_picture' => $message->sender->profile_picture,
+                    ] : null,
+                ],
+            ]);
         }
 
         return back();

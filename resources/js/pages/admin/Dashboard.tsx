@@ -136,7 +136,7 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                     <div className="pointer-events-none absolute -top-24 right-0 h-96 w-96 rounded-full bg-indigo-500/20 blur-3xl" />
                     <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-blue-500/15 blur-3xl" />
 
-                    <div className="relative z-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
+                    <div className="relative z-1 flex flex-col justify-between gap-6 md:flex-row md:items-center">
                         <div className="max-w-2xl space-y-2">
                             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/20 px-3.5 py-1 text-xs font-semibold text-indigo-300">
                                 <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
