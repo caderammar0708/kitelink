@@ -177,7 +177,7 @@ test('admin can update platform settings', function () {
     $this->actingAs($admin);
 
     $response = $this->post('/admin/settings', [
-        'platform_name' => 'KiteLink Global',
+        'platform_name' => 'Winduo Global',
         'support_email' => 'help@kitelink.com',
         'contact_phone' => '+1 (555) 000-1111',
         'require_instructor_approval' => true,
@@ -188,7 +188,7 @@ test('admin can update platform settings', function () {
 
     $response->assertSessionHas('success');
 
-    expect(PlatformSetting::get('platform_name'))->toBe('KiteLink Global')
+    expect(PlatformSetting::get('platform_name'))->toBe('Winduo Global')
         ->and(PlatformSetting::get('support_email'))->toBe('help@kitelink.com')
         ->and(PlatformSetting::get('booking_commission_percentage'))->toBe('12.5');
 });

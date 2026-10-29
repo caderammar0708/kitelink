@@ -40,7 +40,7 @@ export function Show({ school, reviews = [] }: SchoolProps) {
     if (isAuthenticated) {
         return (
             <AppLayout breadcrumbs={breadcrumbs}>
-                <Head title={`${name} - Packages & Courses - KiteLink`} />
+                <Head title={`${name} - Packages & Courses - Winduo`} />
                 {content}
             </AppLayout>
         );
@@ -48,7 +48,7 @@ export function Show({ school, reviews = [] }: SchoolProps) {
 
     return (
         <PublicLayout>
-            <Head title={`${name} - Packages & Courses - KiteLink`} />
+            <Head title={`${name} - Packages & Courses - Winduo`} />
             {content}
         </PublicLayout>
     );

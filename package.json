@@ -1,4 +1,5 @@
 {
+    "name": "winduo",
     "private": true,
     "type": "module",
     "scripts": {

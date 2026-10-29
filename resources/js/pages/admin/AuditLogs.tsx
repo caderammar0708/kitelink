@@ -297,7 +297,7 @@ export default function AuditLogs({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Audit Log - KiteLink Admin" />
+            <Head title="Audit Log - Winduo Admin" />
 
             <div className="flex-1 space-y-6 p-4 md:p-8">
                 {/* Header with Title and Actions */}

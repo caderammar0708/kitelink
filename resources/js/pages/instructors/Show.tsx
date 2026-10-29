@@ -39,7 +39,7 @@ export function Show({ instructor, existingBooking = null }: InstructorProps) {
     if (isAuthenticated) {
         return (
             <AppLayout breadcrumbs={breadcrumbs}>
-                <Head title={`${name} - Certified Kitesurf Instructor | KiteLink`} />
+                <Head title={`${name} - Certified Kitesurf Instructor | Winduo`} />
                 {content}
             </AppLayout>
         );
@@ -47,7 +47,7 @@ export function Show({ instructor, existingBooking = null }: InstructorProps) {
 
     return (
         <PublicLayout>
-            <Head title={`${name} - Certified Kitesurf Instructor | KiteLink`} />
+            <Head title={`${name} - Certified Kitesurf Instructor | Winduo`} />
             {content}
         </PublicLayout>
     );

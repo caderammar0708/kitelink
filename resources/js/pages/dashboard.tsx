@@ -13,7 +13,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Dashboard() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard - KiteLink" />
+            <Head title="Dashboard - Winduo" />
             <div className="flex h-full flex-1 flex-col gap-6 p-4 text-slate-900 transition-colors duration-200 sm:p-6 lg:p-8 dark:text-slate-100">
                 {/* Hero Card */}
                 <div className="relative overflow-hidden rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50/90 via-sky-50/50 to-indigo-50/40 p-6 shadow-sm backdrop-blur-xl sm:p-8 dark:border-white/10 dark:bg-gradient-to-r dark:from-blue-950/40 dark:via-slate-900/60 dark:to-slate-950/70 dark:shadow-2xl">
@@ -21,7 +21,7 @@ export default function Dashboard() {
                     <div className="relative z-1 max-w-2xl space-y-3">
                         <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/15 dark:text-[#8acbff]">
                             <Sparkles className="h-3.5 w-3.5" />
-                            Welcome to KiteLink
+                            Welcome to Winduo
                         </span>
                         <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                             Discover Certified Kitesurf Instructors Worldwide

@@ -1,10 +1,11 @@
+import Logo from '@/components/logo';
 import ThemeToggle from '@/components/theme-toggle';
 import WeatherWidget from '@/components/weather-widget';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import React, { useEffect, useRef, useState } from 'react';
 
-export default function KiteLinkLanding() {
+export default function WinduoLanding() {
     const seasonRefs = useRef<(HTMLDivElement | null)[]>([]);
     const { auth } = usePage<SharedData>().props;
     const isAuthenticated = !!auth?.user;
@@ -127,15 +128,8 @@ export default function KiteLinkLanding() {
                 >
                     {/* Brand Logo */}
                     <div className="flex items-center gap-6">
-                        <Link href={route('home')} className="group flex items-center gap-2.5 no-underline">
-                            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-blue-200 bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-blue-500/35 dark:border-blue-400/30 dark:shadow-[0_0_15px_rgba(59,130,246,0.35)]">
-                                <i className="fas fa-wind text-lg text-white transition-transform duration-300 group-hover:rotate-12" />
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-xl font-extrabold tracking-tight text-transparent dark:from-[#c2e7ff] dark:via-[#8acbff] dark:to-[#60a5fa]">
-                                    KiteLink
-                                </span>
-                            </div>
+                        <Link href={route('home')} className="no-underline transition-transform duration-300 hover:scale-105">
+                            <Logo size="md" />
                         </Link>
 
                         {/* Desktop Navigation Links */}
@@ -203,7 +197,7 @@ export default function KiteLinkLanding() {
                                     className="relative inline-flex cursor-pointer items-center gap-1.5 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-sky-600 to-blue-700 px-4 py-1.5 text-xs font-bold text-white shadow-md shadow-blue-600/25 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/40 sm:px-5 sm:py-2 sm:text-sm"
                                 >
                                     <i className="fas fa-user-plus text-xs" />
-                                    <span>Join KiteLink</span>
+                                    <span>Join Winduo</span>
                                 </Link>
                             </>
                         )}
@@ -675,7 +669,7 @@ export default function KiteLinkLanding() {
                     </div>
 
                     <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-300">
-                        KiteLink is the global infrastructure connecting riders with certified instructors and kitesurf centers across the world. Whether you are learning your first waterstart or dialing in unhooked handlepasses, we ensure transparent pricing, verified safety standards, and live conditions.
+                        Winduo is the global infrastructure connecting riders with certified instructors and kitesurf centers across the world. Whether you are learning your first waterstart or dialing in unhooked handlepasses, we ensure transparent pricing, verified safety standards, and live conditions.
                     </p>
 
                     <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -700,10 +694,8 @@ export default function KiteLinkLanding() {
                 {/* MODERN TECH FOOTER */}
                 <footer className="my-12 flex flex-col items-center justify-between gap-4 rounded-2xl border border-slate-200/80 bg-white/80 px-6 py-5 text-xs font-medium text-slate-600 shadow-xs backdrop-blur-md sm:flex-row dark:border-white/10 dark:bg-[#070b12]/80 dark:text-slate-400">
                     <div className="flex items-center gap-2.5">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-600 text-white">
-                            <i className="fas fa-wind text-[10px]" />
-                        </div>
-                        <span className="font-extrabold text-slate-900 dark:text-white">KiteLink</span>
+                        <Logo size="sm" showWordmark={false} className="size-5" />
+                        <span className="font-extrabold text-slate-900 dark:text-white">Winduo</span>
                         <span className="text-slate-400">&mdash; the kitesurfing network</span>
                     </div>
 

@@ -97,7 +97,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Manage Instructors - KiteLink" />
+            <Head title="Manage Instructors - Winduo" />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-4 text-slate-900 transition-colors duration-200 sm:p-6 lg:p-8 dark:text-slate-100">
                 {/* Header */}
@@ -155,7 +155,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                             </div>
                             <h3 className="text-base font-bold text-slate-900 dark:text-white">No Instructors on Your Roster Yet</h3>
                             <p className="mt-1 max-w-md text-xs text-slate-500 sm:text-sm dark:text-slate-400">
-                                Build your school team! You can invite existing registered KiteLink instructors or add a coach profile directly.
+                                Build your school team! You can invite existing registered Winduo instructors or add a coach profile directly.
                             </p>
                             <div className="mt-6 flex flex-wrap gap-3">
                                 <button
@@ -263,7 +263,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                         <div>
                             <h2 className="text-lg font-bold text-slate-900 dark:text-white">Available Freelance Instructors</h2>
                             <p className="text-xs text-slate-500 dark:text-slate-400">
-                                Certified instructors on KiteLink currently available to join a school roster
+                                Certified instructors on Winduo currently available to join a school roster
                             </p>
                         </div>
 
@@ -307,7 +307,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-white/10">
                             <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
                                 <UserCheck className="h-4 w-4 text-purple-600" />
-                                Invite Existing KiteLink Coach
+                                Invite Existing Winduo Coach
                             </h3>
                             <button
                                 type="button"
@@ -320,7 +320,7 @@ export default function Instructors({ school, roster, availableInstructors }: In
 
                         <form onSubmit={handleInviteSubmit} className="mt-4 space-y-4">
                             <p className="text-xs text-slate-500 dark:text-slate-400">
-                                Enter the registered email address of a certified KiteLink instructor to attach them to your school roster.
+                                Enter the registered email address of a certified Winduo instructor to attach them to your school roster.
                             </p>
 
                             <div className="space-y-1.5">

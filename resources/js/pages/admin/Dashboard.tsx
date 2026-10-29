@@ -128,7 +128,7 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Admin Dashboard - KiteLink" />
+            <Head title="Admin Dashboard - Winduo" />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-4 text-slate-900 transition-colors duration-200 sm:p-6 lg:p-8 dark:text-slate-100">
                 {/* Admin Welcome Hero */}
@@ -140,7 +140,7 @@ export default function AdminDashboard({ stats, charts, recent }: DashboardProps
                         <div className="max-w-2xl space-y-2">
                             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/20 px-3.5 py-1 text-xs font-semibold text-indigo-300">
                                 <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
-                                KiteLink Platform Administration
+                                Winduo Platform Administration
                             </div>
                             <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">Welcome to the Admin Control Center</h1>
                             <p className="text-sm leading-relaxed text-slate-300">

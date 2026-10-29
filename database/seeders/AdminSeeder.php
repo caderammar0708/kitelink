@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
         User::firstOrCreate(
             ['email' => 'admin@kitelink.com'],
             [
-                'name' => 'KiteLink Admin',
+                'name' => 'Winduo Admin',
                 'password' => Hash::make($adminPassword),
                 'role' => 'admin',
                 'email_verified_at' => now(),
@@ -28,7 +28,7 @@ class AdminSeeder extends Seeder
         );
 
         // Seed default platform settings if missing
-        PlatformSetting::set('platform_name', 'KiteLink', 'general');
+        PlatformSetting::set('platform_name', 'Winduo', 'general');
         PlatformSetting::set('support_email', 'support@kitelink.com', 'general');
         PlatformSetting::set('contact_phone', '+1 (555) 019-2834', 'general');
         PlatformSetting::set('require_instructor_approval', '1', 'approval');

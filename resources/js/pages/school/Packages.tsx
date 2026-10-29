@@ -149,7 +149,7 @@ export default function Packages({ school, packages }: PackagesProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Packages & Offers - KiteLink School" />
+            <Head title="Packages & Offers - Winduo School" />
 
             <div className="space-y-6 p-4 sm:p-6 lg:p-8">
                 {/* Header Card */}

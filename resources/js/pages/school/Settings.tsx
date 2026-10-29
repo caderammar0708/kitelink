@@ -94,7 +94,7 @@ export default function Settings({ school, user }: SettingsProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="School Settings - KiteLink" />
+            <Head title="School Settings - Winduo" />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-4 text-slate-900 transition-colors duration-200 sm:p-6 lg:p-8 dark:text-slate-100">
                 {/* Header */}
@@ -164,7 +164,7 @@ export default function Settings({ school, user }: SettingsProps) {
                             Account Email Address
                         </h2>
                         <p className="mb-4 text-xs text-slate-500 dark:text-slate-400">
-                            The email address used to log into KiteLink and receive booking notices.
+                            The email address used to log into Winduo and receive booking notices.
                         </p>
 
                         <form onSubmit={handleEmailSubmit} className="space-y-4">

@@ -32,7 +32,7 @@ class ProfileStatusUpdatedNotification extends Notification
         };
 
         $message = match ($this->status) {
-            'approved' => 'Congratulations! Your profile has been reviewed and approved by KiteLink administration. Your listing is now live!',
+            'approved' => 'Congratulations! Your profile has been reviewed and approved by Winduo administration. Your listing is now live!',
             'rejected' => 'Rejected: '.($this->reason ?? 'Profile does not meet platform requirements. You can edit and resubmit.'),
             'info_requested' => 'Admin requested more information: '.($this->reason ?? 'Please check your profile details and certifications.'),
             'suspended' => 'Your account has been suspended: '.($this->reason ?? 'Please contact platform administration.'),

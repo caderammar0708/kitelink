@@ -1,3 +1,4 @@
+import Logo from '@/components/logo';
 import TechBackground from '@/components/tech-background';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Link, router, useForm } from '@inertiajs/react';
@@ -55,13 +56,8 @@ export default function VerificationPending({ role, application }: VerificationP
 
             {/* Top Navigation Bar without sidebar */}
             <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5">
-                <Link href={route('home')} className="group flex items-center gap-2.5 transition-transform duration-300 hover:scale-105">
-                    <div className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-blue-200 bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-blue-500/35 dark:border-blue-400/30 dark:shadow-[0_0_15px_rgba(59,130,246,0.35)]">
-                        <i className="fas fa-wind text-lg text-white transition-transform duration-300 group-hover:rotate-12" />
-                    </div>
-                    <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent dark:from-[#c2e7ff] dark:via-[#8acbff] dark:to-[#60a5fa]">
-                        KiteLink
-                    </span>
+                <Link href={route('home')} className="transition-transform duration-300 hover:scale-105">
+                    <Logo size="md" />
                 </Link>
 
                 <div className="flex items-center gap-3">
@@ -125,8 +121,8 @@ export default function VerificationPending({ role, application }: VerificationP
                         {/* Reassuring Body Text */}
                         <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-300">
                             {isRejected
-                                ? `The KiteLink verification team reviewed your ${isSchool ? 'school' : 'instructor'} application and requested updates before granting approval.`
-                                : `Thanks for registering with KiteLink. Our team is reviewing your ${isSchool ? 'school' : 'instructor'} application and will notify you by email once it's approved. This usually takes 1–2 business days.`}
+                                ? `The Winduo verification team reviewed your ${isSchool ? 'school' : 'instructor'} application and requested updates before granting approval.`
+                                : `Thanks for registering with Winduo. Our team is reviewing your ${isSchool ? 'school' : 'instructor'} application and will notify you by email once it's approved. This usually takes 1–2 business days.`}
                         </p>
 
                         {/* Rejection Feedback Box */}
@@ -401,7 +397,7 @@ export default function VerificationPending({ role, application }: VerificationP
 
             {/* Simple Footer */}
             <footer className="relative z-10 border-t border-slate-200/80 py-6 text-center text-xs text-slate-500 dark:border-white/5 dark:text-white/40">
-                <p>&copy; {new Date().getFullYear()} KiteLink. All rights reserved.</p>
+                <p>&copy; {new Date().getFullYear()} Winduo. All rights reserved.</p>
             </footer>
         </div>
     );

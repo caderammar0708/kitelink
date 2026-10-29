@@ -18,7 +18,7 @@ class SettingController extends Controller
     public function index(Request $request): Response
     {
         $settings = [
-            'platform_name' => PlatformSetting::get('platform_name', 'KiteLink'),
+            'platform_name' => PlatformSetting::get('platform_name', 'Winduo'),
             'support_email' => PlatformSetting::get('support_email', 'support@kitelink.com'),
             'contact_phone' => PlatformSetting::get('contact_phone', '+1 (555) 019-2834'),
             'require_instructor_approval' => PlatformSetting::getBool('require_instructor_approval', true),

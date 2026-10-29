@@ -345,7 +345,7 @@ export function Index({ instructors = [], filters }: IndexProps) {
     if (isAuthenticated) {
         return (
             <AppLayout breadcrumbs={breadcrumbs}>
-                <Head title="Find Certified Kitesurf Instructors - KiteLink" />
+                <Head title="Find Certified Kitesurf Instructors - Winduo" />
                 {content}
             </AppLayout>
         );
@@ -353,7 +353,7 @@ export function Index({ instructors = [], filters }: IndexProps) {
 
     return (
         <PublicLayout>
-            <Head title="Find Certified Kitesurf Instructors - KiteLink" />
+            <Head title="Find Certified Kitesurf Instructors - Winduo" />
             {content}
         </PublicLayout>
     );

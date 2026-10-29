@@ -47,7 +47,7 @@ class InstructorRosterController extends Controller
     }
 
     /**
-     * Invite/link an existing KiteLink instructor to the school roster.
+     * Invite/link an existing Winduo instructor to the school roster.
      */
     public function invite(Request $request): RedirectResponse
     {

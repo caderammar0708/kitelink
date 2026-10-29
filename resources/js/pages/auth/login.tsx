@@ -1,3 +1,4 @@
+import Logo from '@/components/logo';
 import AuthLayout from '@/layouts/auth-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Eye, EyeOff, LoaderCircle } from 'lucide-react';
@@ -32,21 +33,16 @@ export function Login({ status, canResetPassword }: LoginProps) {
 
     return (
         <>
-            <Head title="Log in - KiteLink" />
+            <Head title="Log in - Winduo" />
 
             <div className="w-full max-w-md rounded-2xl border border-slate-200/90 bg-white/90 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl transition-all duration-300 sm:p-8 dark:border-white/10 dark:bg-white/[0.07] dark:shadow-2xl dark:shadow-black/60">
                 {/* Header with Logo */}
                 <div className="mb-6 flex flex-col items-center text-center">
                     <Link
                         href={route('home')}
-                        className="group mb-4 inline-flex items-center gap-2.5 transition-transform duration-300 hover:scale-105"
+                        className="mb-4 inline-flex items-center transition-transform duration-300 hover:scale-105"
                     >
-                        <div className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-blue-200 bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-blue-500/35 dark:border-blue-400/30 dark:shadow-[0_0_15px_rgba(59,130,246,0.35)]">
-                            <i className="fas fa-wind text-lg text-white transition-transform duration-300 group-hover:rotate-12" />
-                        </div>
-                        <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent dark:from-[#c2e7ff] dark:via-[#8acbff] dark:to-[#60a5fa]">
-                            KiteLink
-                        </span>
+                        <Logo size="lg" />
                     </Link>
 
                     <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">Log in to your account</h1>

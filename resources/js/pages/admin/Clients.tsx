@@ -75,7 +75,7 @@ export default function Clients({ clients, filters, counts }: ClientsProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Clients Management - KiteLink Admin" />
+            <Head title="Clients Management - Winduo Admin" />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-4 text-slate-900 transition-colors duration-200 sm:p-6 lg:p-8 dark:text-slate-100">
                 {/* Header */}

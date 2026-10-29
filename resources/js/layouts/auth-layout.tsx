@@ -1,3 +1,4 @@
+import Logo from '@/components/logo';
 import TechBackground from '@/components/tech-background';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Link } from '@inertiajs/react';
@@ -21,13 +22,8 @@ export function AuthLayout({ children, title, description, headerRight }: AuthLa
 
             {/* Top Navbar / Branding */}
             <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5">
-                <Link href={route('home')} className="group flex items-center gap-2.5 transition-transform duration-300 hover:scale-105">
-                    <div className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-blue-200 bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-blue-500/35 dark:border-blue-400/30 dark:shadow-[0_0_15px_rgba(59,130,246,0.35)]">
-                        <i className="fas fa-wind text-lg text-white transition-transform duration-300 group-hover:rotate-12" />
-                    </div>
-                    <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent dark:from-[#c2e7ff] dark:via-[#8acbff] dark:to-[#60a5fa]">
-                        KiteLink
-                    </span>
+                <Link href={route('home')} className="transition-transform duration-300 hover:scale-105">
+                    <Logo size="md" />
                 </Link>
 
                 <div className="flex items-center gap-3">
@@ -50,14 +46,9 @@ export function AuthLayout({ children, title, description, headerRight }: AuthLa
                         <div className="mb-6 flex flex-col items-center text-center">
                             <Link
                                 href={route('home')}
-                                className="group mb-4 inline-flex items-center gap-2.5 transition-transform duration-300 hover:scale-105"
+                                className="mb-4 inline-flex items-center transition-transform duration-300 hover:scale-105"
                             >
-                                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-200 bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/20 dark:border-blue-400/30">
-                                    <i className="fas fa-wind text-lg text-white transition-transform group-hover:rotate-12" />
-                                </div>
-                                <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent dark:from-[#c2e7ff] dark:via-[#8acbff] dark:to-[#4da6ff]">
-                                    KiteLink
-                                </span>
+                                <Logo size="lg" />
                             </Link>
 
                             <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">{title}</h1>
@@ -72,9 +63,9 @@ export function AuthLayout({ children, title, description, headerRight }: AuthLa
 
             {/* Footer */}
             <footer className="relative z-10 border-t border-slate-200/80 py-5 text-center text-xs text-slate-500 transition-colors duration-300 dark:border-white/5 dark:text-white/40">
-                <p>
-                    <i className="fas fa-wind mr-1 text-blue-600 dark:text-[#5bb4ff]" /> KiteLink — Discover certified kitesurfing instructors &amp; premier kite centers
-                    worldwide
+                <p className="flex items-center justify-center gap-1.5">
+                    <Logo size="sm" showWordmark={false} className="size-4" />
+                    <span>Winduo &mdash; Discover certified kitesurfing instructors &amp; premier kite centers worldwide</span>
                 </p>
             </footer>
         </div>

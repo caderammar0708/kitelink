@@ -6,14 +6,14 @@ import { ReactNode } from 'react';
 export function Join() {
     return (
         <>
-            <Head title="Join KiteLink - Grow Your Kitesurf Business" />
+            <Head title="Join Winduo - Grow Your Kitesurf Business" />
 
             <div className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center">
                 {/* Hero Title */}
                 <div className="mb-6 max-w-xl space-y-2 text-center sm:mb-8">
                     <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-0.5 text-[11px] font-bold tracking-wider text-blue-700 uppercase shadow-xs backdrop-blur-md dark:border-[#5bb4ff]/30 dark:bg-[#5bb4ff]/15 dark:text-[#8acbff]">
                         <Sparkles className="h-3 w-3 text-blue-600 dark:text-[#5bb4ff]" />
-                        Partner with KiteLink
+                        Partner with Winduo
                     </div>
                     <h1 className="text-2xl leading-tight font-extrabold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl dark:text-white">
                         Grow Your Kitesurf Business

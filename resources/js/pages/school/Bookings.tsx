@@ -135,7 +135,7 @@ export default function Bookings({ school, bookings, instructors, counts, filter
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="School Bookings - KiteLink" />
+            <Head title="School Bookings - Winduo" />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-4 text-slate-900 transition-colors duration-200 sm:p-6 lg:p-8 dark:text-slate-100">
                 {/* Header */}

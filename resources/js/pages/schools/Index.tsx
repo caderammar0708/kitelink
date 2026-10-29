@@ -358,7 +358,7 @@ export function Index({ schools = [], filters }: IndexProps) {
     if (isAuthenticated) {
         return (
             <AppLayout breadcrumbs={breadcrumbs}>
-                <Head title="Explore Kite Centers & Schools - KiteLink" />
+                <Head title="Explore Kite Centers & Schools - Winduo" />
                 {content}
             </AppLayout>
         );
@@ -366,7 +366,7 @@ export function Index({ schools = [], filters }: IndexProps) {
 
     return (
         <PublicLayout>
-            <Head title="Explore Kite Centers & Schools - KiteLink" />
+            <Head title="Explore Kite Centers & Schools - Winduo" />
             {content}
         </PublicLayout>
     );

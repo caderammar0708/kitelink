@@ -246,7 +246,7 @@ export default function WeatherIndex({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Live Spot Weather & Kitesurf Wind Forecast - KiteLink" />
+            <Head title="Live Spot Weather & Kitesurf Wind Forecast - Winduo" />
 
             <div className="relative mx-auto min-h-full max-w-7xl space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* Header & Spot Search */}

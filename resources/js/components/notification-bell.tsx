@@ -125,10 +125,10 @@ export function NotificationBell({ className = '' }: { className?: string }) {
 
             if (newUnreads.length > 0) {
                 playChime();
-                window.dispatchEvent(new CustomEvent('kitelink:new-notification', { detail: newUnreads }));
+                window.dispatchEvent(new CustomEvent('winduo:new-notification', { detail: newUnreads }));
                 const newMsg = newUnreads.find((n) => n.data?.type === 'message' || Boolean(n.data?.conversation_id));
                 if (newMsg) {
-                    window.dispatchEvent(new CustomEvent('kitelink:new-message', { detail: newMsg.data }));
+                    window.dispatchEvent(new CustomEvent('winduo:new-message', { detail: newMsg.data }));
                 }
             }
 
@@ -156,8 +156,8 @@ export function NotificationBell({ className = '' }: { className?: string }) {
         const handleRefresh = () => {
             fetchNotifications();
         };
-        window.addEventListener('kitelink:refresh-notifications', handleRefresh);
-        return () => window.removeEventListener('kitelink:refresh-notifications', handleRefresh);
+        window.addEventListener('winduo:refresh-notifications', handleRefresh);
+        return () => window.removeEventListener('winduo:refresh-notifications', handleRefresh);
     }, [fetchNotifications]);
 
     // Listen to Inertia finish navigation event to automatically sync read states

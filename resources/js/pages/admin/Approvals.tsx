@@ -182,7 +182,7 @@ export default function Approvals({ items, tab, filters, counts }: ApprovalsProp
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Approvals Queue - KiteLink Admin" />
+            <Head title="Approvals Queue - Winduo Admin" />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-4 text-slate-900 transition-colors duration-200 sm:p-6 lg:p-8 dark:text-slate-100">
                 {/* Header section */}

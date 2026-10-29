@@ -55,7 +55,7 @@ export default function Revenue({ totalEarned = 0, thisMonth = 0, pendingPayout 
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Revenue & Earnings - KiteLink" />
+            <Head title="Revenue & Earnings - Winduo" />
 
             <div className="relative min-h-full space-y-6 p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* Header */}
@@ -321,7 +321,7 @@ export default function Revenue({ totalEarned = 0, thisMonth = 0, pendingPayout 
                                 <div>
                                     <strong className="text-slate-900 dark:text-slate-200">0% Platform Commission</strong>
                                     <p className="mt-0.5 text-[11px]">
-                                        KiteLink pays instructors 100% of your listed hourly rate. Student payments are processed securely via Stripe
+                                        Winduo pays instructors 100% of your listed hourly rate. Student payments are processed securely via Stripe
                                         Escrow.
                                     </p>
                                 </div>
@@ -346,10 +346,10 @@ export default function Revenue({ totalEarned = 0, thisMonth = 0, pendingPayout 
                         <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-white/10">
                             <div className="flex items-center gap-2">
                                 <Wind className="h-6 w-6 text-blue-600 dark:text-[#5bb4ff]" />
-                                <span className="text-lg font-bold text-slate-900 dark:text-white">KiteLink Receipt</span>
+                                <span className="text-lg font-bold text-slate-900 dark:text-white">Winduo Receipt</span>
                             </div>
                             <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
-                                #KL-INV-{String(selectedInvoice.id).padStart(5, '0')}
+                                #WD-INV-{String(selectedInvoice.id).padStart(5, '0')}
                             </span>
                         </div>
 

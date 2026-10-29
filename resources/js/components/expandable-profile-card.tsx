@@ -101,7 +101,7 @@ export default function ExpandableProfileCard<T = any>({
     const expandToFullProfile = () => {
         if (typeof window !== 'undefined') {
             previousUrlRef.current = window.location.href;
-            window.history.pushState({ kitelinkExpandedCardId: id, viewState: 'full' }, '', profileUrl);
+            window.history.pushState({ winduoExpandedCardId: id, kitelinkExpandedCardId: id, viewState: 'full' }, '', profileUrl);
         }
         setViewState('full');
         fetchFullData();
@@ -109,7 +109,7 @@ export default function ExpandableProfileCard<T = any>({
 
     // Collapse from full profile back to modal or collapsed
     const collapseFromFullProfile = React.useCallback(() => {
-        if (typeof window !== 'undefined' && window.history.state?.kitelinkExpandedCardId === id) {
+        if (typeof window !== 'undefined' && (window.history.state?.winduoExpandedCardId === id || window.history.state?.kitelinkExpandedCardId === id)) {
             window.history.back();
         } else {
             if (previousUrlRef.current && typeof window !== 'undefined') {

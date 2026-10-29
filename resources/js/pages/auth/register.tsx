@@ -1,3 +1,4 @@
+import Logo from '@/components/logo';
 import AuthLayout from '@/layouts/auth-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Award, Building2, Eye, EyeOff, FileText, LoaderCircle, Lock, Mail, MapPin, Phone, ShieldCheck, Sparkles, User } from 'lucide-react';
@@ -56,7 +57,7 @@ export function Register({ role }: RegisterProps) {
         <>
             <Head
                 title={
-                    isSchool ? 'School Registration - KiteLink' : isInstructor ? 'Instructor Registration - KiteLink' : 'Create an Account - KiteLink'
+                    isSchool ? 'School Registration - Winduo' : isInstructor ? 'Instructor Registration - Winduo' : 'Create an Account - Winduo'
                 }
             />
 
@@ -67,14 +68,9 @@ export function Register({ role }: RegisterProps) {
                 <div className="mb-6 flex flex-col items-center text-center">
                     <Link
                         href={route('home')}
-                        className="group mb-4 inline-flex items-center gap-2.5 transition-transform duration-300 hover:scale-105"
+                        className="mb-4 inline-flex items-center transition-transform duration-300 hover:scale-105"
                     >
-                        <div className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-blue-200 bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-blue-500/35 dark:border-blue-400/30 dark:shadow-[0_0_15px_rgba(59,130,246,0.35)]">
-                            <i className="fas fa-wind text-lg text-white transition-transform duration-300 group-hover:rotate-12" />
-                        </div>
-                        <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent dark:from-[#c2e7ff] dark:via-[#8acbff] dark:to-[#60a5fa]">
-                            KiteLink
-                        </span>
+                        <Logo size="lg" />
                     </Link>
 
                     {isInstructor && (
@@ -99,7 +95,7 @@ export function Register({ role }: RegisterProps) {
                             ? 'Quick application for kite schools and centers. Full profile, gear, and roster setup opens after approval.'
                             : isInstructor
                               ? 'Quick signup for certified coaches. You can set rates, spots, and bio once approved.'
-                              : 'Enter your details below to get started with KiteLink'}
+                              : 'Enter your details below to get started with Winduo'}
                     </p>
                 </div>
 

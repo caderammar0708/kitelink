@@ -51,7 +51,7 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
     const [activeTab, setActiveTab] = useState<'settings' | 'audit'>('settings');
 
     const { data, setData, post, processing, recentlySuccessful, errors } = useForm({
-        platform_name: settings.platform_name || 'KiteLink',
+        platform_name: settings.platform_name || 'Winduo',
         support_email: settings.support_email || 'support@kitelink.com',
         contact_phone: settings.contact_phone || '+1 (555) 019-2834',
         require_instructor_approval: settings.require_instructor_approval,
@@ -67,7 +67,7 @@ export default function AdminSettings({ settings, auditLogs }: SettingsProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Platform Settings & Audit Logs - KiteLink Admin" />
+            <Head title="Platform Settings & Audit Logs - Winduo Admin" />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-4 text-slate-900 transition-colors duration-200 sm:p-6 lg:p-8 dark:text-slate-100">
                 {/* Header */}

@@ -89,13 +89,13 @@ export default function Messages({ conversations = [], activeConversationId, mes
         const handleNewMessage = () => {
             router.reload({ only: ['messages', 'conversations'] });
         };
-        window.addEventListener('kitelink:new-message', handleNewMessage);
-        return () => window.removeEventListener('kitelink:new-message', handleNewMessage);
+        window.addEventListener('winduo:new-message', handleNewMessage);
+        return () => window.removeEventListener('winduo:new-message', handleNewMessage);
     }, []);
 
     // Sync navbar notification bell whenever messages are viewed
     useEffect(() => {
-        window.dispatchEvent(new CustomEvent('kitelink:refresh-notifications'));
+        window.dispatchEvent(new CustomEvent('winduo:refresh-notifications'));
     }, [activeConversationId, localMessages.length]);
 
     const filteredConversations = conversations.filter((c) => {
@@ -175,7 +175,7 @@ export default function Messages({ conversations = [], activeConversationId, mes
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="School Messages - KiteLink" />
+            <Head title="School Messages - Winduo" />
 
             <div className="flex h-[calc(100vh-8.5rem)] flex-1 flex-col gap-4 p-4 text-slate-900 transition-colors duration-200 sm:p-6 dark:text-slate-100">
                 <div className="flex h-full flex-1 overflow-hidden rounded-3xl border border-slate-200/90 bg-white shadow-sm dark:border-white/10 dark:bg-[#0c1220]">
@@ -321,7 +321,7 @@ export default function Messages({ conversations = [], activeConversationId, mes
                                         <div>
                                             <h2 className="text-sm font-bold text-slate-900 dark:text-white">{otherUser.name}</h2>
                                             <span className="text-xs text-slate-500 capitalize dark:text-slate-400">
-                                                {otherUser.role} on KiteLink
+                                                {otherUser.role} on Winduo
                                             </span>
                                         </div>
                                     </div>

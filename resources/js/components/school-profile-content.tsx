@@ -849,11 +849,11 @@ export default function SchoolProfileContent({ school, reviews = [], layoutId, o
                         </div>
                     </div>
 
-                    {/* KiteLink Assurance Card */}
+                    {/* Winduo Assurance Card */}
                     <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-md backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl">
                         <h4 className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white">
                             <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                            KiteLink Center Guarantee
+                            Winduo Center Guarantee
                         </h4>
                         <ul className="mt-3 space-y-2 text-xs text-slate-600 dark:text-slate-300">
                             <li className="flex items-start gap-2">

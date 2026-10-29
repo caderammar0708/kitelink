@@ -23,7 +23,7 @@ export default function AwaitingApproval({ instructor }: { instructor: Instructo
 
     return (
         <AppLayout breadcrumbs={[{ title: 'Instructor Dashboard', href: '/instructor/dashboard' }]}>
-            <Head title={isRejected ? 'Application Needs Revision - KiteLink' : 'Application Under Review - KiteLink'} />
+            <Head title={isRejected ? 'Application Needs Revision - Winduo' : 'Application Under Review - Winduo'} />
 
             <div className="relative mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
                 {/* Background ambient decorative glow */}
@@ -63,8 +63,8 @@ export default function AwaitingApproval({ instructor }: { instructor: Instructo
 
                         <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-300">
                             {isRejected
-                                ? 'The KiteLink administration team reviewed your instructor application and requested some updates before approving your public listing.'
-                                : 'Thank you for registering as a certified kitesurfing instructor on KiteLink! Our administration team is reviewing your profile and credentials.'}
+                                ? 'The Winduo administration team reviewed your instructor application and requested some updates before approving your public listing.'
+                                : 'Thank you for registering as a certified kitesurfing instructor on Winduo! Our administration team is reviewing your profile and credentials.'}
                         </p>
 
                         {/* Rejection Reason Notice Box */}

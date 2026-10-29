@@ -61,7 +61,7 @@ export default function AdminNotifications({ notifications, unreadCount }: Notif
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Admin Notifications - KiteLink" />
+            <Head title="Admin Notifications - Winduo" />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-4 text-slate-900 transition-colors duration-200 sm:p-6 lg:p-8 dark:text-slate-100">
                 {/* Header */}

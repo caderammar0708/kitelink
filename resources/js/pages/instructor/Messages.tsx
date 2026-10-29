@@ -95,13 +95,13 @@ export default function Messages({ conversations = [], activeConversationId, mes
         const handleNewMessage = () => {
             router.reload({ only: ['messages', 'conversations'] });
         };
-        window.addEventListener('kitelink:new-message', handleNewMessage);
-        return () => window.removeEventListener('kitelink:new-message', handleNewMessage);
+        window.addEventListener('winduo:new-message', handleNewMessage);
+        return () => window.removeEventListener('winduo:new-message', handleNewMessage);
     }, []);
 
     // Sync navbar notification bell whenever messages are viewed
     useEffect(() => {
-        window.dispatchEvent(new CustomEvent('kitelink:refresh-notifications'));
+        window.dispatchEvent(new CustomEvent('winduo:refresh-notifications'));
     }, [activeConversationId, localMessages.length]);
 
     const filteredConversations = conversations.filter((c) => {
@@ -178,7 +178,7 @@ export default function Messages({ conversations = [], activeConversationId, mes
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Instructor Inbox & Messages - KiteLink" />
+            <Head title="Instructor Inbox & Messages - Winduo" />
 
             <div className="relative min-h-full p-4 text-slate-800 selection:bg-blue-600/30 selection:text-blue-900 sm:p-6 lg:p-8 dark:text-slate-100 dark:selection:bg-[#3b82f6]/30 dark:selection:text-white">
                 {/* 2-Column Chat Box Window */}

@@ -1,4 +1,5 @@
 import TechBackground from '@/components/tech-background';
+import Logo from '@/components/logo';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
@@ -22,13 +23,8 @@ export function PublicLayout({ children }: PublicLayoutProps) {
             <header className="relative sticky top-0 z-30 w-full border-b border-slate-200/80 bg-white/80 backdrop-blur-xl shadow-xs transition-colors duration-300 dark:border-white/10 dark:bg-[#070b12]/80 dark:shadow-none">
                 <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
                     {/* Brand Logo */}
-                    <Link href={route('home')} className="group flex items-center gap-2.5 transition-transform duration-300 hover:scale-105">
-                        <div className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-blue-200 bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-blue-500/35 dark:border-blue-400/30 dark:shadow-[0_0_15px_rgba(59,130,246,0.35)]">
-                            <i className="fas fa-wind text-lg text-white transition-transform duration-300 group-hover:rotate-12" />
-                        </div>
-                        <span className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent dark:from-[#c2e7ff] dark:via-[#8acbff] dark:to-[#60a5fa]">
-                            KiteLink
-                        </span>
+                    <Link href={route('home')} className="transition-transform duration-300 hover:scale-105">
+                        <Logo size="md" />
                     </Link>
 
                     {/* Nav Links & Actions */}
@@ -55,7 +51,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
                                     className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-gradient-to-r from-blue-600 to-sky-500 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/25 transition-all duration-300 hover:scale-105 hover:shadow-blue-500/40 sm:px-5 sm:text-sm dark:from-[#4ba9ff] dark:to-[#1f6eff] dark:shadow-blue-600/30 dark:hover:from-[#5bb4ff] dark:hover:to-[#2e7bff]"
                                 >
                                     <UserPlus className="h-3.5 w-3.5" />
-                                    <span>Join KiteLink</span>
+                                    <span>Join Winduo</span>
                                 </Link>
                             </div>
                         )}
@@ -70,9 +66,9 @@ export function PublicLayout({ children }: PublicLayoutProps) {
             <footer className="relative z-10 border-t border-slate-200/80 bg-white/70 py-8 text-xs text-slate-500 backdrop-blur-md transition-colors duration-300 dark:border-white/10 dark:bg-[#070b12]/70 dark:text-white/50">
                 <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6 lg:px-8">
                     <div className="flex items-center gap-2">
-                        <i className="fas fa-wind text-blue-600 dark:text-[#5bb4ff]" />
-                        <span className="font-semibold text-slate-800 dark:text-slate-300">KiteLink</span>
-                        <span>— Discover certified kitesurfing coaches & schools worldwide</span>
+                        <Logo size="sm" showWordmark={false} className="size-4" />
+                        <span className="font-semibold text-slate-800 dark:text-slate-300">Winduo</span>
+                        <span>— Discover certified kitesurfing coaches &amp; schools worldwide</span>
                     </div>
 
                     <div className="flex items-center gap-6 text-slate-600 dark:text-slate-400">

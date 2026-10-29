@@ -85,7 +85,7 @@ export default function Schools({ schools, filters, counts }: SchoolsProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Kite Schools Management - KiteLink Admin" />
+            <Head title="Kite Schools Management - Winduo Admin" />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-4 text-slate-900 transition-colors duration-200 sm:p-6 lg:p-8 dark:text-slate-100">
                 {/* Header */}
